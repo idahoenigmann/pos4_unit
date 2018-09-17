@@ -12,7 +12,7 @@ namespace i15013
     {
         static void Main(string[] args)
         {
-            parse_argv(args);
+            process(parse_argv(args));
         }
 
         static void usage(string message = null)
@@ -73,6 +73,22 @@ namespace i15013
             }
             
             return fileInformation;
+        }
+
+        static void process(FileInformation fileInformation)
+        {
+            string fileContent = "";
+            try
+            {
+                fileContent = System.IO.File.ReadAllText(fileInformation.filename);
+            }
+            catch (System.IO.FileNotFoundException)
+            {
+                Console.WriteLine(string.Format("File '{0}' not found!", fileInformation.filename));
+                Environment.Exit(2);
+            }
+
+            Console.WriteLine(fileContent);
         }
 
     }
