@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace i15013
 {
@@ -6,6 +7,20 @@ namespace i15013
     {
         public string filename;
         public bool sorted;
+    }
+
+    struct Record
+    {
+        public string article;
+        public string salesClerk;
+        public double price;
+        public int quantity;
+        public int month;
+
+        public string ToString()
+        {
+            return article + ", " + salesClerk + ", " + price + ", " + quantity + ", " + month;
+        }
     }
     
     class Program
@@ -77,20 +92,35 @@ namespace i15013
 
         static void process(FileInformation fileInformation)
         {
+            List<Record> list = new List<Record>();
             try
             {
                 string[] fileContent = System.IO.File.ReadAllLines(fileInformation.filename);
                 
                 foreach (var line in fileContent)
                 {
-                    Console.WriteLine(line);
+                    String[] lineArray = line.Split(',');
+                    
+                    Record record = new Record();
+                    record.article = lineArray[0];
+                    record.salesClerk = lineArray[1];
+                    record.price = double.Parse(lineArray[2]);
+                    record.quantity = int.Parse(lineArray[3]);
+                    record.month = int.Parse(lineArray[4]);
+
+                    list.Add(record);
                 }
             }
             catch (System.IO.FileNotFoundException)
             {
                 Console.WriteLine(string.Format("File '{0}' not found!", fileInformation.filename));
                 Environment.Exit(2);
-            }            
+            }
+
+            foreach (var record in list)
+            {
+                Console.WriteLine(record.ToString());
+            }
         }
     }
 }
