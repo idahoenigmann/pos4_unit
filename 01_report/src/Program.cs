@@ -77,19 +77,20 @@ namespace i15013
 
         static void process(FileInformation fileInformation)
         {
-            string fileContent = "";
             try
             {
-                fileContent = System.IO.File.ReadAllText(fileInformation.filename);
+                string[] fileContent = System.IO.File.ReadAllLines(fileInformation.filename);
+                
+                foreach (var line in fileContent)
+                {
+                    Console.WriteLine(line);
+                }
             }
             catch (System.IO.FileNotFoundException)
             {
                 Console.WriteLine(string.Format("File '{0}' not found!", fileInformation.filename));
                 Environment.Exit(2);
-            }
-
-            Console.WriteLine(fileContent);
+            }            
         }
-
     }
 }
