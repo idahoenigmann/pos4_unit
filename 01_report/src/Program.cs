@@ -17,7 +17,7 @@ namespace i15013
         public int quantity;
         public int month;
 
-        public string ToString()
+        public new string ToString()
         {
             return article + ", " + salesClerk + ", " + price + ", " + quantity + ", " + month;
         }
@@ -96,17 +96,32 @@ namespace i15013
             try
             {
                 string[] fileContent = System.IO.File.ReadAllLines(fileInformation.filename);
-                
+                int i = 0;
                 foreach (var line in fileContent)
                 {
+                    i++;
                     String[] lineArray = line.Split(',');
                     
                     Record record = new Record();
                     record.article = lineArray[0];
                     record.salesClerk = lineArray[1];
-                    record.price = double.Parse(lineArray[2]);
-                    record.quantity = int.Parse(lineArray[3]);
-                    record.month = int.Parse(lineArray[4]);
+                    if (! double.TryParse(lineArray[2], out record.price))
+                    {
+                        Console.WriteLine(string.Format("Error in Line {0}. Price: {1}.", i, lineArray[2]));
+                        Environment.Exit(3);
+                    }
+
+                    if (!int.TryParse(lineArray[3], out record.quantity))
+                    {
+                        Console.WriteLine(string.Format("Error in Line {0}. Quantity: {1}.", i, lineArray[3]));
+                        Environment.Exit(3);
+                    }
+
+                    if (!int.TryParse(lineArray[4], out record.month))
+                    {
+                        Console.WriteLine(string.Format("Error in Line {0}. Month: {1}.", i, lineArray[4]));
+                        Environment.Exit(3);
+                    }
 
                     list.Add(record);
                 }
