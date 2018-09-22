@@ -133,9 +133,56 @@ namespace i15013 {
         }
 
         static void control_break(List<Record> list) {
-            foreach (var record in list) {
+            /*foreach (var record in list) {
                 Console.WriteLine(record.ToString());
+            }*/
+
+            Console.WriteLine("### Umsatzstatistik nach Produkten und " +
+                              "Verkaeufern ###");
+            
+            Console.WriteLine($"{"Produkt",-17}{"Verkaeufer", -10}{"Umsatzsumme", 15}");
+
+            double total_sales = 0.0;
+
+            IEnumerator<Record> rec_iter=list.GetEnumerator();
+            rec_iter.MoveNext();
+
+            bool last_elem = false;
+            while (!last_elem) {
+                double article_sales = 0.0;
+                Console.WriteLine();
+                string curr_article = rec_iter.Current.article;
+                
+                while (curr_article == rec_iter.Current.article) {
+                    
+                    double salesclerk_sales = 0.0;
+                    string curr_salesclerk = rec_iter.Current.salesClerk;
+
+                    while (curr_article == rec_iter.Current.article &
+                           curr_salesclerk == rec_iter.Current.salesClerk) {
+
+                        salesclerk_sales +=
+                            rec_iter.Current.price * rec_iter.Current.quantity;
+                        article_sales +=
+                            rec_iter.Current.price * rec_iter.Current.quantity;
+                        total_sales +=
+                            rec_iter.Current.price * rec_iter.Current.quantity;
+                        
+                        last_elem = !rec_iter.MoveNext();
+                    }
+                    
+                    Console.WriteLine($"{curr_article,-17}" +
+                                      $"{curr_salesclerk, -10}" +
+                                      $"{salesclerk_sales, 15} *");
+
+                }
+                
+                Console.WriteLine($"{curr_article,-17}" +
+                                  $"{article_sales, 25} **");
             }
+            
+            Console.WriteLine($"\nGesamtumsatz{total_sales, 30} ***");
+            
         }
     }
 }
