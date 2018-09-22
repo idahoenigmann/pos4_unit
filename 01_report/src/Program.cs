@@ -116,6 +116,9 @@ namespace i15013 {
                 Environment.Exit(2);
             }
 
+            list.Sort((x,y) => string.Compare(x.salesClerk, y.salesClerk));
+            list.Sort((x,y) => string.Compare(x.article, y.article));
+
             foreach (var record in list) {
                 Console.WriteLine(record.ToString());
             }
