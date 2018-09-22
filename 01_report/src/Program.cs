@@ -27,10 +27,10 @@ namespace i15013 {
 
         static void usage(string message = null) {
             Console.WriteLine("usage: report [--help|-h|-s] [FILE]\n" +
-            "Print a sales statistics report ordered by product and" +
+            "Print a sales statistics report ordered by product and " +
             "salesclerk.\n  --help|-h ... Help!\n" +
             "  -s ... sort it before producing the report\n" +
-            "FILE ... file name or - (stdin). If FILE is missing read" +
+            "FILE ... file name or - (stdin). If FILE is missing read " +
             "from stdin");
 
             if (message != null) {
@@ -116,19 +116,23 @@ namespace i15013 {
                 Environment.Exit(2);
             }
 
-            list.Sort((x,y) => string.Compare(x.salesClerk, y.salesClerk));
-            list.Sort((x,y) => string.Compare(x.article, y.article));
+            if (fileInformation.sorted) {
+                list.Sort((x, y) =>
+                    string.Compare(x.salesClerk, y.salesClerk));
+                list.Sort((x, y) => string.Compare(x.article, y.article));
 
-            string[] s_list = new string[list.Count];
-            int j = 0;
-            
-            foreach (var record in list) {
-                s_list[j] = record.ToString();
-                j++;
+                string[] s_list = new string[list.Count];
+                int j = 0;
+
+                foreach (var record in list) {
+                    s_list[j] = record.ToString();
+                    j++;
+                }
+
+                System.IO.File.WriteAllLines(
+                    fileInformation.filename + ".sort", s_list);
             }
-            
-            System.IO.File.WriteAllLines(
-            fileInformation.filename + ".sort", s_list);
+
             return list;
         }
 
