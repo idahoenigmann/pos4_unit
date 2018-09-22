@@ -119,9 +119,19 @@ namespace i15013 {
             list.Sort((x,y) => string.Compare(x.salesClerk, y.salesClerk));
             list.Sort((x,y) => string.Compare(x.article, y.article));
 
+            string[] s_list = new string[list.Count];
+            int j = 0;
+            
             foreach (var record in list) {
-                Console.WriteLine(record.ToString());
+                string s = record.ToString();
+                Console.WriteLine(s);
+                s_list[j] = s;
+                j++;
             }
+            
+            System.IO.File.WriteAllLines(
+            fileInformation.filename + ".sort", s_list);
+ 
         }
     }
 }
