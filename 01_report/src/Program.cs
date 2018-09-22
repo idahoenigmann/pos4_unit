@@ -22,7 +22,7 @@ namespace i15013 {
     
     class Program {
         static void Main(string[] args) {
-            process(parse_argv(args));
+            control_break(process(parse_argv(args)));
         }
 
         static void usage(string message = null) {
@@ -77,7 +77,7 @@ namespace i15013 {
             return fileInformation;
         }
 
-        static void process(FileInformation fileInformation) {
+        static List<Record> process(FileInformation fileInformation) {
             List<Record> list = new List<Record>();
             try {
                 string[] fileContent =
@@ -123,15 +123,19 @@ namespace i15013 {
             int j = 0;
             
             foreach (var record in list) {
-                string s = record.ToString();
-                Console.WriteLine(s);
-                s_list[j] = s;
+                s_list[j] = record.ToString();
                 j++;
             }
             
             System.IO.File.WriteAllLines(
             fileInformation.filename + ".sort", s_list);
- 
+            return list;
+        }
+
+        static void control_break(List<Record> list) {
+            foreach (var record in list) {
+                Console.WriteLine(record.ToString());
+            }
         }
     }
 }
