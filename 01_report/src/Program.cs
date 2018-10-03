@@ -161,7 +161,7 @@ namespace i15013 {
                             rec_iter.Current.price * rec_iter.Current.quantity;
                         last_elem = !rec_iter.MoveNext();
                     }
-                    Console.WriteLine($"{curr_article,-17}" +
+                    Console.WriteLine($"{curr_article, -17}" +
                                       $"{curr_salesclerk, -10}" +
                                       $"{salesclerk_sales, 15} *");
                 }
