@@ -1,4 +1,5 @@
 ﻿using System;
+using i15013.lexer;
 
 namespace i15013
 {
@@ -13,6 +14,8 @@ namespace i15013
             FileInformation fileInformation = parse_argv(args);
             Console.WriteLine(fileInformation.filename);
             Console.WriteLine(fileInformation.g);
+            
+            Definition definition = new Definition("LPAREN", "(", false);
         }
         
         public static void usage(string message = null) {
