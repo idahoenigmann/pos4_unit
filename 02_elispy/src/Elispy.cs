@@ -15,7 +15,7 @@ namespace i15013
             Console.WriteLine(fileInformation.filename);
             Console.WriteLine(fileInformation.g);
             
-            Definition definition = new Definition("LPAREN", "(", false);
+            Definition definition = new Definition("LPAREN", @"\(", false);
         }
         
         public static void usage(string message = null) {

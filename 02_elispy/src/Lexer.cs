@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace i15013.lexer {
@@ -47,5 +48,10 @@ namespace i15013.lexer {
         public override string ToString() {
             return $"{type}: {value}; {position}";
         }
+    }
+
+    public interface ILexer {
+        void add_definition(Definition def);
+        IEnumerable<Token> tokenize(string source);
     }
 }
