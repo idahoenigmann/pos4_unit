@@ -15,9 +15,9 @@ namespace i15013.lexer {
     }
 
     public struct Position {
-        private int idx { get; set; };
-        private int line_number { get; set; };
-        private int column_number { get; set; };
+        private int idx { get; set; }
+        private int line_number { get; set; }
+        private int column_number { get; set; }
 
         public Position(int idx, int line_number, int column_number) {
             this.idx = idx;
@@ -27,6 +27,25 @@ namespace i15013.lexer {
 
         public override string ToString() {
             return $"{line_number}, {column_number}";
+        }
+    }
+
+    public struct Token {
+        private string type {
+            get { return type;}
+            set { type = value; }
+        }
+        private string value { get; set; }
+        private Position position { get; set; }
+
+        public Token(string type, string value, Position position) {
+            this.value = value;
+            this.position = position;
+            this.type = type;
+        }
+
+        public override string ToString() {
+            return $"{type}: {value}; {position}";
         }
     }
 }
