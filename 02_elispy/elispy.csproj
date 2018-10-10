@@ -14,4 +14,9 @@
     <Optimize>false</Optimize>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <TrimUnusedDependencies>false</TrimUnusedDependencies>
+  </PropertyGroup>
+
+
 </Project>

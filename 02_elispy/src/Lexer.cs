@@ -4,9 +4,9 @@ using System.Text.RegularExpressions;
 
 namespace i15013.lexer {
     public class Definition {
-        public string type { get; set; }
-        public Regex regex { get; set; }
-        public bool is_ignored { get; set; }
+        public string type { get; }
+        public Regex regex { get; }
+        public bool is_ignored { get; }
 
         public Definition(string type, string regex, bool is_ignored) {
             this.type = type;
@@ -16,9 +16,9 @@ namespace i15013.lexer {
     }
 
     public struct Position {
-        private int idx { get; set; }
-        private int line_number { get; set; }
-        private int column_number { get; set; }
+        public int idx { get; set; }
+        public int line_number { get; set; }
+        public int column_number { get; set; }
 
         public Position(int idx, int line_number, int column_number) {
             this.idx = idx;
@@ -32,10 +32,7 @@ namespace i15013.lexer {
     }
 
     public struct Token {
-        private string type {
-            get { return type;}
-            set { type = value; }
-        }
+        private string type { get; set; }
         private string value { get; set; }
         private Position position { get; set; }
 
@@ -46,8 +43,16 @@ namespace i15013.lexer {
         }
 
         public override string ToString() {
-            return $"{type}: {value}; {position}";
+            return $"{type}: {value} at {position}";
         }
+    }
+
+    public class LexerException : Exception {
+        public LexerException() : base() { }
+        public LexerException(string message) : base(message) { }
+
+        public LexerException(string message, System.Exception inner) : base(
+            message, inner) { }
     }
 
     public interface ILexer {
@@ -64,29 +69,64 @@ namespace i15013.lexer {
             int idx = 0;
             int row = 0;
             int col = 0;
+            Position position = new Position(0, 0, 0);
+
+            bool ignore = false;
+            bool found_def = false;
             
             while (idx < source.Length)
             {
                 string type = "";
                 string value = "";
                 
+                position.idx = idx;
+                position.line_number = row;
+                position.column_number = col;
+
                 foreach (Definition def in definitions) {
+                    ignore = false;
+                    found_def = false;
                     Match match = def.regex.Match(source, idx);
-                    if (match.Success) {
+                    if (match.Success && match.Index == idx) {
                         type = def.type;
                         value = source.Substring(match.Index, match.Length);
                         idx = match.Index + match.Length;
                         col = col + match.Length;
+
+                        if (def.is_ignored) {
+                            ignore = true;
+                        }
+
+                        found_def = true;
                         break;
                     }
                 }
+
+                if (!found_def) {
+                    string message = $"Invalid Token at ({row}, {col})\n" + source;
+                    for (int i = 0; i < row; i++) {
+                        message = message.Substring('\n');
+                    }
+
+                    message += "\n";
+                    
+                    for (int i = 0; i < col; i++) {
+                        message += " ";
+                    }
+
+                    message += "^";
+
+                    throw new LexerException(message);
+                }
+                
                 if (value.Contains("\n")) {
                     row++;
                     col = 0;
                 }
-                Console.WriteLine("a");
-                yield return new Token(type, value, new Position(idx, row, col));
-                Console.WriteLine("b");
+
+                if (!ignore) {
+                    yield return new Token(type, value, position);
+                }
             }
         }
 

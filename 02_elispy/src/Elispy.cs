@@ -16,14 +16,55 @@ namespace i15013
             Lexer lexer = new Lexer();
             lexer.add_definition(new Definition("LPAREN", @"\(", false));
             lexer.add_definition(new Definition("RPAREN", @"\)", false));
-            lexer.add_definition(new Definition("SYMBOL", @"([\w-[0-9]]\w*)|[+\*-]", false));
-            lexer.add_definition(new Definition("INTEGER", @"[0-9]*", false));
-            lexer.add_definition(new Definition("STRING", "\"" + @"[\w*]" + "\"", false));
-            lexer.add_definition(new Definition("SPACE", @"\t|\r|\v|\n", true));
+            lexer.add_definition(new Definition("SYMBOL", @"([\w-[0-9]]\w*)|[+\*-]|[<]|[<=]|[==]|[>]|[>=]", false));
+            lexer.add_definition(new Definition("INTEGER", @"\d+", false));
+            lexer.add_definition(new Definition("STRING", @""".*""", false));
+            lexer.add_definition(new Definition("SPACE", @"\t|\r|\v|\n|\s", true));
             lexer.add_definition(new Definition("QUOTE", @"'", false));
 
             foreach (Token token in lexer.tokenize("(+ 1 2 \"abc def\")")) {
                 Console.WriteLine(token);
+            }
+            
+            Console.WriteLine();
+            
+            foreach (Token token in lexer.tokenize("'(+ 1 2)")) {
+                Console.WriteLine(token);
+            }
+            
+            Console.WriteLine();
+            
+            foreach (Token token in lexer.tokenize("(name _n_ame _ < <= == > >=)")) {
+                Console.WriteLine(token);
+            }
+
+            Console.WriteLine();
+            
+            foreach (Token token in lexer.tokenize("(- 1 \n 2 \r\n 3)")) {
+                Console.WriteLine(token);
+            }
+            
+            Console.WriteLine();
+            
+            foreach (Token token in lexer.tokenize("(+ 1 \n   3)")) {
+                Console.WriteLine(token);
+            }
+            
+            Console.WriteLine();
+            
+            foreach (Token token in lexer.tokenize("(+ 1 \r\n   3)")) {
+                Console.WriteLine(token);
+            }
+            
+            Console.WriteLine();
+
+            try {
+                foreach (Token token in lexer.tokenize("1.5")) {
+                    Console.WriteLine(token);
+                }
+            }
+            catch (LexerException e) {
+                Console.WriteLine(e.Message);
             }
         }
         
