@@ -13,53 +13,8 @@ namespace i15013
     {
         static void Main(string[] args) {
             FileInformation fileInformation = parse_argv(args);
-            
-            SexpsLexer lexer = new SexpsLexer();
 
-            foreach (Token token in lexer.tokenize("(+ 1 2 \"abc def\")")) {
-                Console.WriteLine(token);
-            }
-            
-            Console.WriteLine();
-            
-            foreach (Token token in lexer.tokenize("'(+ 1 2)")) {
-                Console.WriteLine(token);
-            }
-            
-            Console.WriteLine();
-            
-            foreach (Token token in lexer.tokenize("(name _n_ame _ < <= == > >=)")) {
-                Console.WriteLine(token);
-            }
-
-            Console.WriteLine();
-            
-            foreach (Token token in lexer.tokenize("(- 1 \n 2 \r\n 3)")) {
-                Console.WriteLine(token);
-            }
-            
-            Console.WriteLine();
-            
-            foreach (Token token in lexer.tokenize("(+ 1 \n   3)")) {
-                Console.WriteLine(token);
-            }
-            
-            Console.WriteLine();
-            
-            foreach (Token token in lexer.tokenize("(+ 1 \r\n   3)")) {
-                Console.WriteLine(token);
-            }
-            
-            Console.WriteLine();
-
-            try {
-                foreach (Token token in lexer.tokenize("1.5")) {
-                    Console.WriteLine(token);
-                }
-            }
-            catch (LexerException e) {
-                Console.WriteLine(e.Message);
-            }
+            SexpsLexer.test();
         }
         
         public static void usage(string message = null) {
