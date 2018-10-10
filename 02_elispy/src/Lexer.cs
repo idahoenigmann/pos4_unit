@@ -4,9 +4,9 @@ using System.Text.RegularExpressions;
 
 namespace i15013.lexer {
     public class Definition {
-        private string type { get; set; }
-        private Regex regex { get; set; }
-        private bool is_ignored { get; set; }
+        public string type { get; set; }
+        public Regex regex { get; set; }
+        public bool is_ignored { get; set; }
 
         public Definition(string type, string regex, bool is_ignored) {
             this.type = type;
@@ -53,5 +53,43 @@ namespace i15013.lexer {
     public interface ILexer {
         void add_definition(Definition def);
         IEnumerable<Token> tokenize(string source);
+    }
+
+    public class Lexer : ILexer {
+        public void add_definition(Definition def) {
+            definitions.Add(def);
+        }
+
+        public IEnumerable<Token> tokenize(string source) {
+            int idx = 0;
+            int row = 0;
+            int col = 0;
+            
+            while (idx < source.Length)
+            {
+                string type = "";
+                string value = "";
+                
+                foreach (Definition def in definitions) {
+                    Match match = def.regex.Match(source, idx);
+                    if (match.Success) {
+                        type = def.type;
+                        value = source.Substring(match.Index, match.Length);
+                        idx = match.Index + match.Length;
+                        col = col + match.Length;
+                        break;
+                    }
+                }
+                if (value.Contains("\n")) {
+                    row++;
+                    col = 0;
+                }
+                Console.WriteLine("a");
+                yield return new Token(type, value, new Position(idx, row, col));
+                Console.WriteLine("b");
+            }
+        }
+
+        private static List<Definition> definitions = new List<Definition>();
     }
 }

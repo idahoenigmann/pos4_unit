@@ -12,10 +12,19 @@ namespace i15013
     {
         static void Main(string[] args) {
             FileInformation fileInformation = parse_argv(args);
-            Console.WriteLine(fileInformation.filename);
-            Console.WriteLine(fileInformation.g);
             
-            Definition definition = new Definition("LPAREN", @"\(", false);
+            Lexer lexer = new Lexer();
+            lexer.add_definition(new Definition("LPAREN", @"\(", false));
+            lexer.add_definition(new Definition("RPAREN", @"\)", false));
+            lexer.add_definition(new Definition("SYMBOL", @"([\w-[0-9]]\w*)|[+\*-]", false));
+            lexer.add_definition(new Definition("INTEGER", @"[0-9]*", false));
+            lexer.add_definition(new Definition("STRING", "\"" + @"[\w*]" + "\"", false));
+            lexer.add_definition(new Definition("SPACE", @"\t|\r|\v|\n", true));
+            lexer.add_definition(new Definition("QUOTE", @"'", false));
+
+            foreach (Token token in lexer.tokenize("(+ 1 2 \"abc def\")")) {
+                Console.WriteLine(token);
+            }
         }
         
         public static void usage(string message = null) {
