@@ -1,5 +1,6 @@
 ﻿using System;
 using i15013.lexer;
+using i15013.elispy;
 
 namespace i15013
 {
@@ -13,14 +14,7 @@ namespace i15013
         static void Main(string[] args) {
             FileInformation fileInformation = parse_argv(args);
             
-            Lexer lexer = new Lexer();
-            lexer.add_definition(new Definition("LPAREN", @"\(", false));
-            lexer.add_definition(new Definition("RPAREN", @"\)", false));
-            lexer.add_definition(new Definition("SYMBOL", @"([\w-[0-9]]\w*)|[+\*-]|[<]|[<=]|[==]|[>]|[>=]", false));
-            lexer.add_definition(new Definition("INTEGER", @"\d+", false));
-            lexer.add_definition(new Definition("STRING", @""".*""", false));
-            lexer.add_definition(new Definition("SPACE", @"\t|\r|\v|\n|\s", true));
-            lexer.add_definition(new Definition("QUOTE", @"'", false));
+            SexpsLexer lexer = new SexpsLexer();
 
             foreach (Token token in lexer.tokenize("(+ 1 2 \"abc def\")")) {
                 Console.WriteLine(token);
