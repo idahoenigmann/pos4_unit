@@ -16,6 +16,7 @@ namespace i15013
 
             //SexpsLexer.test();
             SexpsParser sexpsParser = new SexpsParser(new SexpsLexer());
+            //sexpsParser.parse("(+ 1 2)");
         }
         
         public static void usage(string message = null) {

@@ -16,10 +16,17 @@ namespace i15013.elispy {
     
     public class SexpsParser {
         public SexpsParser(ILexer lexer) {
-            foreach (Token token in lexer.tokenize("(+ 1 2 \"abc def\")")) {
+            this.lexer = lexer;
+        }
+
+        /*public List<Sexp> parse(string source) {
+            foreach (Token token in lexer.tokenize(source)) {
                 Console.WriteLine(token);
             }
-        }
+            return new List<Sexp>();
+        }*/
+
+        private ILexer lexer;
     }
     
     public class ParserException : Exception {
