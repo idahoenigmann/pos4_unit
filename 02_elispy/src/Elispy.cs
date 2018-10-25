@@ -14,7 +14,8 @@ namespace i15013
         static void Main(string[] args) {
             FileInformation fileInformation = parse_argv(args);
 
-            SexpsLexer.test();
+            //SexpsLexer.test();
+            SexpsParser sexpsParser = new SexpsParser(new SexpsLexer());
         }
         
         public static void usage(string message = null) {
