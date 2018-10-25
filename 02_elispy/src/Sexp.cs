@@ -3,15 +3,15 @@ using i15013.elispy;
 using i15013.lexer;
 
 namespace elispy {
-    /*public class Sexp {
+    public class Sexp {
         protected bool is_quoted;
         protected Position? position;
 
         protected Sexp(Position? position) {
-            this.position = position;
+            //this.position = position;
         }
 
-        public Sexp EvaluateException(Context ctx) {
+        public Sexp eval(Context ctx) {
             return this;
         }
 
@@ -19,8 +19,38 @@ namespace elispy {
             return "";
         }
 
-        public static int operator+ (Sexp sexp) {
+        public static void operator_int (Sexp sexp) {
             
         }
-    }*/
+
+        public static void operator_string(Sexp sexp) {
+            
+        }
+
+        public static void operator_Sexp(int i) {
+            
+        }
+        
+        
+    }
+    
+    public class SexpList : Sexp {
+        
+    }
+    
+    public class SexpAtom : Sexp{
+        
+    }
+
+    public class SexpSymbol : SexpAtom {
+        
+    }
+
+    public class SexpString : SexpAtom {
+        
+    }
+
+    public class SexpInteger : SexpAtom {
+        
+    }
 }
