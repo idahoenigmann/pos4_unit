@@ -15,8 +15,9 @@ namespace i15013.elispy {
      */
     
     public class SexpsParser {
-        public SexpsParser(ILexer lexer) {
+        public SexpsParser(ILexer lexer, Context ctx) {
             this.lexer = lexer;
+            this.ctx = ctx;
         }
 
         public List<Sexp> parse(string source) {
@@ -27,6 +28,7 @@ namespace i15013.elispy {
         }
 
         private ILexer lexer;
+        private Context ctx;
     }
     
     public class ParserException : Exception {

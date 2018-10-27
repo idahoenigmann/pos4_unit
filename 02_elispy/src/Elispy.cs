@@ -15,7 +15,7 @@ namespace i15013
             FileInformation fileInformation = parse_argv(args);
 
             //SexpsLexer.test();
-            SexpsParser sexpsParser = new SexpsParser(new SexpsLexer());
+            SexpsParser sexpsParser = new SexpsParser(new SexpsLexer(), new Context());
             //sexpsParser.parse("(+ 1 2)");
         }
         
