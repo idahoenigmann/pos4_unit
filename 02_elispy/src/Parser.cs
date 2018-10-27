@@ -4,13 +4,13 @@ using i15013.lexer;
 
 namespace i15013.elispy {
     public interface IParser {
-        void parse(string source);
+        List<Sexp> parse(string source);
     }
 
     /*
      * Atom::= INTEGER | STRING | SYMBOL
-     * List::= ( {Atom} )
-     * Sexp::= ' Atom | List | Sexp
+     * List::= ( {Sexp} )
+     * Sexp::= '? Atom | List | Sexp
      * Program::= {Sexp}
      */
     
@@ -19,12 +19,12 @@ namespace i15013.elispy {
             this.lexer = lexer;
         }
 
-        /*public List<Sexp> parse(string source) {
+        public List<Sexp> parse(string source) {
             foreach (Token token in lexer.tokenize(source)) {
                 Console.WriteLine(token);
             }
             return new List<Sexp>();
-        }*/
+        }
 
         private ILexer lexer;
     }
