@@ -8,7 +8,7 @@ namespace i15013.elispy {
         public bool is_quoted = false;
         protected Position? position;
 
-        protected Sexp(Position? position) {
+        protected Sexp(Position? position = null) {
             this.position = position;
         }
 
@@ -69,7 +69,7 @@ namespace i15013.elispy {
     public class SexpList : Sexp {
         List<Sexp> terms;
 
-        public SexpList(Position? position) {
+        public SexpList(Position? position = null) {
             this.position = position;
             this.terms = new List<Sexp>();
         }
@@ -153,7 +153,7 @@ namespace i15013.elispy {
     public abstract class SexpAtom : Sexp {
         protected dynamic value;
 
-        public SexpAtom(dynamic value, Position? position) {
+        public SexpAtom(dynamic value, Position? position = null) {
             this.value = value;
             this.position = position;
         }
@@ -184,7 +184,7 @@ namespace i15013.elispy {
     }
 
     public class SexpSymbol : SexpAtom {
-        public SexpSymbol(string name, Position? position) {
+        public SexpSymbol(string name, Position? position = null) {
             value = name;
             this.position = position;
         }
@@ -207,8 +207,9 @@ namespace i15013.elispy {
     }
 
     public class SexpString : SexpAtom {
-        public SexpString(string value) {
+        public SexpString(string value, Position? position = null) {
             this.value = value;
+            this.position = position;
         }
 
         public override string ToString() {
@@ -221,8 +222,9 @@ namespace i15013.elispy {
     }
 
     public class SexpInteger : SexpAtom {
-        public SexpInteger(int value) {
+        public SexpInteger(int value, Position? position = null) {
             this.value = value;
+            this.position = position;
         }
 
         public override string ToString() {

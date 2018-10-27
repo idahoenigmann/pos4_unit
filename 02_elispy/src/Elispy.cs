@@ -15,17 +15,9 @@ namespace i15013
         static void Main(string[] args) {
             FileInformation fileInformation = parse_argv(args);
 
-            //SexpsLexer.test();
-            SexpsParser sexpsParser = new SexpsParser(new SexpsLexer(), new Context());
-            
-            
-            foreach (Sexp sexp in sexpsParser.parse("(+ 1 2)"))
-            {
-                Console.WriteLine(sexp);
-            }
-            
-            
-            //sexpsParser.test();
+            SexpsLexer.test();
+            SexpsParser.test();
+
         }
         
         public static void usage(string message = null) {

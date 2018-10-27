@@ -26,7 +26,7 @@ namespace i15013.elispy {
             return program();
         }
 
-        public void test() {
+        public static void test() {
             Console.WriteLine(new SexpSymbol("a", null).ToString());
             Console.WriteLine(new SexpInteger(1).ToString());
             Console.WriteLine(new SexpString("abc").ToString());
@@ -45,6 +45,26 @@ namespace i15013.elispy {
             sexpList.is_quoted = true;
             
             Console.WriteLine(sexpList.ToString());
+            
+            Console.WriteLine("----------------------------");
+            
+            SexpsParser sexpsParser = new SexpsParser(new SexpsLexer(), new Context());
+            
+            foreach (Sexp sexp in sexpsParser.parse("(+ 1 2 name \"abc def\")\n" +
+                                                    "'(+ 1 2)\n" +
+                                                    "( + 1 2 )")) {
+                Console.WriteLine(sexp);
+            }
+            
+            /*foreach (Sexp sexp in sexpsParser.parse("'(+ 1 2)")) {
+                Console.WriteLine(sexp);
+            }
+            
+            foreach (Sexp sexp in sexpsParser.parse("( + 1 2 )")) {
+                Console.WriteLine(sexp);
+            }*/
+            
+            
         }
 
         private List<Sexp> program() {
@@ -58,19 +78,30 @@ namespace i15013.elispy {
         private Sexp sexp() {
             while (source[idx] == ' ' || source[idx] == '\n') {
                 idx++;
+                col++;
+                if (source[idx] == '\n') {
+                    line++;
+                    col = 0;
+                }
             }
             
             if (source[idx] == '\'') {
                 idx++;
-                return sexp();
+                col++;
+                Sexp s = sexp();
+                s.is_quoted = true;
+                return s;
             }
             if (source[idx] == '(') {
                 idx++;
+                col++;
                 Sexp sexp = list();
                 if (source[idx] == ')') {
                     idx++;
+                    col++;
                 } else {
-                    throw new ParserException();
+                    throw new ParserException($"Missing ')' or EOF at" +
+                                   $"(index={idx}, line={line}, column={col}");
                 }
 
                 return sexp;
@@ -82,55 +113,62 @@ namespace i15013.elispy {
         private SexpAtom atom() {
             while (source[idx] == ' ' || source[idx] == '\n') {
                 idx++;
+                col++;
+                if (source[idx] == '\n') {
+                    line++;
+                    col = 0;
+                }
             }
             
             Match match = new Regex(@"\d+", RegexOptions.Compiled).Match(source, idx);
             if (match.Success && match.Index == idx) {
-                SexpInteger sexpInteger = new SexpInteger(Int32.Parse(source.Substring(idx, match.Length)));
+                SexpInteger sexpInteger = new SexpInteger(Int32.Parse(source.Substring(idx, match.Length)), new Position(idx, line, col));
                 idx += match.Length;
+                col += match.Length;
                 return sexpInteger;
             }
             match = new Regex(@"([\w-[0-9]]\w*)|[+\*-]|<=|==|>=|<|>", RegexOptions.Compiled).Match(source, idx);
             if (match.Success && match.Index == idx) {
-                SexpSymbol sexpSymbol = new SexpSymbol(source.Substring(idx, match.Length), null);
+                SexpSymbol sexpSymbol = new SexpSymbol(source.Substring(idx, match.Length), new Position(idx, line, col));
                 idx += match.Length;
+                col += match.Length;
                 return sexpSymbol;
             }
             match = new Regex(@""".*""", RegexOptions.Compiled).Match(source, idx);
             if (match.Success && match.Index == idx) {
-                SexpString sexpString = new SexpString(source.Substring(idx, match.Length));
+                SexpString sexpString = new SexpString(source.Substring(idx+1, match.Length-2), new Position(idx, line, col));
                 idx += match.Length;
+                col += match.Length;
                 return sexpString;
             }
-            throw new ParserException();
+            throw new ParserException($"Unrecognized symbol '{source[idx]}' " +
+                               $"at (index={idx}, line={line}, column={col})");
         }
 
         private SexpList list() {
-            SexpList sexpList = new SexpList(null);
-            while (source[idx] != ')') {
-                while (source[idx] == ' ' || source[idx] == '\n') {
-                    idx++;
+            SexpList sexpList = new SexpList(new Position(idx, line, col));
+            
+            if (idx >= source.Length) {
+                throw new ParserException($"Opening '(' but EOF at (index={idx}, line={line}, column={col})");
+            }
+            
+            while (source[idx] != ')') {      
+                
+                sexpList.add_term(sexp());
+                
+                if (idx >= source.Length) {
+                    throw new ParserException($"Opening '(' but EOF at (index={idx}, line={line}, column={col})");
                 }
                 
-                if (source[idx] == '\'') {
+                while (source[idx] == ' ' || source[idx] == '\n') {
                     idx++;
-                    sexpList.add_term(sexp());
+                    col++;
+                    if (source[idx] == '\n') {
+                        line++;
+                        col = 0;
+                    }
                 }
 
-                if (source[idx] == '(') {
-                    idx++;
-                    Sexp sexp = list();
-                    if (source[idx] == ')') {
-                        idx++;
-                    }
-                    else {
-                        throw new ParserException();
-                    }
-
-                    sexpList.add_term(sexp);
-                }
-
-                sexpList.add_term(atom());
             }
 
             return sexpList;
@@ -140,6 +178,8 @@ namespace i15013.elispy {
         private Context ctx;
         private string source;
         private int idx = 0;
+        private int line = 0;
+        private int col = 0; 
     }
     
     public class ParserException : Exception {
