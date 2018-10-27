@@ -27,6 +27,27 @@ namespace i15013.elispy {
             return new List<Sexp>();
         }
 
+        public void test() {
+            Console.WriteLine(new SexpSymbol("a", null).ToString());
+            Console.WriteLine(new SexpInteger(1).ToString());
+            Console.WriteLine(new SexpString("abc").ToString());
+
+            Sexp s = new SexpSymbol("a", null);
+            s.is_quoted = true;
+            Console.WriteLine(s.ToString());
+            
+            Console.WriteLine(new SexpList(new List<Sexp>(), null).ToString());
+
+            List<Sexp> list = new List<Sexp>();
+            list.Add(new SexpInteger(1));
+            list.Add(new SexpString("abc"));
+            
+            SexpList sexpList = new SexpList(list, null);
+            sexpList.is_quoted = true;
+            
+            Console.WriteLine(sexpList.ToString());
+        }
+        
         private ILexer lexer;
         private Context ctx;
     }

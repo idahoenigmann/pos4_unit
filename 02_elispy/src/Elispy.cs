@@ -19,24 +19,7 @@ namespace i15013
             SexpsParser sexpsParser = new SexpsParser(new SexpsLexer(), new Context());
             //sexpsParser.parse("(+ 1 2)");
             
-            Console.WriteLine(new SexpSymbol("a", null).ToString());
-            Console.WriteLine(new SexpInteger(1).ToString());
-            Console.WriteLine(new SexpString("abc").ToString());
-
-            Sexp s = new SexpSymbol("a", null);
-            s.is_quoted = true;
-            Console.WriteLine(s.ToString());
-            
-            Console.WriteLine(new SexpList(new List<Sexp>(), null).ToString());
-
-            List<Sexp> list = new List<Sexp>();
-            list.Add(new SexpInteger(1));
-            list.Add(new SexpString("abc"));
-            
-            SexpList sexpList = new SexpList(list, null);
-            sexpList.is_quoted = true;
-            
-            Console.WriteLine(sexpList.ToString());
+            sexpsParser.test();
         }
         
         public static void usage(string message = null) {

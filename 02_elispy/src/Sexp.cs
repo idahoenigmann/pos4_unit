@@ -71,6 +71,7 @@ namespace i15013.elispy {
 
         public SexpList(Position? position) {
             this.position = position;
+            this.terms = new List<Sexp>();
         }
 
         public SexpList(List<Sexp> terms, Position? position) {
