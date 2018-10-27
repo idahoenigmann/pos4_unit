@@ -14,7 +14,7 @@ namespace i15013.elispy {
      * Program::= {Sexp}
      */
     
-    public class SexpsParser {
+    public class SexpsParser : IParser{
         public SexpsParser(ILexer lexer, Context ctx) {
             this.lexer = lexer;
             this.ctx = ctx;

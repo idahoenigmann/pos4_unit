@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using i15013.lexer;
 using i15013.elispy;
 
@@ -17,6 +18,25 @@ namespace i15013
             //SexpsLexer.test();
             SexpsParser sexpsParser = new SexpsParser(new SexpsLexer(), new Context());
             //sexpsParser.parse("(+ 1 2)");
+            
+            Console.WriteLine(new SexpSymbol("a", null).ToString());
+            Console.WriteLine(new SexpInteger(1).ToString());
+            Console.WriteLine(new SexpString("abc").ToString());
+
+            Sexp s = new SexpSymbol("a", null);
+            s.is_quoted = true;
+            Console.WriteLine(s.ToString());
+            
+            Console.WriteLine(new SexpList(new List<Sexp>(), null).ToString());
+
+            List<Sexp> list = new List<Sexp>();
+            list.Add(new SexpInteger(1));
+            list.Add(new SexpString("abc"));
+            
+            SexpList sexpList = new SexpList(list, null);
+            sexpList.is_quoted = true;
+            
+            Console.WriteLine(sexpList.ToString());
         }
         
         public static void usage(string message = null) {

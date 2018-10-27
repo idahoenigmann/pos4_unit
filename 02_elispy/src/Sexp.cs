@@ -1,14 +1,15 @@
 using System;
 using System.Collections.Generic;
-using i15013.elispy;
+using System.Reflection;
 using i15013.lexer;
 
 namespace i15013.elispy {
     public abstract class Sexp {
-        protected bool is_quoted;
+        public bool is_quoted = false;
         protected Position? position;
 
         protected Sexp(Position? position) {
+            this.position = position;
         }
 
         public Sexp() {
@@ -17,9 +18,7 @@ namespace i15013.elispy {
 
         public abstract Sexp eval(Context ctx = null);
 
-        public override string ToString() {
-            return "";
-        }
+        public abstract override string ToString();
 
         public static explicit operator int (Sexp sexp) {
             return 0;
@@ -38,11 +37,11 @@ namespace i15013.elispy {
         }
         
         public static bool operator==(Sexp lhs, Sexp rhs) {
-            return true;
+            return lhs.Equals(rhs);
         }
 
         public static bool operator!=(Sexp lhs, Sexp rhs) {
-            return true;
+            return !lhs.Equals(rhs);
         }
 
         public override int GetHashCode() {
@@ -50,11 +49,14 @@ namespace i15013.elispy {
         }
 
         public override bool Equals(Object obj) {
-            return true;
+            if (obj is Sexp) {
+                return this.Equals(obj);
+            }
+            return false;
         }
 
         public bool Equals(Sexp sexp) {
-            return true;
+            return this.Equals(sexp);
         }
 
         public static explicit operator bool(Sexp sexp) {
@@ -68,23 +70,40 @@ namespace i15013.elispy {
         List<Sexp> terms;
 
         public SexpList(Position? position) {
-            
+            this.position = position;
         }
 
         public SexpList(List<Sexp> terms, Position? position) {
-            
+            this.terms = terms;
+            this.position = position;
         }
 
         public void add_term(Sexp term) {
-            
+            terms.Add(term);
         }
 
         public override Sexp eval(Context ctx = null) {
             return terms[0];
         }
 
-        public new string ToString() {
-            return "";
+        public override string ToString() {
+            if (terms.Count == 0) {
+                return "nil";
+            }
+            string str = "";
+
+            if (is_quoted) {
+                str += "'";
+            }
+            
+            str += "(";
+            foreach (Sexp sexp in terms) {
+                str += sexp + " ";
+            }
+
+            str = str.Remove(str.Length - 1);
+            str += ")";
+            return str;
         }
 
         public new int GetHashCode() {
@@ -92,11 +111,37 @@ namespace i15013.elispy {
         }
 
         public new bool Equals(Object o) {
-            return true;
+            if (o is SexpList) {
+
+                SexpList sexpList = (SexpList) o;
+                
+                for (int i=0; i<terms.Count; i++) {
+                    if (!terms[i].Equals(sexpList.terms[i])) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+            
+            return false;
         }
 
         public new bool Equals(Sexp sexp) {
-            return true;
+            if (sexp is SexpList) {
+
+                SexpList sexpList = (SexpList) sexp;
+                
+                for (int i=0; i<terms.Count; i++) {
+                    if (!terms[i].Equals(sexpList.terms[i])) {
+                        return false;
+                    }
+                }
+
+                return true;
+            }
+            
+            return false;
         }
 
         public override bool is_null() {
@@ -105,10 +150,11 @@ namespace i15013.elispy {
     }
     
     public abstract class SexpAtom : Sexp {
-        dynamic value;
+        protected dynamic value;
 
         public SexpAtom(dynamic value, Position? position) {
-            
+            this.value = value;
+            this.position = position;
         }
 
         public SexpAtom() {
@@ -138,15 +184,20 @@ namespace i15013.elispy {
 
     public class SexpSymbol : SexpAtom {
         public SexpSymbol(string name, Position? position) {
-            
+            value = name;
+            this.position = position;
         }
 
         public new Sexp eval(Context ctx = null) {
             return new SexpString("");
         }
 
-        public new string ToString() {
-            return "";
+        public override string ToString() {
+            if (is_quoted) {
+                return "'" + value;
+            }
+            
+            return value;
         }
 
         public override bool is_null() {
@@ -156,21 +207,29 @@ namespace i15013.elispy {
 
     public class SexpString : SexpAtom {
         public SexpString(string value) {
-            
+            this.value = value;
         }
 
-        public new string ToString() {
-            return "";
+        public override string ToString() {
+            if (is_quoted) {
+                return "'\"" + value + "\"";
+            }
+            
+            return "\"" + value + "\"";
         }
     }
 
     public class SexpInteger : SexpAtom {
         public SexpInteger(int value) {
-            
+            this.value = value;
         }
 
-        public new string ToString() {
-            return "";
+        public override string ToString() {
+            if (is_quoted) {
+                return "'" + value.ToString();
+            }
+            
+            return value.ToString();
         }
     }
 }
