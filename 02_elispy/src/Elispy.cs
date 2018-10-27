@@ -17,9 +17,15 @@ namespace i15013
 
             //SexpsLexer.test();
             SexpsParser sexpsParser = new SexpsParser(new SexpsLexer(), new Context());
-            //sexpsParser.parse("(+ 1 2)");
             
-            sexpsParser.test();
+            
+            foreach (Sexp sexp in sexpsParser.parse("(+ 1 2)"))
+            {
+                Console.WriteLine(sexp);
+            }
+            
+            
+            //sexpsParser.test();
         }
         
         public static void usage(string message = null) {
