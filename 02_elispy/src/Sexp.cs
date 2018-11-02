@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 using i15013.lexer;
 
 namespace i15013.elispy {
@@ -18,7 +17,13 @@ namespace i15013.elispy {
 
         public abstract Sexp eval(Context ctx = null);
 
-        public abstract override string ToString();
+        public override string ToString() {    //can not be virtual because override
+            if (is_quoted) {
+                return "'";
+            }
+
+            return "";
+        }
 
         public static explicit operator int (Sexp sexp) {
             return 0;
@@ -91,11 +96,7 @@ namespace i15013.elispy {
             if (terms.Count == 0) {
                 return "nil";
             }
-            string str = "";
-
-            if (is_quoted) {
-                str += "'";
-            }
+            string str = base.ToString();
             
             str += "(";
             foreach (Sexp sexp in terms) {
@@ -193,12 +194,8 @@ namespace i15013.elispy {
             return new SexpString("");
         }
 
-        public override string ToString() {
-            if (is_quoted) {
-                return "'" + value;
-            }
-            
-            return value;
+        public override string ToString() {           
+            return base.ToString() + value;
         }
 
         public override bool is_null() {
@@ -213,11 +210,7 @@ namespace i15013.elispy {
         }
 
         public override string ToString() {
-            if (is_quoted) {
-                return "'\"" + value + "\"";
-            }
-            
-            return "\"" + value + "\"";
+            return base.ToString() + "\"" + value + "\"";
         }
     }
 
@@ -227,12 +220,8 @@ namespace i15013.elispy {
             this.position = position;
         }
 
-        public override string ToString() {
-            if (is_quoted) {
-                return "'" + value.ToString();
-            }
-            
-            return value.ToString();
+        public override string ToString() {           
+            return base.ToString() + value.ToString();
         }
     }
 }

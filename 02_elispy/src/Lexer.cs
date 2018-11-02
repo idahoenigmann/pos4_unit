@@ -37,7 +37,7 @@ namespace i15013.lexer {
         public Position position { get; private set; }
 
         public Token(string type, string value, Position position) {
-            this.value = value;
+            this.value = value.Replace(@"""", "");
             this.position = position;
             this.type = type;
         }

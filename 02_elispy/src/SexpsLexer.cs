@@ -14,6 +14,15 @@ namespace i15013.elispy {
         }
 
         public static void test() {
+            Console.WriteLine(@"" +
+            @"  _______        _     _                        "+"\n"+
+            @" |__   __|      | |   | |                       "+"\n"+         
+            @"    | | ___  ___| |_  | |     _____  _____ _ __ "+"\n"+
+            @"    | |/ _ \/ __| __| | |    / _ \ \/ / _ \ '__|"+"\n"+
+            @"    | |  __/\__ \ |_  | |___|  __/>  <  __/ |   "+"\n"+
+            @"    |_|\___||___/\__| |______\___/_/\_\___|_|   "+"\n");
+            
+            
             SexpsLexer lexer = new SexpsLexer();
 
             foreach (Token token in lexer.tokenize("(+ 1 2 \"abc def\")")) {

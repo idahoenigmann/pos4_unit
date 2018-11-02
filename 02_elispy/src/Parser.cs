@@ -25,15 +25,22 @@ namespace i15013.elispy {
         }
 
         public static void test() {
-            Console.WriteLine(new SexpSymbol("a", null).ToString());
-            Console.WriteLine(new SexpInteger(1).ToString());
-            Console.WriteLine(new SexpString("abc").ToString());
+            Console.WriteLine("" +
+             @" _______        _     _____                         "+"\n"+
+             @"|__   __|      | |   |  __ \                        "+"\n"+
+             @"   | | ___  ___| |_  | |__) |_ _ _ __ ___  ___ _ __ "+"\n"+
+             @"   | |/ _ \/ __| __| |  ___/ _` | '__/ __|/ _ \ '__|"+"\n"+
+             @"   | |  __/\__ \ |_  | |  | (_| | |  \__ \  __/ |   "+"\n"+
+             @"   |_|\___||___/\__| |_|   \__,_|_|  |___/\___|_|   "+"\n");
+            Console.WriteLine("a as SexpSymbol: " + new SexpSymbol("a", null));
+            Console.WriteLine("1 as SexpInteger: " + new SexpInteger(1));
+            Console.WriteLine("abc as SexpString: " + new SexpString("abc"));
 
             Sexp s = new SexpSymbol("a", null);
             s.is_quoted = true;
-            Console.WriteLine(s.ToString());
+            Console.WriteLine("a as quoted SexpSymbol: " + s);
             
-            Console.WriteLine(new SexpList(new List<Sexp>(), null).ToString());
+            Console.WriteLine("empty list as SexpList: " + new SexpList(new List<Sexp>(), null));
 
             List<Sexp> list = new List<Sexp>();
             list.Add(new SexpInteger(1));
@@ -42,27 +49,17 @@ namespace i15013.elispy {
             SexpList sexpList = new SexpList(list, null);
             sexpList.is_quoted = true;
             
-            Console.WriteLine(sexpList.ToString());
+            Console.WriteLine("1 and abc as quoted SexpList: " + sexpList);
             
-            Console.WriteLine("----------------------------");
+            Console.WriteLine("\n+ 1 2 name \"abc def\")\\n'(+ 1 2)\\n( + 1 2 )\t parsed is:");
             
             SexpsParser sexpsParser = new SexpsParser(new SexpsLexer(), new Context());
             
             foreach (Sexp sexp in sexpsParser.parse("(+ 1 2 name \"abc def\")\n" +
                                                     "'(+ 1 2)\n" +
                                                     "( + 1 2 )")) {
-                Console.WriteLine(sexp);
+                Console.WriteLine("\t" + sexp);
             }
-            
-            /*foreach (Sexp sexp in sexpsParser.parse("'(+ 1 2)")) {
-                Console.WriteLine(sexp);
-            }
-            
-            foreach (Sexp sexp in sexpsParser.parse("( + 1 2 )")) {
-                Console.WriteLine(sexp);
-            }*/
-            
-            
         }
 
         private Token getSym() {
@@ -81,45 +78,36 @@ namespace i15013.elispy {
 
             while (tokens.Count > 0) {
                 list.Add(sexp(getSym()));
-                Console.WriteLine("----------------------------");
             }
             
             return list;
         }
 
         private Sexp sexp(Token token) {
-            Console.WriteLine(token);
             
             if (token.type == Tokens.QUOTE) {
                 Sexp s = sexp(getSym());
                 s.is_quoted = true;
-                Console.WriteLine("return quoted sexp");
                 return s;
             }
             if (token.type == Tokens.LPAREN) {
                 Sexp sexp = list(getSym());
-                Console.WriteLine("return list");
                 return sexp;
             }
-            Console.WriteLine("return atom");
             return atom(token);
         }
 
         private SexpAtom atom(Token token) {
-            Console.WriteLine(token);
             
             if (token.type == Tokens.INTEGER) {
-                Console.WriteLine("return Integer");
                 return new SexpInteger(Int32.Parse(token.value), token.position);
             }
             
             if (token.type == Tokens.SYMBOL) {
-                Console.WriteLine("return Symbol");
                 return new SexpSymbol(token.value, token.position);
             }
             
             if (token.type == Tokens.STRING) {
-                Console.WriteLine("return String");
                 return new SexpString(token.value, token.position);
             }
             throw new ParserException($"Unrecognized symbol '{token.value}' " +
@@ -129,7 +117,6 @@ namespace i15013.elispy {
         }
 
         private SexpList list(Token token) {
-            Console.WriteLine(token);
             
             SexpList sexpList = new SexpList(token.position);
             
@@ -138,7 +125,6 @@ namespace i15013.elispy {
                 token = getSym();
 
             }
-            Console.WriteLine("return list");
             return sexpList;
         }
         
