@@ -67,59 +67,55 @@ namespace i15013.elispy {
             
         }
 
+        private char getSym() {
+            return source[idx];
+        }
+
+        private bool checkSym(char c) {
+            while (getSym() == ' ' || getSym() == '\n') {    //ignore whitespace
+                idx++;
+                col++;
+                if (getSym() == '\n') {
+                    line++;
+                    col = 0;
+                }
+            }
+
+            if (getSym() == c) {
+                idx++;
+                col++;
+                return true;
+            }
+
+            return false;
+        }
+
         private List<Sexp> program() {
             List<Sexp> list = new List<Sexp>();
-            while (idx < source.Length) {
+            while (idx < source.Length) {    //while there still are symbols to check
                 list.Add(sexp());
             }
             return list;
         }
 
         private Sexp sexp() {
-            while (source[idx] == ' ' || source[idx] == '\n') {
-                idx++;
-                col++;
-                if (source[idx] == '\n') {
-                    line++;
-                    col = 0;
-                }
-            }
-            
-            if (source[idx] == '\'') {
-                idx++;
-                col++;
+            if (checkSym('\'')) {
                 Sexp s = sexp();
                 s.is_quoted = true;
                 return s;
             }
-            if (source[idx] == '(') {
-                idx++;
-                col++;
+            if (checkSym('(')) {
                 Sexp sexp = list();
-                if (source[idx] == ')') {
-                    idx++;
-                    col++;
-                } else {
+                if (!checkSym(')')) {
                     throw new ParserException($"Missing ')' or EOF at" +
-                                   $"(index={idx}, line={line}, column={col}");
+                                   $"(index={idx}, line={line}, column={col})");
                 }
-
                 return sexp;
             }
-
             return atom();
         }
 
-        private SexpAtom atom() {
-            while (source[idx] == ' ' || source[idx] == '\n') {
-                idx++;
-                col++;
-                if (source[idx] == '\n') {
-                    line++;
-                    col = 0;
-                }
-            }
-            
+        private SexpAtom atom() {            
             Match match = new Regex(@"\d+", RegexOptions.Compiled).Match(source, idx);
             if (match.Success && match.Index == idx) {
                 SexpInteger sexpInteger = new SexpInteger(Int32.Parse(source.Substring(idx, match.Length)), new Position(idx, line, col));
@@ -141,7 +137,7 @@ namespace i15013.elispy {
                 col += match.Length;
                 return sexpString;
             }
-            throw new ParserException($"Unrecognized symbol '{source[idx]}' " +
+            throw new ParserException($"Unrecognized symbol '{getSym()}' " +
                                $"at (index={idx}, line={line}, column={col})");
         }
 
@@ -152,25 +148,14 @@ namespace i15013.elispy {
                 throw new ParserException($"Opening '(' but EOF at (index={idx}, line={line}, column={col})");
             }
             
-            while (source[idx] != ')') {      
+            while (!checkSym(')')) {
                 
                 sexpList.add_term(sexp());
                 
                 if (idx >= source.Length) {
                     throw new ParserException($"Opening '(' but EOF at (index={idx}, line={line}, column={col})");
                 }
-                
-                while (source[idx] == ' ' || source[idx] == '\n') {
-                    idx++;
-                    col++;
-                    if (source[idx] == '\n') {
-                        line++;
-                        col = 0;
-                    }
-                }
-
             }
-
             return sexpList;
         }
         
