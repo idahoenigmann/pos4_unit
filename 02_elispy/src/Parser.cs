@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using i15013.lexer;
-using System.Text.RegularExpressions;
 
 namespace i15013.elispy {
     public interface IParser {
@@ -22,8 +21,7 @@ namespace i15013.elispy {
         }
 
         public List<Sexp> parse(string source) {
-            this.source = source;
-            return program();
+            return program(source);
         }
 
         public static void test() {
@@ -67,106 +65,86 @@ namespace i15013.elispy {
             
         }
 
-        private char getSym() {
-            return source[idx];
+        private Token getSym() {
+            Token token = tokens[0];
+            tokens.RemoveAt(0);
+            return token;
         }
 
-        private bool checkSym(char c) {
-            removeWhitespace();
-
-            if (getSym() == c) {
-                idx++;
-                col++;
-                return true;
-            }
-
-            return false;
-        }
-
-        private void removeWhitespace() {
-            while (getSym() == ' ' || getSym() == '\n') {    //ignore whitespace
-                idx++;
-                col++;
-                if (getSym() == '\n') {
-                    line++;
-                    col = 0;
-                }
-            }
-        }
-
-        private List<Sexp> program() {
+        private List<Sexp> program(string source) {
             List<Sexp> list = new List<Sexp>();
-            while (idx < source.Length) {    //while there still are symbols to check
-                list.Add(sexp());
+            
+            foreach (Token token in lexer.tokenize(source)) {
+                tokens.Add(token);
+                
             }
+
+            while (tokens.Count > 0) {
+                list.Add(sexp(getSym()));
+                Console.WriteLine("----------------------------");
+            }
+            
             return list;
         }
 
-        private Sexp sexp() {
-            if (checkSym('\'')) {
-                Sexp s = sexp();
+        private Sexp sexp(Token token) {
+            Console.WriteLine(token);
+            
+            if (token.type == Tokens.QUOTE) {
+                Sexp s = sexp(getSym());
                 s.is_quoted = true;
+                Console.WriteLine("return quoted sexp");
                 return s;
             }
-            if (checkSym('(')) {
-                Sexp sexp = list();
+            if (token.type == Tokens.LPAREN) {
+                Sexp sexp = list(getSym());
+                Console.WriteLine("return list");
                 return sexp;
             }
-            return atom();
+            Console.WriteLine("return atom");
+            return atom(token);
         }
 
-        private SexpAtom atom() {
-            removeWhitespace();
+        private SexpAtom atom(Token token) {
+            Console.WriteLine(token);
             
-            Match match = new Regex(@"\d+", RegexOptions.Compiled).Match(source, idx);
-            if (match.Success && match.Index == idx) {
-                SexpInteger sexpInteger = new SexpInteger(Int32.Parse(source.Substring(idx, match.Length)), new Position(idx, line, col));
-                idx += match.Length;
-                col += match.Length;
-                return sexpInteger;
+            if (token.type == Tokens.INTEGER) {
+                Console.WriteLine("return Integer");
+                return new SexpInteger(Int32.Parse(token.value), token.position);
             }
-            match = new Regex(@"([\w-[0-9]]\w*)|[+\*-]|<=|==|>=|<|>", RegexOptions.Compiled).Match(source, idx);
-            if (match.Success && match.Index == idx) {
-                SexpSymbol sexpSymbol = new SexpSymbol(source.Substring(idx, match.Length), new Position(idx, line, col));
-                idx += match.Length;
-                col += match.Length;
-                return sexpSymbol;
+            
+            if (token.type == Tokens.SYMBOL) {
+                Console.WriteLine("return Symbol");
+                return new SexpSymbol(token.value, token.position);
             }
-            match = new Regex(@""".*""", RegexOptions.Compiled).Match(source, idx);
-            if (match.Success && match.Index == idx) {
-                SexpString sexpString = new SexpString(source.Substring(idx+1, match.Length-2), new Position(idx, line, col));
-                idx += match.Length;
-                col += match.Length;
-                return sexpString;
+            
+            if (token.type == Tokens.STRING) {
+                Console.WriteLine("return String");
+                return new SexpString(token.value, token.position);
             }
-            throw new ParserException($"Unrecognized symbol '{getSym()}' " +
-                               $"at (index={idx}, line={line}, column={col})");
+            throw new ParserException($"Unrecognized symbol '{token.value}' " +
+                               $"at (index={token.position.idx}, " +
+                                      $"line={token.position.line_number}, " +
+                                      $"column={token.position.column_number})");
         }
 
-        private SexpList list() {
-            SexpList sexpList = new SexpList(new Position(idx, line, col));
+        private SexpList list(Token token) {
+            Console.WriteLine(token);
             
-            if (idx >= source.Length) {
-                throw new ParserException($"Opening '(' but EOF at (index={idx}, line={line}, column={col})");
-            }
+            SexpList sexpList = new SexpList(token.position);
             
-            while (!checkSym(')')) {
-                
-                sexpList.add_term(sexp());
-                
-                if (idx >= source.Length) {
-                    throw new ParserException($"Opening '(' but EOF at (index={idx}, line={line}, column={col})");
-                }
+            while (token.type != Tokens.RPAREN) {
+                sexpList.add_term(sexp(token));
+                token = getSym();
+
             }
+            Console.WriteLine("return list");
             return sexpList;
         }
         
         private ILexer lexer;
         private Context ctx;
-        private string source;
-        private int idx = 0;
-        private int line = 0;
-        private int col = 0; 
+        private List<Token> tokens = new List<Token>();
     }
     
     public class ParserException : Exception {

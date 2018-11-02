@@ -32,9 +32,9 @@ namespace i15013.lexer {
     }
 
     public struct Token {
-        private string type { get; set; }
-        private string value { get; set; }
-        private Position position { get; set; }
+        public string type { get; private set; }
+        public string value { get; private set; }
+        public Position position { get; private set; }
 
         public Token(string type, string value, Position position) {
             this.value = value;
