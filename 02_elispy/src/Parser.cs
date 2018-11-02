@@ -72,14 +72,7 @@ namespace i15013.elispy {
         }
 
         private bool checkSym(char c) {
-            while (getSym() == ' ' || getSym() == '\n') {    //ignore whitespace
-                idx++;
-                col++;
-                if (getSym() == '\n') {
-                    line++;
-                    col = 0;
-                }
-            }
+            removeWhitespace();
 
             if (getSym() == c) {
                 idx++;
@@ -88,6 +81,17 @@ namespace i15013.elispy {
             }
 
             return false;
+        }
+
+        private void removeWhitespace() {
+            while (getSym() == ' ' || getSym() == '\n') {    //ignore whitespace
+                idx++;
+                col++;
+                if (getSym() == '\n') {
+                    line++;
+                    col = 0;
+                }
+            }
         }
 
         private List<Sexp> program() {
@@ -106,16 +110,14 @@ namespace i15013.elispy {
             }
             if (checkSym('(')) {
                 Sexp sexp = list();
-                if (!checkSym(')')) {
-                    throw new ParserException($"Missing ')' or EOF at" +
-                                   $"(index={idx}, line={line}, column={col})");
-                }
                 return sexp;
             }
             return atom();
         }
 
-        private SexpAtom atom() {            
+        private SexpAtom atom() {
+            removeWhitespace();
+            
             Match match = new Regex(@"\d+", RegexOptions.Compiled).Match(source, idx);
             if (match.Success && match.Index == idx) {
                 SexpInteger sexpInteger = new SexpInteger(Int32.Parse(source.Substring(idx, match.Length)), new Position(idx, line, col));
