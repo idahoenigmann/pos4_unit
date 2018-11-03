@@ -57,7 +57,7 @@ namespace i15013.elispy {
             
             foreach (Sexp sexp in sexpsParser.parse("(+ 1 2 name \"abc def\")\n" +
                                                     "'(+ 1 2)\n" +
-                                                    "( + 1 2 )")) {
+                                                    "( + 1 2 )\n")) {
                 Console.WriteLine("\t" + sexp);
             }
         }
@@ -70,10 +70,14 @@ namespace i15013.elispy {
 
         private List<Sexp> program(string source) {
             List<Sexp> list = new List<Sexp>();
-            
-            foreach (Token token in lexer.tokenize(source)) {
-                tokens.Add(token);
-                
+
+            try {
+                foreach (Token token in lexer.tokenize(source)) {
+                    tokens.Add(token);
+                }
+            }
+            catch (LexerException lexerException) {
+                throw new ParserException("Unrecognized symbol", lexerException);
             }
 
             while (tokens.Count > 0) {
@@ -91,8 +95,16 @@ namespace i15013.elispy {
                 return s;
             }
             if (token.type == Tokens.LPAREN) {
-                Sexp sexp = list(getSym());
-                return sexp;
+                try {
+                    Sexp sexp = list(getSym());
+                    return sexp;
+                }
+                catch (ArgumentOutOfRangeException) {
+                    throw new ParserException($"Opening '(' but EOF at " +
+                                  $"(index={token.position.idx}, " +
+                                  $"line={token.position.line_number}, " +
+                                  $"column={token.position.column_number})");
+                }
             }
             return atom(token);
         }
@@ -119,12 +131,20 @@ namespace i15013.elispy {
         private SexpList list(Token token) {
             
             SexpList sexpList = new SexpList(token.position);
-            
-            while (token.type != Tokens.RPAREN) {
-                sexpList.add_term(sexp(token));
-                token = getSym();
+            try {
+                while (token.type != Tokens.RPAREN) {
+                    sexpList.add_term(sexp(token));
+                    token = getSym();
 
+                }
             }
+            catch (ArgumentOutOfRangeException) {
+                throw new ParserException($"Missing ')' or EOF at " +
+                                  $"(index={token.position.idx}, " +
+                                  $"line={token.position.line_number}, " +
+                                  $"column={token.position.column_number})");
+            }
+
             return sexpList;
         }
         
