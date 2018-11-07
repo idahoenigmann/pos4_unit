@@ -103,18 +103,7 @@ namespace i15013.lexer {
                 }
 
                 if (!found_def) {
-                    string message = $"Invalid Token at ({row}, {col})\n" + source;
-                    for (int i = 0; i < row; i++) {
-                        message = message.Substring('\n');
-                    }
-
-                    message += "\n";
-                    
-                    for (int i = 0; i < col; i++) {
-                        message += " ";
-                    }
-
-                    message += "^";
+                    string message = $"Invalid Token '{source[idx]}' at ({row}, {col})\n";
 
                     throw new LexerException(message);
                 }
