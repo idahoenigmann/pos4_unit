@@ -89,7 +89,11 @@ namespace i15013.elispy {
         }
 
         public override Sexp eval(Context ctx = null) {
-            return terms[0];
+            if (is_quoted) {
+                return new SexpList(terms, position);
+            }
+            
+            return this;    //TODO
         }
 
         public override string ToString() {
