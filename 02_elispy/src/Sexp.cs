@@ -164,6 +164,14 @@ namespace i15013.elispy {
         }
 
         public override Sexp eval(Context ctx = null) {
+            if (this.is_quoted) {
+                if (GetType() == typeof(SexpString)) {
+                    return new SexpString(value, position);
+                }
+                if (GetType() == typeof(SexpInteger)) {
+                    return new SexpInteger(value, position);
+                }
+            }
             return this;
         }
 
@@ -191,7 +199,10 @@ namespace i15013.elispy {
         }
 
         public new Sexp eval(Context ctx = null) {
-            return new SexpString("");
+            if (is_quoted) {
+                return new SexpSymbol(value, position);
+            }
+            return new SexpInteger(1, null);    //TODO
         }
 
         public override string ToString() {           
