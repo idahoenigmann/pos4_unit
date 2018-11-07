@@ -164,7 +164,7 @@ namespace i15013.elispy {
         }
 
         public override Sexp eval(Context ctx = null) {
-            return new SexpString("");
+            return this;
         }
 
         public new int GetHashCode() {

@@ -13,7 +13,7 @@ namespace i15013.elispy {
             add_definition(new Definition(Tokens.QUOTE, @"'", false));
         }
 
-        public static void test() {
+        public void test() {
             Console.WriteLine(@"" +
             @"  _______        _     _                        "+"\n"+
             @" |__   __|      | |   | |                       "+"\n"+         
@@ -23,46 +23,44 @@ namespace i15013.elispy {
             @"    |_|\___||___/\__| |______\___/_/\_\___|_|   "+"\n");
             
             
-            SexpsLexer lexer = new SexpsLexer();
-
-            foreach (Token token in lexer.tokenize("(+ 1 2 \"abc def\")")) {
+            foreach (Token token in tokenize("(+ 1 2 \"abc def\")")) {
                 Console.WriteLine(token);
             }
             
             Console.WriteLine();
             
-            foreach (Token token in lexer.tokenize("'(+ 1 2)")) {
+            foreach (Token token in tokenize("'(+ 1 2)")) {
                 Console.WriteLine(token);
             }
             
             Console.WriteLine();
             
-            foreach (Token token in lexer.tokenize("(name _n_ame _ < <= == > >=)")) {
+            foreach (Token token in tokenize("(name _n_ame _ < <= == > >=)")) {
                 Console.WriteLine(token);
             }
 
             Console.WriteLine();
             
-            foreach (Token token in lexer.tokenize("(- 1 \n 2 \r\n 3)")) {
+            foreach (Token token in tokenize("(- 1 \n 2 \r\n 3)")) {
                 Console.WriteLine(token);
             }
             
             Console.WriteLine();
             
-            foreach (Token token in lexer.tokenize("(+ 1 \n   3)")) {
+            foreach (Token token in tokenize("(+ 1 \n   3)")) {
                 Console.WriteLine(token);
             }
             
             Console.WriteLine();
             
-            foreach (Token token in lexer.tokenize("(+ 1 \r\n   3)")) {
+            foreach (Token token in tokenize("(+ 1 \r\n   3)")) {
                 Console.WriteLine(token);
             }
             
             Console.WriteLine();
 
             try {
-                foreach (Token token in lexer.tokenize("1.5")) {
+                foreach (Token token in tokenize("1.5")) {
                     Console.WriteLine(token);
                 }
             }

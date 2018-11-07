@@ -24,7 +24,7 @@ namespace i15013.elispy {
             return program(source);
         }
 
-        public static void test() {
+        public void test() {
             Console.WriteLine("" +
              @" _______        _     _____                         "+"\n"+
              @"|__   __|      | |   |  __ \                        "+"\n"+
@@ -53,9 +53,7 @@ namespace i15013.elispy {
             
             Console.WriteLine("\n+ 1 2 name \"abc def\")\\n'(+ 1 2)\\n( + 1 2 )\t parsed is:");
             
-            SexpsParser sexpsParser = new SexpsParser(new SexpsLexer(), new Context());
-            
-            foreach (Sexp sexp in sexpsParser.parse("(+ 1 2 name \"abc def\")\n" +
+            foreach (Sexp sexp in parse("(+ 1 2 name \"abc def\")\n" +
                                                     "'(+ 1 2)\n" +
                                                     "( + 1 2 )\n")) {
                 Console.WriteLine("\t" + sexp);
