@@ -164,7 +164,7 @@ namespace i15013.elispy {
         }
 
         public override Sexp eval(Context ctx = null) {
-            if (this.is_quoted) {
+            if (is_quoted) {
                 if (GetType() == typeof(SexpString)) {
                     return new SexpString(value, position);
                 }
@@ -198,11 +198,18 @@ namespace i15013.elispy {
             this.position = position;
         }
 
-        public new Sexp eval(Context ctx = null) {
+        public override Sexp eval(Context ctx = null) {
             if (is_quoted) {
                 return new SexpSymbol(value, position);
             }
-            return new SexpInteger(1, null);    //TODO
+            try {
+                return ctx.symtab[value];
+            }
+            catch (KeyNotFoundException) {
+                throw new InterpreterException($"Symbol \"{this.value}\" not defined at ({position.ToString()})");
+            } catch (NullReferenceException) {
+                throw new InterpreterException($"Symbol \"{this.value}\" not defined at ({position.ToString()})");
+            }
         }
 
         public override string ToString() {           

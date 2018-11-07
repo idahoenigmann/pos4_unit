@@ -27,7 +27,7 @@ namespace i15013.lexer {
         }
 
         public override string ToString() {
-            return $"{line_number}, {column_number}";
+            return $"index={idx}, line={line_number}, column={column_number}";
         }
     }
 

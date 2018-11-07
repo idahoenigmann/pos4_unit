@@ -17,13 +17,30 @@ namespace i15013.elispy {
                               @"                                              | |                          " + "\n" +
                               @"                                              |_|                          ");
             
-            Console.WriteLine(parser.parse("1")[0].eval());
-            Console.WriteLine(parser.parse("\"abc\"")[0].eval());
-            Console.WriteLine(parser.parse("'1")[0].eval());
-            Console.WriteLine(parser.parse("'\"abc\"")[0].eval());
-            Console.WriteLine(parser.parse("'a")[0].eval());
+            Context context = new Context();
+
+            context.symtab["a"] = new SexpInteger(1, new Position(0, 0, 0));
+
+            foreach (var x in context.symtab) {
+                Console.WriteLine(x);
+            }
+            
+            Console.WriteLine(parser.parse("1")[0].eval(context));
+            Console.WriteLine(parser.parse("\"abc\"")[0].eval(context));
+            Console.WriteLine(parser.parse("'1")[0].eval(context));
+            Console.WriteLine(parser.parse("'\"abc\"")[0].eval(context));
+            Console.WriteLine(parser.parse("'a")[0].eval(context));
+            Console.WriteLine(parser.parse("a")[0].eval(context));
         }
 
         private SexpsParser parser;
+    }
+    
+    public class InterpreterException : Exception {
+        public InterpreterException() : base() { }
+        public InterpreterException(string message) : base(message) { }
+
+        public InterpreterException(string message, System.Exception inner) : base(
+            message, inner) { }
     }
 }
