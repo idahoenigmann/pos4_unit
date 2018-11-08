@@ -33,7 +33,15 @@ namespace i15013.elispy {
             Console.WriteLine(parser.parse("a")[0].eval(context));
             Console.WriteLine(parser.parse("'(1 2 3)")[0].eval(context));
             Console.WriteLine(parser.parse("nil")[0].eval(context));
-            
+            try {
+                Console.WriteLine(parser.parse("(1 2 3)")[0].eval(context));
+            }
+            catch (InterpreterException e) {
+                Console.WriteLine(e.Message);
+            }
+            Console.WriteLine(parser.parse("(+ 1 2)")[0].eval(context));
+            Console.WriteLine(parser.parse("(+ 1 (+ 2 3))")[0].eval(context));
+
         }
 
         private SexpsParser parser;

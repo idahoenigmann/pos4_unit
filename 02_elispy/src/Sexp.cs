@@ -92,7 +92,14 @@ namespace i15013.elispy {
             if (is_quoted) {
                 return new SexpList(terms, position);
             }
-            
+
+            if (terms.Count == 0) {
+                return new SexpSymbol("nil", position);
+            }
+
+            if (terms[0].GetType() != typeof(SexpSymbol)) {
+                throw new InterpreterException($"First item must be a symbol, but got \"{terms[0]}\" at ({position})");
+            }
             return this;    //TODO
         }
 
