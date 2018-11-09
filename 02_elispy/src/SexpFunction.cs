@@ -2,12 +2,10 @@ using System;
 using System.Collections.Generic;
 
 namespace i15013.elispy {
-    public abstract class SexpFunction {
-        protected string name;
+    public abstract class SexpFunction : SexpSymbol {
+        //protected string name;
 
-        protected SexpFunction(string name) {
-            this.name = name;
-        }
+        protected SexpFunction(string name) : base(name) {}
 
         public abstract Sexp call(List<Sexp> args, Context ctx);
 
@@ -25,7 +23,11 @@ namespace i15013.elispy {
         public AddSexpFunction(string name) : base(name) {}
         
         public override Sexp call(List<Sexp> args, Context ctx) {
-            return new SexpInteger(1);
+            int res = 0;
+            foreach (Sexp sexp in args) {
+                res += (int) sexp.eval(ctx);
+            }
+            return res;
         }
     }
 

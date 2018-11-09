@@ -11,6 +11,7 @@ namespace i15013.elispy {
         public Context() {
             symtab["nil"] = new SexpList();
             symtab["t"] = new SexpSymbol("t");
+            symtab["+"] = new AddSexpFunction("+");
         }
     }
 }

@@ -39,7 +39,10 @@ namespace i15013.elispy {
             catch (InterpreterException e) {
                 Console.WriteLine(e.Message);
             }
+            Console.WriteLine(parser.parse("(+)")[0].eval(context));
+            Console.WriteLine(parser.parse("(+ 1)")[0].eval(context));
             Console.WriteLine(parser.parse("(+ 1 2)")[0].eval(context));
+            Console.WriteLine(parser.parse("(+ 1 2 3)")[0].eval(context));
             Console.WriteLine(parser.parse("(+ 1 (+ 2 3))")[0].eval(context));
 
         }

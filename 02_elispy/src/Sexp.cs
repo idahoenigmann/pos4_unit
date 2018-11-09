@@ -27,7 +27,7 @@ namespace i15013.elispy {
 
         public static explicit operator int (Sexp sexp) {
             SexpInteger sexpInteger = sexp as SexpInteger;
-            if (sexpInteger == null) {
+            if (sexpInteger is null) {
                 throw new ArgumentException($"\"{sexp}\" is not a valid argument");
             }
             return sexpInteger.value;
@@ -105,10 +105,21 @@ namespace i15013.elispy {
                 return new SexpSymbol("nil", position);
             }
 
-            if (terms[0].GetType() != typeof(SexpSymbol)) {
-                throw new InterpreterException($"First item must be a symbol, but got \"{terms[0]}\" at ({position})");
+            try {
+                SexpSymbol sexpSymbol = terms[0] as SexpSymbol;
+                
+                if (sexpSymbol is null) {
+                    throw new InterpreterException(
+                        $"First item must be a symbol, but got \"{terms[0]}\" at ({position})");
+                }
+                
+                SexpFunction sexpFunction = ctx.symtab[sexpSymbol.value];
+
+                return sexpFunction.call(terms.GetRange(1, terms.Count-1), ctx);
             }
-            return this;    //TODO
+            catch (ArgumentException e) {
+                throw new InterpreterException($"method {terms[0]} at ({position}) received invalid argument.", e);
+            }
         }
 
         public override string ToString() {
