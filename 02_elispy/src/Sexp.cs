@@ -26,19 +26,27 @@ namespace i15013.elispy {
         }
 
         public static explicit operator int (Sexp sexp) {
-            return 0;
+            SexpInteger sexpInteger = sexp as SexpInteger;
+            if (sexpInteger == null) {
+                throw new ArgumentException($"\"{sexp}\" is not a valid argument");
+            }
+            return sexpInteger.value;
         }
 
         public static explicit operator string(Sexp sexp) {
-            return "";
+            SexpString sexpString = sexp as SexpString;
+            if (sexpString == null) {
+                throw new ArgumentException($"\"{sexp}\" is not a valid argument");
+            }
+            return sexpString.value;
         }
 
         public static implicit operator Sexp(int i) {
-            return new SexpString("");
+            return new SexpInteger(i);
         }
 
         public static implicit operator Sexp(string s) {
-            return new SexpString("");
+            return new SexpString(s);
         }
         
         public static bool operator==(Sexp lhs, Sexp rhs) {
@@ -163,7 +171,7 @@ namespace i15013.elispy {
     }
     
     public abstract class SexpAtom : Sexp {
-        protected dynamic value;
+        public dynamic value { get; protected set; }
 
         public SexpAtom(dynamic value, Position? position = null) {
             this.value = value;
