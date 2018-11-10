@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
+using System.Diagnostics;
 
 namespace i15013.elispy {
     public abstract class SexpFunction : SexpSymbol {
@@ -296,6 +296,67 @@ namespace i15013.elispy {
             Sexp res = args[0].eval(ctx);
             Console.WriteLine(res);
             return res;
+        }
+    }
+    
+    public class WhileSexpFunction : BuiltInSexpFunction {
+        public WhileSexpFunction(string name) : base(name) {}
+
+        public override Sexp call(List<Sexp> args, Context ctx) {
+            if (args.Count != 2) {
+                throw new ConstraintException("Too many or too few argument given.");
+            }
+
+            Sexp res = new SexpSymbol("nil");
+
+            while ((bool)args[0].eval(ctx)) {
+                res = args[1].eval(ctx);
+            }
+            return res;
+        }
+    }
+    
+    public class ShellSexpFunction : BuiltInSexpFunction {
+        public ShellSexpFunction(string name) : base(name) {}
+
+        public override Sexp call(List<Sexp> args, Context ctx) {
+            if (args.Count != 1) {
+                throw new ConstraintException("Too many or too few argument given.");
+            }
+
+            string cmd = (string)args[0].eval();
+            var escaped_args = cmd.Replace("\"", "\\\"");
+            var process = new Process() {
+                StartInfo = new ProcessStartInfo {
+                    FileName = "/bin/bash",
+                    Arguments = $"-c \"{escaped_args}\"",
+                    RedirectStandardOutput = true,
+                    UseShellExecute = false,
+                    CreateNoWindow = true
+                }
+            };
+
+            process.Start();
+            string result = process.StandardOutput.ReadToEnd();
+            process.WaitForExit();
+            
+            if (process.ExitCode != 0)
+                throw new InvalidOperationException($"Process exited with {process.ExitCode}");
+            return new SexpString(result);
+
+        }
+    }
+    
+    public class NotSexpFunction : BuiltInSexpFunction {
+        public NotSexpFunction(string name) : base(name) {}
+
+        public override Sexp call(List<Sexp> args, Context ctx) {
+            if (args.Count != 1) {
+                throw new ConstraintException("Too many or too few argument given.");
+            }
+
+            if ((bool)args[0].eval(ctx)) return new SexpSymbol("nil");
+            return new SexpSymbol("t");
         }
     }
 }

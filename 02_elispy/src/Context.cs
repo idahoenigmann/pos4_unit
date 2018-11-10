@@ -30,6 +30,9 @@ namespace i15013.elispy {
             functab["if"] = new IfSexpFunction("if");
             functab["progn"] = new PrognSexpFunction("progn");
             functab["princ"] = new PrincSexpFunction("princ");
+            functab["while"] = new WhileSexpFunction("while");
+            functab["shell"] = new ShellSexpFunction("shell");
+            functab["not"] = new NotSexpFunction("not");
         }
     }
 }

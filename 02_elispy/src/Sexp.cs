@@ -67,6 +67,7 @@ namespace i15013.elispy {
         }
 
         public virtual bool Equals(Sexp sexp) {
+            if (sexp is null) return false;
             return is_quoted == sexp.is_quoted;
         }
 
