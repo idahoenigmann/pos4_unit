@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using i15013.lexer;
 
 namespace i15013.elispy {
@@ -60,8 +61,15 @@ namespace i15013.elispy {
             while (true) {
                 Console.Write("elispy> ");
                 string input = Console.ReadLine();
-                if (input is null) {
+                if (input is null) {    //input stream stopped (e.g. ctrl-d)
                     break;
+                }
+
+                input = input.Trim();    //remove unnecessary chars from input
+                input = new string(input.Where(c => !char.IsControl(c)).ToArray());
+
+                if (input == "") {    //empty string does not need to be interpreted
+                    continue;
                 }
                 
                 try {
