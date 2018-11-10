@@ -204,6 +204,14 @@ namespace i15013.elispy {
                     Console.WriteLine(inputs[i]);
                 }
             }
+            
+            inputs = new []{"(or)", "(or 1)", "(or 1 2 3)", "(or nil nil 3 a)"};
+            s_res = new []{"nil", "1", "1", "3"};
+            for (int i=0; i < inputs.Length; i++) {
+                if (parser.parse(inputs[i])[0].eval(context).ToString() != s_res[i]) {
+                    Console.WriteLine(inputs[i]);
+                }
+            }
         }
 
         public void repl() {

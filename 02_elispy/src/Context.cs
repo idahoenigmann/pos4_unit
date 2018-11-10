@@ -34,6 +34,7 @@ namespace i15013.elispy {
             functab["shell"] = new ShellSexpFunction("shell");
             functab["not"] = new NotSexpFunction("not");
             functab["and"] = new AndSexpFunction("and");
+            functab["or"] = new OrSexpFunction("or");
         }
     }
 }

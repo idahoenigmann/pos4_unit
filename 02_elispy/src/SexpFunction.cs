@@ -375,4 +375,19 @@ namespace i15013.elispy {
             return res;
         }
     }
+    
+    public class OrSexpFunction : BuiltInSexpFunction {
+        public OrSexpFunction(string name) : base(name) {}
+
+        public override Sexp call(List<Sexp> args, Context ctx) {
+
+            foreach (Sexp sexp in args) {
+                if ((bool) sexp.eval(ctx)) {
+                    return sexp.eval(ctx);
+                }
+            }
+            
+            return new SexpSymbol("nil");
+        }
+    }
 }
