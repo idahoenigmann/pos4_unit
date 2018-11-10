@@ -164,15 +164,14 @@ namespace i15013.elispy {
                 throw new ConstraintException("Too many or too few argument given.");
             }
             
-            if (!(args[0].eval(new Context()) is SexpList sexpList)) {
-                if (args[0].eval(new Context()).Equals(new SexpSymbol("nil"))) {
-                    return new SexpSymbol("nil");    //TODO
-                }
-                
+            if (!(args[0].eval(ctx) is SexpList sexpList)) {
                 throw new ArgumentException();
             }
+
+            if (sexpList.terms.Count == 0) {
+                return new SexpList();
+            }
             return sexpList.terms[0].eval(ctx);
-            
         }
     }
     
@@ -184,14 +183,35 @@ namespace i15013.elispy {
                 throw new ConstraintException("Too many or too few argument given.");
             }
             
-            if (!(args[0].eval(new Context()) is SexpList sexpList)) {
-                if (args[0].eval(new Context()).Equals(new SexpSymbol("nil"))) {
+            if (!(args[0].eval(ctx) is SexpList sexpList)) {
+                if (args[0].eval(ctx).Equals(new SexpSymbol("nil"))) {
                     return new SexpSymbol("nil");
                 }
                 
                 throw new ArgumentException();
             }
             sexpList.terms.RemoveAt(0);
+            return sexpList;
+
+        }
+    }
+    
+    public class ConsSexpFunction : BuiltInSexpFunction {
+        public ConsSexpFunction(string name) : base(name) {}
+
+        public override Sexp call(List<Sexp> args, Context ctx) {
+            if (args.Count != 2) {
+                throw new ConstraintException("Too many or too few argument given.");
+            }
+            
+            Console.WriteLine(args[0].eval(ctx) + ", " + args[1].eval(ctx));
+            
+            
+            if (!(args[1].eval(ctx) is SexpList sexpList)) {
+                throw new ArgumentException();
+            }
+            
+            sexpList.terms.Insert(0, args[0].eval(ctx));
             return sexpList;
 
         }

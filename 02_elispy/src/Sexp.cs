@@ -99,18 +99,12 @@ namespace i15013.elispy {
             }
 
             if (terms.Count == 0) {
-                return new SexpSymbol("nil", position);
+                return this;
             }
 
             try {
-                SexpSymbol sexpSymbol = terms[0] as SexpSymbol;
-
-                if (sexpSymbol is null) {
-                    throw new InterpreterException(
-                        $"First item must be a symbol, but got \"{terms[0]}\" at ({position})");
-                }
-
-                SexpFunction sexpFunction = ctx.symtab[sexpSymbol.value];
+                SexpFunction sexpFunction =
+                    ctx.functab[((SexpAtom) terms[0]).value];
 
                 return sexpFunction.call(terms.GetRange(1, terms.Count - 1),
                     ctx);
@@ -121,7 +115,13 @@ namespace i15013.elispy {
                     e);
             }
             catch (ConstraintException e) {
-                throw new InterpreterException($"method {terms[0]} at ({position}) received too many or too few arguments.", e);
+                throw new InterpreterException(
+                    $"method {terms[0]} at ({position}) received too many or too few arguments.",
+                    e);
+            }
+            catch (KeyNotFoundException) {
+                throw new InterpreterException(
+                    $"First item must be a function, but got \"{terms[0]}\" at ({position})");
             }
         }
 
