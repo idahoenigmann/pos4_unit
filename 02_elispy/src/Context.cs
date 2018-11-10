@@ -20,6 +20,8 @@ namespace i15013.elispy {
             symtab["="] = new EqualsSexpFunction("=");
             symtab[">="] = new GreaterThanOrEqualsSexpFunction(">=");
             symtab[">"] = new GreaterThanSexpFunction(">");
+            symtab["first"] = new FirstSexpFunction("first");
+            
         }
     }
 }

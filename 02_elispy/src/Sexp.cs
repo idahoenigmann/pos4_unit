@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using i15013.lexer;
@@ -10,10 +11,6 @@ namespace i15013.elispy {
 
         protected Sexp(Position? position = null) {
             this.position = position;
-        }
-
-        public Sexp() {
-            
         }
 
         public abstract Sexp eval(Context ctx = null);
@@ -62,15 +59,14 @@ namespace i15013.elispy {
             return 0;
         }
 
-        public override bool Equals(Object obj) {
-            if (obj is Sexp) {
-                return this.Equals(obj);
-            }
-            return false;
+        public virtual bool Equals(Object obj) {
+            Sexp sexp = obj as Sexp;
+            if (sexp is null) return false;
+            return eval() == sexp.eval();
         }
 
-        public bool Equals(Sexp sexp) {
-            return this.Equals(sexp);
+        public virtual bool Equals(Sexp sexp) {
+            return eval() == sexp.eval();
         }
 
         public static explicit operator bool(Sexp sexp) {
@@ -81,7 +77,7 @@ namespace i15013.elispy {
     }
     
     public class SexpList : Sexp {
-        List<Sexp> terms;
+        public List<Sexp> terms;
 
         public SexpList(Position? position = null) {
             this.position = position;
@@ -149,42 +145,52 @@ namespace i15013.elispy {
             return 0;
         }
 
-        public new bool Equals(Object o) {
-            if (o is SexpList) {
-
-                SexpList sexpList = (SexpList) o;
-                
-                for (int i=0; i<terms.Count; i++) {
-                    if (!terms[i].Equals(sexpList.terms[i])) {
-                        return false;
-                    }
+        public override bool Equals(Object o) {
+            SexpList sexpList = o as SexpList;
+            if (sexpList is null) {
+                if (terms.Count == 0 && ((SexpAtom)o).value == "nil") {
+                    return true;
                 }
+                return false;
+            }
 
-                return true;
+            if (sexpList.terms.Count != terms.Count) {
+                return false;
             }
             
-            return false;
+            for (int i=0; i<terms.Count; i++) {
+                if (!terms[i].Equals(sexpList.terms[i])) {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
-        public new bool Equals(Sexp sexp) {
-            if (sexp is SexpList) {
-
-                SexpList sexpList = (SexpList) sexp;
-                
-                for (int i=0; i<terms.Count; i++) {
-                    if (!terms[i].Equals(sexpList.terms[i])) {
-                        return false;
-                    }
+        public override bool Equals(Sexp sexp) {
+            SexpList sexpList = sexp as SexpList;
+            if (sexpList is null) {
+                if (terms.Count == 0 && ((SexpAtom)sexp).value == "nil") {
+                    return true;
                 }
+                return false;
+            }
 
-                return true;
+            if (sexpList.terms.Count != terms.Count) {
+                return false;
             }
             
-            return false;
+            for (int i=0; i<terms.Count; i++) {
+                if (!terms[i].Equals(sexpList.terms[i])) {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public override bool is_null() {
-            return true;
+            return false;
         }
     }
     
@@ -194,10 +200,6 @@ namespace i15013.elispy {
         public SexpAtom(dynamic value, Position? position = null) {
             this.value = value;
             this.position = position;
-        }
-
-        public SexpAtom() {
-            
         }
 
         public override Sexp eval(Context ctx = null) {
@@ -216,12 +218,20 @@ namespace i15013.elispy {
             return 0;
         }
 
-        public new bool Equals(Object o) {
-            return true;
+        public override bool Equals(Object o) {
+            SexpAtom sexpAtom = o as SexpAtom;
+            if (sexpAtom is null) {
+                return false;
+            }
+            return sexpAtom.value == value;
         }
 
-        public new bool Equals(Sexp sexp) {
-            return true;
+        public override bool Equals(Sexp sexp) {
+            SexpAtom sexpAtom = sexp as SexpAtom;
+            if (sexpAtom is null) {
+                return false;
+            }
+            return sexpAtom.value == value;
         }
 
         public override bool is_null() {
@@ -230,10 +240,8 @@ namespace i15013.elispy {
     }
 
     public class SexpSymbol : SexpAtom {
-        public SexpSymbol(string name, Position? position = null) {
-            value = name;
-            this.position = position;
-        }
+        public SexpSymbol(string name, Position? position = null) : base(name,
+            position) { }
 
         public override Sexp eval(Context ctx = null) {
             if (is_quoted) {
@@ -259,10 +267,7 @@ namespace i15013.elispy {
     }
 
     public class SexpString : SexpAtom {
-        public SexpString(string value, Position? position = null) {
-            this.value = value;
-            this.position = position;
-        }
+        public SexpString(string value, Position? position = null) : base(value, position) {}
 
         public override string ToString() {
             return base.ToString() + "\"" + value + "\"";
@@ -270,10 +275,7 @@ namespace i15013.elispy {
     }
 
     public class SexpInteger : SexpAtom {
-        public SexpInteger(int value, Position? position = null) {
-            this.value = value;
-            this.position = position;
-        }
+        public SexpInteger(int value, Position? position = null) : base(value, position) {}
 
         public override string ToString() {           
             return base.ToString() + value.ToString();
