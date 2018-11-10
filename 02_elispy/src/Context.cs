@@ -24,6 +24,7 @@ namespace i15013.elispy {
             functab["first"] = new FirstSexpFunction("first");
             functab["rest"] = new RestSexpFunction("rest");
             functab["cons"] = new ConsSexpFunction("cons");
+            functab["equal"] = new EqualSexpFunction("equal");
         }
     }
 }

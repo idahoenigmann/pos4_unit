@@ -211,4 +211,16 @@ namespace i15013.elispy {
 
         }
     }
+    
+    public class EqualSexpFunction : BuiltInSexpFunction {
+        public EqualSexpFunction(string name) : base(name) {}
+
+        public override Sexp call(List<Sexp> args, Context ctx) {
+            if (args.Count != 2) {
+                throw new ConstraintException("Too many or too few argument given.");
+            }
+
+            return args[0] == args[1] ? new SexpSymbol("t") : new SexpSymbol("nil");
+        }
+    }
 }
