@@ -184,13 +184,11 @@ namespace i15013.elispy {
             }
             
             if (!(args[0].eval(ctx) is SexpList sexpList)) {
-                if (args[0].eval(ctx).Equals(new SexpSymbol("nil"))) {
-                    return new SexpSymbol("nil");
-                }
-                
                 throw new ArgumentException();
             }
-            sexpList.terms.RemoveAt(0);
+            if (sexpList.terms.Count > 0) {
+                sexpList.terms.RemoveAt(0);
+            }
             return sexpList;
 
         }
@@ -203,9 +201,6 @@ namespace i15013.elispy {
             if (args.Count != 2) {
                 throw new ConstraintException("Too many or too few argument given.");
             }
-            
-            Console.WriteLine(args[0].eval(ctx) + ", " + args[1].eval(ctx));
-            
             
             if (!(args[1].eval(ctx) is SexpList sexpList)) {
                 throw new ArgumentException();

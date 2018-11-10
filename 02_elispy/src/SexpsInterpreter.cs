@@ -55,6 +55,117 @@ namespace i15013.elispy {
 
         }
 
+        public void test_repl() {
+            
+            Console.WriteLine(@"   _______        _     _____            _ " + "\n" +
+                              @"  |__   __|      | |   |  __ \          | |" + "\n" +
+                              @"     | | ___  ___| |_  | |__) |___ _ __ | |" + "\n" +
+                              @"     | |/ _ \/ __| __| |  _  // _ \ '_ \| |" + "\n" +
+                              @"     | |  __/\__ \ |_  | | \ \  __/ |_) | |" + "\n" +
+                              @"     |_|\___||___/\__| |_|  \_\___| .__/|_|" + "\n" +
+                              @"                                  | |      " + "\n" +
+                              @"                                  |_|      ");
+            
+            Context context = new Context();
+
+            string[] inputs =
+                {"(+)", "(+ 1)", "(+ 1 2)", "(+ 1 2 3)", "(+ 1 (+ 2 3))"};
+            int[] i_res = {0, 1, 3, 6, 6};
+            for (int i=0; i < inputs.Length; i++) {
+                if (parser.parse(inputs[i])[0].eval(context) != i_res[i]) {
+                    Console.WriteLine(inputs[i]);
+                }
+            }
+            
+            inputs = new []{"(-)", "(- 1)", "(- 5 3)", "(- 51 4 3 2)"};
+            i_res = new []{0, -1, 2, 42};
+            for (int i=0; i < inputs.Length; i++) {
+                if (parser.parse(inputs[i])[0].eval(context) != i_res[i]) {
+                    Console.WriteLine(inputs[i]);
+                }
+            }
+            
+            inputs = new []{"(*)", "(* 4)", "(* 4 3)", "(* 7 3 2)"};
+            i_res = new []{1, 4, 12, 42};
+            for (int i=0; i < inputs.Length; i++) {
+                if (parser.parse(inputs[i])[0].eval(context) != i_res[i]) {
+                    Console.WriteLine(inputs[i]);
+                }
+            }
+
+            inputs = new []{"(/ 2)", "(/ 6 3)", "(/ 252 3 2)"};
+            i_res = new []{0, 2, 42};
+            for (int i=0; i < inputs.Length; i++) {
+                if (parser.parse(inputs[i])[0].eval(context) != i_res[i]) {
+                    Console.WriteLine(inputs[i]);
+                }
+            }
+            
+            inputs = new []{"(< 3 2)", "(< 2 3)", "(< 3 3)"};
+            string[] s_res = {"nil", "t", "nil"};
+            for (int i=0; i < inputs.Length; i++) {
+                if (parser.parse(inputs[i])[0].eval(context) != s_res[i]) {
+                    Console.WriteLine(inputs[i]);
+                }
+            }
+            
+            inputs = new []{"(<= 3 2)", "(<= 2 3)", "(<= 3 3)"};
+            s_res = new []{"nil", "t", "t"};
+            for (int i=0; i < inputs.Length; i++) {
+                if (parser.parse(inputs[i])[0].eval(context) != s_res[i]) {
+                    Console.WriteLine(inputs[i]);
+                }
+            }
+            
+            inputs = new []{"(= 3 2)", "(= 2 3)", "(= 3 3)"};
+            s_res = new []{"nil", "nil", "t"};
+            for (int i=0; i < inputs.Length; i++) {
+                if (parser.parse(inputs[i])[0].eval(context) != s_res[i]) {
+                    Console.WriteLine(inputs[i]);
+                }
+            }
+            
+            inputs = new []{"(>= 3 2)", "(>= 2 3)", "(>= 3 3)"};
+            s_res = new []{"t", "nil", "t"};
+            for (int i=0; i < inputs.Length; i++) {
+                if (parser.parse(inputs[i])[0].eval(context) != s_res[i]) {
+                    Console.WriteLine(inputs[i]);
+                }
+            }
+            
+            inputs = new []{"(> 3 2)", "(> 2 3)", "(> 3 3)"};
+            s_res = new []{"t", "nil", "nil"};
+            for (int i=0; i < inputs.Length; i++) {
+                if (parser.parse(inputs[i])[0].eval(context) != s_res[i]) {
+                    Console.WriteLine(inputs[i]);
+                }
+            }
+            
+            inputs = new []{"(first '(1 2 3))", "(first ())", "(first nil)"};
+            s_res = new []{"1", "nil", "nil"};
+            for (int i=0; i < inputs.Length; i++) {
+                if (parser.parse(inputs[i])[0].eval(context).ToString() != s_res[i]) {
+                    Console.WriteLine(inputs[i]);
+                }
+            }
+
+            inputs = new []{"(rest ())", "(rest '(1))", "(rest '(1 2 3))"};
+            s_res = new []{"nil", "nil", "(2 3)"};
+            for (int i=0; i < inputs.Length; i++) {
+                if (parser.parse(inputs[i])[0].eval(context).ToString() != s_res[i]) {
+                    Console.WriteLine(inputs[i]);
+                }
+            }
+            
+            inputs = new []{"(cons 1 ())", "(cons 1 '(2 3))", "(cons '(1 2) '(3 4))"};
+            s_res = new []{"(1)", "(1 2 3)", "((1 2) 3 4)"};
+            for (int i=0; i < inputs.Length; i++) {
+                if (parser.parse(inputs[i])[0].eval(context).ToString() != s_res[i]) {
+                    Console.WriteLine(inputs[i]);
+                }
+            }
+        }
+
         public void repl() {
             Context context = new Context();
             

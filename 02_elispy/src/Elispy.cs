@@ -23,6 +23,8 @@ namespace i15013
             //lexer.test();
             //parser.test();
             //interpreter.test();
+            interpreter.test_repl();
+            
             if (fileInformation.filename == "") {
                 interpreter.repl();
             } else if (fileInformation.filename == "-") {

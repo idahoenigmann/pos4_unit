@@ -48,25 +48,26 @@ namespace i15013.elispy {
         }
         
         public static bool operator==(Sexp lhs, Sexp rhs) {
+            if (Object.ReferenceEquals(lhs, null)) {
+                if (Object.ReferenceEquals(rhs, null)) return true;
+                return false;
+            }
             return lhs.Equals(rhs);
         }
 
-        public static bool operator!=(Sexp lhs, Sexp rhs) {
-            return !lhs.Equals(rhs);
-        }
+        public static bool operator !=(Sexp lhs, Sexp rhs) => !(lhs == rhs);
 
-        public override int GetHashCode() {
-            return 0;
-        }
+        public override int GetHashCode() => is_quoted.GetHashCode();
 
-        public virtual bool Equals(Object obj) {
+        public new virtual bool Equals(Object obj) {
             Sexp sexp = obj as Sexp;
             if (sexp is null) return false;
-            return eval() == sexp.eval();
+
+            return is_quoted == sexp.is_quoted;
         }
 
         public virtual bool Equals(Sexp sexp) {
-            return eval() == sexp.eval();
+            return is_quoted == sexp.is_quoted;
         }
 
         public static explicit operator bool(Sexp sexp) {
@@ -99,12 +100,15 @@ namespace i15013.elispy {
             }
 
             if (terms.Count == 0) {
-                return this;
+                return new SexpList();
             }
 
             try {
-                SexpFunction sexpFunction =
-                    ctx.functab[((SexpAtom) terms[0]).value];
+                if (terms[0].GetType() != typeof(SexpSymbol)) {
+                    throw new KeyNotFoundException();
+                }
+                
+                SexpFunction sexpFunction = ctx.functab[((SexpSymbol)terms[0]).value];
 
                 return sexpFunction.call(terms.GetRange(1, terms.Count - 1),
                     ctx);
@@ -141,16 +145,16 @@ namespace i15013.elispy {
             return str;
         }
 
-        public new int GetHashCode() {
-            return 0;
+        public override int GetHashCode() {
+            return base.GetHashCode() ^ terms.GetHashCode();
         }
 
         public override bool Equals(Object o) {
-            SexpList sexpList = o as SexpList;
-            if (sexpList is null) {
-                if (terms.Count == 0 && ((SexpAtom)o).value == "nil") {
-                    return true;
-                }
+            if (!base.Equals(o)) {
+                return false;
+            }
+
+            if (!(o is SexpList sexpList)) {
                 return false;
             }
 
@@ -168,11 +172,11 @@ namespace i15013.elispy {
         }
 
         public override bool Equals(Sexp sexp) {
-            SexpList sexpList = sexp as SexpList;
-            if (sexpList is null) {
-                if (terms.Count == 0 && ((SexpAtom)sexp).value == "nil") {
-                    return true;
-                }
+            if (!base.Equals(sexp)) {
+                return false;
+            }
+            
+            if (!(sexp is SexpList sexpList)) {
                 return false;
             }
 
@@ -214,21 +218,23 @@ namespace i15013.elispy {
             return this;
         }
 
-        public new int GetHashCode() {
-            return 0;
+        public override int GetHashCode() {
+            return base.GetHashCode() ^ value.GetHashCode();
         }
 
         public override bool Equals(Object o) {
-            SexpAtom sexpAtom = o as SexpAtom;
-            if (sexpAtom is null) {
+            if (!base.Equals(o)) return false;
+
+            if (!(o is SexpAtom sexpAtom)) {
                 return false;
             }
             return sexpAtom.value == value;
         }
 
         public override bool Equals(Sexp sexp) {
-            SexpAtom sexpAtom = sexp as SexpAtom;
-            if (sexpAtom is null) {
+            if (!base.Equals(sexp)) return false;
+
+            if (!(sexp is SexpAtom sexpAtom)) {
                 return false;
             }
             return sexpAtom.value == value;
@@ -251,9 +257,9 @@ namespace i15013.elispy {
                 return ctx.symtab[value];
             }
             catch (KeyNotFoundException) {
-                throw new InterpreterException($"Symbol \"{this.value}\" not defined at ({position.ToString()})");
+                throw new InterpreterException($"Symbol \"{value}\" not defined at ({position})");
             } catch (NullReferenceException) {
-                throw new InterpreterException($"Symbol \"{this.value}\" not defined at ({position.ToString()})");
+                throw new InterpreterException($"Symbol \"{value}\" not defined at ({position})");
             }
         }
 
