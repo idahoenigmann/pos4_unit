@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 
 namespace i15013.elispy {
@@ -79,4 +80,81 @@ namespace i15013.elispy {
             return res;
         }
     }
+    
+    public class LessThanSexpFunction : BuiltInSexpFunction {
+        public LessThanSexpFunction(string name) : base(name) {}
+
+        public override Sexp call(List<Sexp> args, Context ctx) {
+            if (args.Count != 2) {
+                throw new ConstraintException("Too many or too few argument given.");
+            }
+
+            if ((int)args[0].eval() < (int)args[1].eval()) {
+                return new SexpSymbol("t");
+            }
+            return new SexpSymbol("nil");
+        }
+    }
+    
+    public class LessThanOrEqualsSexpFunction : BuiltInSexpFunction {
+        public LessThanOrEqualsSexpFunction(string name) : base(name) {}
+
+        public override Sexp call(List<Sexp> args, Context ctx) {
+            if (args.Count != 2) {
+                throw new ConstraintException("Too many or too few argument given.");
+            }
+
+            if ((int)args[0].eval() <= (int)args[1].eval()) {
+                return new SexpSymbol("t");
+            }
+            return new SexpSymbol("nil");
+        }
+    }
+    
+    public class EqualsSexpFunction : BuiltInSexpFunction {
+        public EqualsSexpFunction(string name) : base(name) {}
+
+        public override Sexp call(List<Sexp> args, Context ctx) {
+            if (args.Count != 2) {
+                throw new ConstraintException("Too many or too few argument given.");
+            }
+
+            if ((int)args[0].eval() == (int)args[1].eval()) {
+                return new SexpSymbol("t");
+            }
+            return new SexpSymbol("nil");
+        }
+    }
+    
+    public class GreaterThanOrEqualsSexpFunction : BuiltInSexpFunction {
+        public GreaterThanOrEqualsSexpFunction(string name) : base(name) {}
+
+        public override Sexp call(List<Sexp> args, Context ctx) {
+            if (args.Count != 2) {
+                throw new ConstraintException("Too many or too few argument given.");
+            }
+
+            if ((int)args[0].eval() >= (int)args[1].eval()) {
+                return new SexpSymbol("t");
+            }
+            return new SexpSymbol("nil");
+        }
+    }
+    
+    public class GreaterThanSexpFunction : BuiltInSexpFunction {
+        public GreaterThanSexpFunction(string name) : base(name) {}
+
+        public override Sexp call(List<Sexp> args, Context ctx) {
+            if (args.Count != 2) {
+                throw new ConstraintException("Too many or too few argument given.");
+            }
+
+            if ((int)args[0].eval() > (int)args[1].eval()) {
+                return new SexpSymbol("t");
+            }
+            return new SexpSymbol("nil");
+        }
+    }
+    
+    
 }

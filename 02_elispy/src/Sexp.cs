@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using i15013.lexer;
 
 namespace i15013.elispy {
@@ -107,18 +108,24 @@ namespace i15013.elispy {
 
             try {
                 SexpSymbol sexpSymbol = terms[0] as SexpSymbol;
-                
+
                 if (sexpSymbol is null) {
                     throw new InterpreterException(
                         $"First item must be a symbol, but got \"{terms[0]}\" at ({position})");
                 }
-                
+
                 SexpFunction sexpFunction = ctx.symtab[sexpSymbol.value];
 
-                return sexpFunction.call(terms.GetRange(1, terms.Count-1), ctx);
+                return sexpFunction.call(terms.GetRange(1, terms.Count - 1),
+                    ctx);
             }
             catch (ArgumentException e) {
-                throw new InterpreterException($"method {terms[0]} at ({position}) received invalid argument.", e);
+                throw new InterpreterException(
+                    $"method {terms[0]} at ({position}) received invalid argument.",
+                    e);
+            }
+            catch (ConstraintException e) {
+                throw new InterpreterException($"method {terms[0]} at ({position}) received too many or too few arguments.", e);
             }
         }
 

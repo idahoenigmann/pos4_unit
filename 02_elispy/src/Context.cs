@@ -15,6 +15,11 @@ namespace i15013.elispy {
             symtab["-"] = new SubSexpFunction("-");
             symtab["*"] = new MulSexpFunction("*");
             symtab["/"] = new DivSexpFunction("/");
+            symtab["<"] = new LessThanSexpFunction("<");
+            symtab["<="] = new LessThanOrEqualsSexpFunction("<=");
+            symtab["="] = new EqualsSexpFunction("=");
+            symtab[">="] = new GreaterThanOrEqualsSexpFunction(">=");
+            symtab[">"] = new GreaterThanSexpFunction(">");
         }
     }
 }
