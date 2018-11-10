@@ -166,13 +166,34 @@ namespace i15013.elispy {
             
             if (!(args[0].eval(new Context()) is SexpList sexpList)) {
                 if (args[0].eval(new Context()).Equals(new SexpSymbol("nil"))) {
-                    return new SexpSymbol("nil");
+                    return new SexpSymbol("nil");    //TODO
                 }
                 
                 throw new ArgumentException();
             }
             return sexpList.terms[0].eval(ctx);
             
+        }
+    }
+    
+    public class RestSexpFunction : BuiltInSexpFunction {
+        public RestSexpFunction(string name) : base(name) {}
+
+        public override Sexp call(List<Sexp> args, Context ctx) {
+            if (args.Count != 1) {
+                throw new ConstraintException("Too many or too few argument given.");
+            }
+            
+            if (!(args[0].eval(new Context()) is SexpList sexpList)) {
+                if (args[0].eval(new Context()).Equals(new SexpSymbol("nil"))) {
+                    return new SexpSymbol("nil");
+                }
+                
+                throw new ArgumentException();
+            }
+            sexpList.terms.RemoveAt(0);
+            return sexpList;
+
         }
     }
 }

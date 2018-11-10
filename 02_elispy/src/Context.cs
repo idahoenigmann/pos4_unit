@@ -21,7 +21,7 @@ namespace i15013.elispy {
             symtab[">="] = new GreaterThanOrEqualsSexpFunction(">=");
             symtab[">"] = new GreaterThanSexpFunction(">");
             symtab["first"] = new FirstSexpFunction("first");
-            
+            symtab["rest"] = new RestSexpFunction("rest");
         }
     }
 }
