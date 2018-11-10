@@ -44,9 +44,43 @@ namespace i15013.elispy {
             Console.WriteLine(parser.parse("(+ 1 2)")[0].eval(context));
             Console.WriteLine(parser.parse("(+ 1 2 3)")[0].eval(context));
             Console.WriteLine(parser.parse("(+ 1 (+ 2 3))")[0].eval(context));
+            try {
+                Console.WriteLine(parser.parse("(+ 1 \"a\")")[0]
+                    .eval(context));
+            }
+            catch (InterpreterException e) {
+                Console.WriteLine(e.Message + " ---> " + e.InnerException.Message);
+            }
 
         }
 
+        public void repl() {
+            Context context = new Context();
+            
+            while (true) {
+                Console.Write("elispy> ");
+                string input = Console.ReadLine();
+                if (input is null) {
+                    break;
+                }
+                
+                try {
+                    foreach (Sexp sexp in parser.parse(input)) {
+                        Console.WriteLine(sexp.eval(context));
+                    }
+                }
+                catch (InterpreterException e) {
+                    Console.WriteLine(e.Message);
+                }
+                catch (ParserException e) {
+                    Console.WriteLine(e.Message);
+                }
+                catch (LexerException e) {
+                    Console.WriteLine(e.Message);
+                }
+            }
+        }
+        
         private SexpsParser parser;
     }
     

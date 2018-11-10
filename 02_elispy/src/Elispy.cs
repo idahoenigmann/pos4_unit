@@ -19,9 +19,12 @@ namespace i15013
             SexpsParser parser = new SexpsParser(lexer, new Context());
             SexpsInterpreter interpreter = new SexpsInterpreter(parser);
 
-            lexer.test();
-            parser.test();
-            interpreter.test();
+            //lexer.test();
+            //parser.test();
+            //interpreter.test();
+            if (fileInformation.filename == "-") {
+                interpreter.repl();
+            }
 
         }
         
