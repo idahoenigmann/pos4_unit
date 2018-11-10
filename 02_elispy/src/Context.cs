@@ -33,6 +33,7 @@ namespace i15013.elispy {
             functab["while"] = new WhileSexpFunction("while");
             functab["shell"] = new ShellSexpFunction("shell");
             functab["not"] = new NotSexpFunction("not");
+            functab["and"] = new AndSexpFunction("and");
         }
     }
 }

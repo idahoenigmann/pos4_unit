@@ -196,6 +196,14 @@ namespace i15013.elispy {
                     Console.WriteLine(inputs[i]);
                 }
             }
+            
+            inputs = new []{"(and)", "(and t)", "(and nil)", "(and 1 2 3)", "(and 1 nil a)"};
+            s_res = new []{"t", "t", "nil", "3", "nil"};
+            for (int i=0; i < inputs.Length; i++) {
+                if (parser.parse(inputs[i])[0].eval(context).ToString() != s_res[i]) {
+                    Console.WriteLine(inputs[i]);
+                }
+            }
         }
 
         public void repl() {

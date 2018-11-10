@@ -359,4 +359,20 @@ namespace i15013.elispy {
             return new SexpSymbol("t");
         }
     }
+    
+    public class AndSexpFunction : BuiltInSexpFunction {
+        public AndSexpFunction(string name) : base(name) {}
+
+        public override Sexp call(List<Sexp> args, Context ctx) {
+
+            Sexp res = new SexpSymbol("t");
+
+            foreach (Sexp sexp in args) {
+                res = sexp.eval(ctx);
+                if (!(bool)res.eval(ctx)) return new SexpSymbol("nil");
+            }
+            
+            return res;
+        }
+    }
 }
