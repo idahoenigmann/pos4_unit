@@ -284,4 +284,18 @@ namespace i15013.elispy {
             return res;
         }
     }
+    
+    public class PrincSexpFunction : BuiltInSexpFunction {
+        public PrincSexpFunction(string name) : base(name) {}
+
+        public override Sexp call(List<Sexp> args, Context ctx) {
+            if (args.Count != 1) {
+                throw new ConstraintException("Too many or too few argument given.");
+            }
+
+            Sexp res = args[0].eval(ctx);
+            Console.WriteLine(res);
+            return res;
+        }
+    }
 }

@@ -188,6 +188,14 @@ namespace i15013.elispy {
                     Console.WriteLine(inputs[i]);
                 }
             }
+            
+            inputs = new []{"(princ 1)", "(princ \"abc\")", "(princ 'a)", "(setq a 42)", "(princ a)", "(princ '(1 2 3))"};
+            s_res = new []{"1", "\"abc\"", "a", "42", "42", "(1 2 3)"};
+            for (int i=0; i < inputs.Length; i++) {
+                if (parser.parse(inputs[i])[0].eval(context).ToString() != s_res[i]) {
+                    Console.WriteLine(inputs[i]);
+                }
+            }
         }
 
         public void repl() {

@@ -29,6 +29,7 @@ namespace i15013.elispy {
             functab["null"] = new NullSexpFunction("null");
             functab["if"] = new IfSexpFunction("if");
             functab["progn"] = new PrognSexpFunction("progn");
+            functab["princ"] = new PrincSexpFunction("princ");
         }
     }
 }
