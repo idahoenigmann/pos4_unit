@@ -269,4 +269,19 @@ namespace i15013.elispy {
             return new SexpSymbol("nil");
         }
     }
+    
+    public class PrognSexpFunction : BuiltInSexpFunction {
+        public PrognSexpFunction(string name) : base(name) {}
+
+        public override Sexp call(List<Sexp> args, Context ctx) {
+
+            Sexp res = new SexpSymbol("nil");
+
+            for (int i = 0; i < args.Count; i++) {
+                res = args[i].eval(ctx);
+            }
+            
+            return res;
+        }
+    }
 }

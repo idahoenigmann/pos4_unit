@@ -180,6 +180,14 @@ namespace i15013.elispy {
                     Console.WriteLine(inputs[i]);
                 }
             }
+            
+            inputs = new []{"(progn)", "(progn 1)", "(progn 1 (+ 1 1) (- 43 1))"};
+            s_res = new []{"nil", "1", "42"};
+            for (int i=0; i < inputs.Length; i++) {
+                if (parser.parse(inputs[i])[0].eval(context).ToString() != s_res[i]) {
+                    Console.WriteLine(inputs[i]);
+                }
+            }
         }
 
         public void repl() {
