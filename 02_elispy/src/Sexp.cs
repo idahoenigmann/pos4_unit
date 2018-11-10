@@ -71,7 +71,7 @@ namespace i15013.elispy {
         }
 
         public static explicit operator bool(Sexp sexp) {
-            return true;
+            return !sexp.is_null();
         }
 
         public abstract bool is_null();

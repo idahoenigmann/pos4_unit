@@ -27,6 +27,7 @@ namespace i15013.elispy {
             functab["equal"] = new EqualSexpFunction("equal");
             functab["setq"] = new SetqSexpFunction("setq");
             functab["null"] = new NullSexpFunction("null");
+            functab["if"] = new IfSexpFunction("if");
         }
     }
 }

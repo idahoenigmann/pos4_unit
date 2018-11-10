@@ -250,4 +250,23 @@ namespace i15013.elispy {
             return args[0].eval(ctx).is_null() ? new SexpSymbol("t") : new SexpSymbol("nil");
         }
     }
+    
+    public class IfSexpFunction : BuiltInSexpFunction {
+        public IfSexpFunction(string name) : base(name) {}
+
+        public override Sexp call(List<Sexp> args, Context ctx) {
+            if (args.Count < 2 || args.Count > 3) {
+                throw new ConstraintException("Too many or too few argument given.");
+            }
+
+            if ((bool) args[0].eval(ctx)) {
+                return args[1].eval(ctx);
+            }
+
+            if (args.Count == 3) {
+                return args[2].eval(ctx);
+            }
+            return new SexpSymbol("nil");
+        }
+    }
 }
