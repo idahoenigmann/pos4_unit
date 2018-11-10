@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using i15013.lexer;
 using i15013.elispy;
 
@@ -22,8 +23,20 @@ namespace i15013
             //lexer.test();
             //parser.test();
             //interpreter.test();
-            if (fileInformation.filename == "-") {
+            if (fileInformation.filename == "") {
                 interpreter.repl();
+            } else if (fileInformation.filename == "-") {
+                interpreter.repl_stdin_file(Console.In.ReadToEnd());
+            } else {
+                string input = "";
+                try {
+                    input = File.ReadAllText(fileInformation.filename);
+                }
+                catch (FileNotFoundException) {
+                    usage($"Can not open file \"{fileInformation.filename}\".");
+                }
+                
+                interpreter.repl_stdin_file(input);
             }
 
         }
@@ -46,7 +59,7 @@ namespace i15013
 
         private static FileInformation parse_argv(string[] args) {
             FileInformation fileInformation = new FileInformation();
-            fileInformation.filename = "-";
+            fileInformation.filename = "";
             fileInformation.g = false;
             switch (args.Length) {
                 case 0:

@@ -88,6 +88,13 @@ namespace i15013.elispy {
                 }
             }
         }
+
+        public void repl_stdin_file(string input) {
+            Context context = new Context();
+            foreach (Sexp sexp in parser.parse(input)) {
+                Console.WriteLine(sexp.eval(context));
+            }
+        }
         
         private SexpsParser parser;
     }
