@@ -238,4 +238,16 @@ namespace i15013.elispy {
             return args[1].eval(ctx);
         }
     }
+    
+    public class NullSexpFunction : BuiltInSexpFunction {
+        public NullSexpFunction(string name) : base(name) {}
+
+        public override Sexp call(List<Sexp> args, Context ctx) {
+            if (args.Count != 1) {
+                throw new ConstraintException("Too many or too few argument given.");
+            }
+
+            return args[0].eval(ctx).is_null() ? new SexpSymbol("t") : new SexpSymbol("nil");
+        }
+    }
 }

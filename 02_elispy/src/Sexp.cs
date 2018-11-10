@@ -194,7 +194,7 @@ namespace i15013.elispy {
         }
 
         public override bool is_null() {
-            return false;
+            return terms.Count == 0;
         }
     }
     
@@ -241,7 +241,7 @@ namespace i15013.elispy {
         }
 
         public override bool is_null() {
-            return true;
+            return false;
         }
     }
 
@@ -268,7 +268,7 @@ namespace i15013.elispy {
         }
 
         public override bool is_null() {
-            return true;
+            return value == "nil";
         }
     }
 

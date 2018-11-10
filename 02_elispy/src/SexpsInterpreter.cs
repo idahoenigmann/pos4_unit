@@ -172,6 +172,14 @@ namespace i15013.elispy {
                     Console.WriteLine(inputs[i]);
                 }
             }
+            
+            inputs = new []{"(null 1)", "(null nil)"};
+            s_res = new []{"nil", "t"};
+            for (int i=0; i < inputs.Length; i++) {
+                if (parser.parse(inputs[i])[0].eval(context).ToString() != s_res[i]) {
+                    Console.WriteLine(inputs[i]);
+                }
+            }
         }
 
         public void repl() {
