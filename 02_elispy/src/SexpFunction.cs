@@ -223,4 +223,19 @@ namespace i15013.elispy {
             return args[0] == args[1] ? new SexpSymbol("t") : new SexpSymbol("nil");
         }
     }
+    
+    public class SetqSexpFunction : BuiltInSexpFunction {
+        public SetqSexpFunction(string name) : base(name) {}
+
+        public override Sexp call(List<Sexp> args, Context ctx) {
+            if (args.Count != 2) {
+                throw new ConstraintException("Too many or too few argument given.");
+            }
+
+            if (!(args[0] is SexpSymbol symbol)) throw new ArgumentException();    //BUG: symbol can only be set once
+
+            ctx.symtab.Add(symbol.value, args[1].eval(ctx));
+            return args[1].eval(ctx);
+        }
+    }
 }
