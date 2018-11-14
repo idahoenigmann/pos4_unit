@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using i15013.lexer;
 using i15013.elispy;
 
 namespace i15013
@@ -23,7 +21,7 @@ namespace i15013
             //lexer.test();
             //parser.test();
             //interpreter.test();
-            interpreter.test_repl();
+            //interpreter.test_repl();
             
             if (fileInformation.filename == "") {
                 interpreter.repl();

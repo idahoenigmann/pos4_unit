@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using SymTab = System.Collections.Generic.Dictionary<string, i15013.elispy.Sexp>;
 using FuncTab = System.Collections.Generic.Dictionary<string, i15013.elispy.SexpFunction>;
 

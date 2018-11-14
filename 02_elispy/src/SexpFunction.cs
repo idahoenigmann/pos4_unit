@@ -232,9 +232,15 @@ namespace i15013.elispy {
                 throw new ConstraintException("Too many or too few argument given.");
             }
 
-            if (!(args[0] is SexpSymbol symbol)) throw new ArgumentException();    //BUG: symbol can only be set once
+            if (!(args[0] is SexpSymbol symbol)) throw new ArgumentException();
 
-            ctx.symtab.Add(symbol.value, args[1].eval(ctx));
+            if (ctx.symtab.ContainsKey(symbol.value)) {
+                ctx.symtab[symbol.value] = args[1].eval(ctx);
+            }
+            else {
+                ctx.symtab.Add(symbol.value, args[1].eval(ctx));
+            }
+
             return args[1].eval(ctx);
         }
     }
