@@ -45,7 +45,7 @@ namespace i15013.elispy {
                 return -(int)args[0].eval(ctx);
             }
             
-            int res = (int)args[0].eval();
+            int res = (int)args[0].eval(ctx);
             for (int i=1; i < args.Count; i++) {
                 res -= (int) args[i].eval(ctx);
             }
@@ -73,7 +73,7 @@ namespace i15013.elispy {
                 return 0;
             }
             
-            int res = (int)args[0].eval();
+            int res = (int)args[0].eval(ctx);
             for (int i=1; i < args.Count; i++) {
                 res /= (int) args[i].eval(ctx);
             }
@@ -89,7 +89,7 @@ namespace i15013.elispy {
                 throw new ConstraintException("Too many or too few argument given.");
             }
 
-            if ((int)args[0].eval() < (int)args[1].eval()) {
+            if ((int)args[0].eval(ctx) < (int)args[1].eval(ctx)) {
                 return new SexpSymbol("t");
             }
             return new SexpSymbol("nil");
@@ -104,7 +104,7 @@ namespace i15013.elispy {
                 throw new ConstraintException("Too many or too few argument given.");
             }
 
-            if ((int)args[0].eval() <= (int)args[1].eval()) {
+            if ((int)args[0].eval(ctx) <= (int)args[1].eval(ctx)) {
                 return new SexpSymbol("t");
             }
             return new SexpSymbol("nil");
@@ -119,7 +119,7 @@ namespace i15013.elispy {
                 throw new ConstraintException("Too many or too few argument given.");
             }
 
-            if ((int)args[0].eval() == (int)args[1].eval()) {
+            if ((int)args[0].eval(ctx) == (int)args[1].eval(ctx)) {
                 return new SexpSymbol("t");
             }
             return new SexpSymbol("nil");
@@ -134,7 +134,7 @@ namespace i15013.elispy {
                 throw new ConstraintException("Too many or too few argument given.");
             }
 
-            if ((int)args[0].eval() >= (int)args[1].eval()) {
+            if ((int)args[0].eval(ctx) >= (int)args[1].eval(ctx)) {
                 return new SexpSymbol("t");
             }
             return new SexpSymbol("nil");
@@ -149,7 +149,7 @@ namespace i15013.elispy {
                 throw new ConstraintException("Too many or too few argument given.");
             }
 
-            if ((int)args[0].eval() > (int)args[1].eval()) {
+            if ((int)args[0].eval(ctx) > (int)args[1].eval(ctx)) {
                 return new SexpSymbol("t");
             }
             return new SexpSymbol("nil");
@@ -330,7 +330,7 @@ namespace i15013.elispy {
                 throw new ConstraintException("Too many or too few argument given.");
             }
 
-            string cmd = (string)args[0].eval();
+            string cmd = (string)args[0].eval(ctx);
             var escaped_args = cmd.Replace("\"", "\\\"");
             var process = new Process() {
                 StartInfo = new ProcessStartInfo {

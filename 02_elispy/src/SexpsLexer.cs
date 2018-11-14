@@ -6,7 +6,7 @@ namespace i15013.elispy {
         public SexpsLexer() {
             add_definition(new Definition(Tokens.LPAREN, @"\(", false));
             add_definition(new Definition(Tokens.RPAREN, @"\)", false));
-            add_definition(new Definition(Tokens.SYMBOL, @"([\w-[0-9]]\w*)|[+/*-]|<=|=|>=|<|>", false));
+            add_definition(new Definition(Tokens.SYMBOL, @"([\w-[0-9]]\w*)|[+/*-]|<=|>=|<|>|=", false));
             add_definition(new Definition(Tokens.INTEGER, @"\d+", false));
             add_definition(new Definition(Tokens.STRING, @""".*""", false));
             add_definition(new Definition(Tokens.SPACE, @"\t|\r|\v|\n|\s", true));

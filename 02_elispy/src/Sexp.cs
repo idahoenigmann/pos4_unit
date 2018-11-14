@@ -12,7 +12,7 @@ namespace i15013.elispy {
             this.position = position;
         }
 
-        public abstract Sexp eval(Context ctx = null);
+        public abstract Sexp eval(Context ctx);
 
         public override string ToString() {    //can not be virtual because override
             if (is_quoted) {
@@ -32,7 +32,7 @@ namespace i15013.elispy {
 
         public static explicit operator string(Sexp sexp) {
             SexpString sexpString = sexp as SexpString;
-            if (sexpString == null) {
+            if (sexpString is null) {
                 throw new ArgumentException($"\"{sexp}\" is not a valid argument");
             }
             return sexpString.value;
@@ -45,20 +45,14 @@ namespace i15013.elispy {
         public static implicit operator Sexp(string s) {
             return new SexpString(s);
         }
-        
-        public static bool operator==(Sexp lhs, Sexp rhs) {
-            if (Object.ReferenceEquals(lhs, null)) {
-                if (Object.ReferenceEquals(rhs, null)) return true;
-                return false;
-            }
-            return lhs.Equals(rhs);
-        }
 
-        public static bool operator !=(Sexp lhs, Sexp rhs) => !(lhs == rhs);
+        public static bool operator ==(Sexp lhs, Sexp rhs) => lhs.Equals(rhs);
+
+        public static bool operator !=(Sexp lhs, Sexp rhs) => !lhs.Equals(rhs);
 
         public override int GetHashCode() => is_quoted.GetHashCode();
 
-        public new virtual bool Equals(Object obj) {
+        public override bool Equals(Object obj) {
             Sexp sexp = obj as Sexp;
             if (sexp is null) return false;
 
@@ -94,7 +88,7 @@ namespace i15013.elispy {
             terms.Add(term);
         }
 
-        public override Sexp eval(Context ctx = null) {
+        public override Sexp eval(Context ctx) {
             if (is_quoted) {
                 return new SexpList(terms, position);
             }
@@ -206,7 +200,7 @@ namespace i15013.elispy {
             this.position = position;
         }
 
-        public override Sexp eval(Context ctx = null) {
+        public override Sexp eval(Context ctx) {
             if (is_quoted) {
                 if (GetType() == typeof(SexpString)) {
                     return new SexpString(value, position);
@@ -249,7 +243,7 @@ namespace i15013.elispy {
         public SexpSymbol(string name, Position? position = null) : base(name,
             position) { }
 
-        public override Sexp eval(Context ctx = null) {
+        public override Sexp eval(Context ctx) {
             if (is_quoted) {
                 return new SexpSymbol(value, position);
             }

@@ -252,11 +252,7 @@ namespace i15013.elispy {
         public void repl_stdin_file(string input) {
             Context context = new Context();
             foreach (Sexp sexp in parser.parse(input)) {
-                List<Sexp> sexpAsList = new List<Sexp>();
-                sexpAsList.Add(context.functab["princ"]);
-                sexpAsList.Add(sexp.eval(context));
-                SexpList sexpList = new SexpList(sexpAsList, null);
-                sexpList.eval(context);
+                sexp.eval(context);
             }
         }
         
