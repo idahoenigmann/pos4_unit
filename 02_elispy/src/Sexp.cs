@@ -46,9 +46,9 @@ namespace i15013.elispy {
             return new SexpString(s);
         }
 
-        public static bool operator ==(Sexp lhs, Sexp rhs) => lhs.Equals(rhs);
+        public static bool operator ==(Sexp lhs, Sexp rhs) => lhs != null && lhs.Equals(rhs);
 
-        public static bool operator !=(Sexp lhs, Sexp rhs) => !lhs.Equals(rhs);
+        public static bool operator !=(Sexp lhs, Sexp rhs) => lhs != null && !lhs.Equals(rhs);
 
         public override int GetHashCode() => is_quoted.GetHashCode();
 
@@ -76,7 +76,7 @@ namespace i15013.elispy {
 
         public SexpList(Position? position = null) {
             this.position = position;
-            this.terms = new List<Sexp>();
+            terms = new List<Sexp>();
         }
 
         public SexpList(List<Sexp> terms, Position? position) {
@@ -193,7 +193,7 @@ namespace i15013.elispy {
     }
     
     public abstract class SexpAtom : Sexp {
-        public dynamic value { get; protected set; }
+        public dynamic value { get; }
 
         public SexpAtom(dynamic value, Position? position = null) {
             this.value = value;

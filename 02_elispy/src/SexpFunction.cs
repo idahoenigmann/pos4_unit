@@ -17,7 +17,7 @@ namespace i15013.elispy {
     }
 
     public abstract class BuiltInSexpFunction : SexpFunction {
-        public BuiltInSexpFunction(string name) : base(name) {
+        protected BuiltInSexpFunction(string name) : base(name) {
         }
     }
     
@@ -283,8 +283,8 @@ namespace i15013.elispy {
 
             Sexp res = new SexpSymbol("nil");
 
-            for (int i = 0; i < args.Count; i++) {
-                res = args[i].eval(ctx);
+            foreach (var arg in args) {
+                res = arg.eval(ctx);
             }
             
             return res;

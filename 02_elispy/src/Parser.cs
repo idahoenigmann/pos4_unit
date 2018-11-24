@@ -32,11 +32,11 @@ namespace i15013.elispy {
              @"   | |/ _ \/ __| __| |  ___/ _` | '__/ __|/ _ \ '__|"+"\n"+
              @"   | |  __/\__ \ |_  | |  | (_| | |  \__ \  __/ |   "+"\n"+
              @"   |_|\___||___/\__| |_|   \__,_|_|  |___/\___|_|   "+"\n");
-            Console.WriteLine("a as SexpSymbol: " + new SexpSymbol("a", null));
+            Console.WriteLine("a as SexpSymbol: " + new SexpSymbol("a"));
             Console.WriteLine("1 as SexpInteger: " + new SexpInteger(1));
             Console.WriteLine("abc as SexpString: " + new SexpString("abc"));
 
-            Sexp s = new SexpSymbol("a", null);
+            Sexp s = new SexpSymbol("a");
             s.is_quoted = true;
             Console.WriteLine("a as quoted SexpSymbol: " + s);
             
@@ -98,10 +98,8 @@ namespace i15013.elispy {
                     return sexp;
                 }
                 catch (ArgumentOutOfRangeException) {
-                    throw new ParserException($"Opening '(' but EOF at " +
-                                  $"(index={token.position.idx}, " +
-                                  $"line={token.position.line_number}, " +
-                                  $"column={token.position.column_number})");
+                    throw new ParserException(
+                        $"Opening \'(\' but EOF at (index={token.position.idx}, line={token.position.line_number}, column={token.position.column_number})");
                 }
             }
             return atom(token);
@@ -137,10 +135,8 @@ namespace i15013.elispy {
                 }
             }
             catch (ArgumentOutOfRangeException) {
-                throw new ParserException($"Missing ')' or EOF at " +
-                                  $"(index={token.position.idx}, " +
-                                  $"line={token.position.line_number}, " +
-                                  $"column={token.position.column_number})");
+                throw new ParserException(
+                    $"Missing \')\' or EOF at (index={token.position.idx}, line={token.position.line_number}, column={token.position.column_number})");
             }
 
             return sexpList;
@@ -155,7 +151,7 @@ namespace i15013.elispy {
         public ParserException() : base() { }
         public ParserException(string message) : base(message) { }
 
-        public ParserException(string message, System.Exception inner) : base(
+        public ParserException(string message, Exception inner) : base(
             message, inner) { }
     }
 }

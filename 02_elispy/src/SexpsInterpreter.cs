@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using i15013.lexer;
 
@@ -18,10 +17,10 @@ namespace i15013.elispy {
                               @"   |_|\___||___/\__| |_____|_| |_|\__\___|_|  | .__/|_|  \___|\__\___|_|   " + "\n" +
                               @"                                              | |                          " + "\n" +
                               @"                                              |_|                          ");
-            
-            Context context = new Context();
 
-            context.symtab["a"] = new SexpInteger(1, new Position(0, 0, 0));
+            Context context = new Context {
+                symtab = {["a"] = new SexpInteger(1, new Position(0, 0, 0))}
+            };
 
             foreach (var x in context.symtab) {
                 Console.WriteLine(x);
@@ -263,7 +262,7 @@ namespace i15013.elispy {
         public InterpreterException() : base() { }
         public InterpreterException(string message) : base(message) { }
 
-        public InterpreterException(string message, System.Exception inner) : base(
+        public InterpreterException(string message, Exception inner) : base(
             message, inner) { }
     }
 }

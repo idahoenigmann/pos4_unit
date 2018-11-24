@@ -41,7 +41,7 @@ namespace i15013
 
         }
         
-        public static void usage(string message = null) {
+        private static void usage(string message = null) {
             Console.WriteLine("usage: elispy [--help|-h|-s] [FILE]\n" +
                               "Executes the \"elispy\" expressions contained " +
                               "in FILE otherwise the REPL will be started\n\n" +
@@ -58,9 +58,9 @@ namespace i15013
         }
 
         private static FileInformation parse_argv(string[] args) {
-            FileInformation fileInformation = new FileInformation();
-            fileInformation.filename = "";
-            fileInformation.g = false;
+            FileInformation fileInformation = new FileInformation {
+                filename = "", g = false
+            };
             switch (args.Length) {
                 case 0:
                     break;

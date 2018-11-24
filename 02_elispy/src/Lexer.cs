@@ -32,9 +32,9 @@ namespace i15013.lexer {
     }
 
     public struct Token {
-        public string type { get; private set; }
-        public string value { get; private set; }
-        public Position position { get; private set; }
+        public string type { get; }
+        public string value { get; }
+        public Position position { get; }
 
         public Token(string type, string value, Position position) {
             this.value = value.Replace(@"""", "");
@@ -51,7 +51,7 @@ namespace i15013.lexer {
         public LexerException() : base() { }
         public LexerException(string message) : base(message) { }
 
-        public LexerException(string message, System.Exception inner) : base(
+        public LexerException(string message, Exception inner) : base(
             message, inner) { }
     }
 
