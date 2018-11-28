@@ -8,7 +8,7 @@ namespace i15013.elispy {
             add_definition(new Definition(Tokens.RPAREN, @"\)", false));
             add_definition(new Definition(Tokens.SYMBOL, @"([\w-[0-9]]\w*)|[+/*-]|<=|>=|<|>|=", false));
             add_definition(new Definition(Tokens.INTEGER, @"\d+", false));
-            add_definition(new Definition(Tokens.STRING, @""".*""", false));
+            add_definition(new Definition(Tokens.STRING, @""".[^""]*""", false));
             add_definition(new Definition(Tokens.SPACE, @"\t|\r|\v|\n|\s", true));
             add_definition(new Definition(Tokens.QUOTE, @"'", false));
         }
