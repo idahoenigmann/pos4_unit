@@ -22,27 +22,47 @@ namespace i15013
             //parser.test();
             //interpreter.test();
             //interpreter.test_repl();
-            
-            if (fileInformation.filename == "") {
-                interpreter.repl();
-            } else if (fileInformation.filename == "-") {
-                interpreter.repl_stdin_file(Console.In.ReadToEnd());
-            } else {
-                string input = "";
-                try {
-                    input = File.ReadAllText(fileInformation.filename);
+            if (fileInformation.g) {
+                StreamWriter sw;
+                if (fileInformation.filename == "-") {
+                    sw = new StreamWriter(Console.OpenStandardOutput());
+                    sw.AutoFlush = true;
                 }
-                catch (FileNotFoundException) {
-                    usage($"Can not open file \"{fileInformation.filename}\".");
+                else {
+                    int idx = fileInformation.filename.LastIndexOf(".");
+                    string csFile = (idx < 0)
+                        ? fileInformation.filename
+                        : fileInformation.filename.Remove(idx,
+                            fileInformation.filename.Length - idx);
+                    sw = new StreamWriter(csFile + ".cs");
                 }
                 
-                interpreter.repl_stdin_file(input);
+            }
+            else {
+                if (fileInformation.filename == "") {
+                    interpreter.repl();
+                }
+                else if (fileInformation.filename == "-") {
+                    interpreter.repl_stdin_file(Console.In.ReadToEnd());
+                }
+                else {
+                    string input = "";
+                    try {
+                        input = File.ReadAllText(fileInformation.filename);
+                    }
+                    catch (FileNotFoundException) {
+                        usage(
+                            $"Can not open file \"{fileInformation.filename}\".");
+                    }
+
+                    interpreter.repl_stdin_file(input);
+                }
             }
 
         }
         
         private static void usage(string message = null) {
-            Console.WriteLine("usage: elispy [--help|-h|-s] [FILE]\n" +
+            Console.WriteLine("usage: elispy [--help|-h|-g] [FILE]\n" +
                               "Executes the \"elispy\" expressions contained " +
                               "in FILE otherwise the REPL will be started\n\n" +
                               "--help|-h ... Help!\n" +
@@ -68,7 +88,7 @@ namespace i15013
                     usage();
                     break;
                 case 1 when args[0] == "-g":
-                    fileInformation.g = true;
+                    usage("No filename given but code generation requested!");
                     break;
                 case 1:
                     fileInformation.filename = args[0];
