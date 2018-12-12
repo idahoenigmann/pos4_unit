@@ -7,8 +7,4 @@ namespace i15013.transpiler {
         void visit(SexpInteger sexpint);
         void visit(SexpList sexplst);
     }
-
-    public class CSharpGenerator {
-        
-    }
 }
