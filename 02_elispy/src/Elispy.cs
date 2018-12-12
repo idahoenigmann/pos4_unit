@@ -26,7 +26,7 @@ namespace i15013
                 StreamWriter sw;
                 if (fileInformation.filename == "-") {
                     sw = new StreamWriter(Console.OpenStandardOutput());
-                    sw.AutoFlush = true;
+                    
                 }
                 else {
                     int idx = fileInformation.filename.LastIndexOf(".");
@@ -36,7 +36,8 @@ namespace i15013
                             fileInformation.filename.Length - idx);
                     sw = new StreamWriter(csFile + ".cs");
                 }
-                
+                sw.AutoFlush = true;
+                sw.WriteLine("qwerty");
             }
             else {
                 if (fileInformation.filename == "") {
@@ -54,7 +55,6 @@ namespace i15013
                         usage(
                             $"Can not open file \"{fileInformation.filename}\".");
                     }
-
                     interpreter.repl_stdin_file(input);
                 }
             }
