@@ -20,7 +20,7 @@ namespace i15013.elispy {
         protected BuiltInSexpFunction(string name) : base(name) {
         }
 
-        public abstract string toCS();
+        public abstract string toCS(List<String> list);
     }
     
     public class AddSexpFunction : BuiltInSexpFunction {
@@ -34,7 +34,16 @@ namespace i15013.elispy {
             return res;
         }
 
-        public override string toCS() { return ""; }
+        public override string toCS(List<String> list) {
+			if (list.Count == 0) {
+				return "0";
+			}
+			string res = "";
+			foreach (String s in list) {
+				res += s + " + ";
+			}
+            return res.Substring(0, res.Length - 3);
+        }
     }
 
     public class SubSexpFunction : BuiltInSexpFunction {
@@ -55,7 +64,7 @@ namespace i15013.elispy {
             }
             return res;
         }
-        public override string toCS() { return ""; }
+        public override string toCS(List<String> list) { return ""; }
     }
     
     public class MulSexpFunction : BuiltInSexpFunction {
@@ -68,7 +77,7 @@ namespace i15013.elispy {
             }
             return res;
         }
-        public override string toCS() { return ""; }
+        public override string toCS(List<String> list) { return ""; }
     }
     
     public class DivSexpFunction : BuiltInSexpFunction {
@@ -85,7 +94,7 @@ namespace i15013.elispy {
             }
             return res;
         }
-        public override string toCS() { return ""; }
+        public override string toCS(List<String> list) { return ""; }
     }
     
     public class LessThanSexpFunction : BuiltInSexpFunction {
@@ -101,7 +110,10 @@ namespace i15013.elispy {
             }
             return new SexpSymbol("nil");
         }
-        public override string toCS() { return ""; }
+
+        public override string toCS(List<String> list) {
+			return list[0].ToString() + " < " + list[1].ToString();
+		}
     }
     
     public class LessThanOrEqualsSexpFunction : BuiltInSexpFunction {
@@ -117,7 +129,7 @@ namespace i15013.elispy {
             }
             return new SexpSymbol("nil");
         }
-        public override string toCS() { return ""; }
+        public override string toCS(List<String> list) { return ""; }
     }
     
     public class EqualsSexpFunction : BuiltInSexpFunction {
@@ -133,7 +145,7 @@ namespace i15013.elispy {
             }
             return new SexpSymbol("nil");
         }
-        public override string toCS() { return ""; }
+        public override string toCS(List<String> list) { return ""; }
     }
     
     public class GreaterThanOrEqualsSexpFunction : BuiltInSexpFunction {
@@ -149,7 +161,7 @@ namespace i15013.elispy {
             }
             return new SexpSymbol("nil");
         }
-        public override string toCS() { return ""; }
+        public override string toCS(List<String> list) { return ""; }
     }
     
     public class GreaterThanSexpFunction : BuiltInSexpFunction {
@@ -165,7 +177,7 @@ namespace i15013.elispy {
             }
             return new SexpSymbol("nil");
         }
-        public override string toCS() { return ""; }
+        public override string toCS(List<String> list) { return ""; }
     }
     
     public class FirstSexpFunction : BuiltInSexpFunction {
@@ -185,7 +197,7 @@ namespace i15013.elispy {
             }
             return sexpList.terms[0].eval(ctx);
         }
-        public override string toCS() { return ""; }
+        public override string toCS(List<String> list) { return ""; }
     }
     
     public class RestSexpFunction : BuiltInSexpFunction {
@@ -205,7 +217,7 @@ namespace i15013.elispy {
             return sexpList;
 
         }
-        public override string toCS() { return ""; }
+        public override string toCS(List<String> list) { return ""; }
     }
     
     public class ConsSexpFunction : BuiltInSexpFunction {
@@ -224,7 +236,7 @@ namespace i15013.elispy {
             return sexpList;
 
         }
-        public override string toCS() { return ""; }
+        public override string toCS(List<String> list) { return ""; }
     }
     
     public class EqualSexpFunction : BuiltInSexpFunction {
@@ -237,7 +249,7 @@ namespace i15013.elispy {
 
             return args[0] == args[1] ? new SexpSymbol("t") : new SexpSymbol("nil");
         }
-        public override string toCS() { return ""; }
+        public override string toCS(List<String> list) { return ""; }
     }
     
     public class SetqSexpFunction : BuiltInSexpFunction {
@@ -259,7 +271,7 @@ namespace i15013.elispy {
 
             return args[1].eval(ctx);
         }
-        public override string toCS() { return ""; }
+        public override string toCS(List<String> list) { return ""; }
     }
     
     public class NullSexpFunction : BuiltInSexpFunction {
@@ -272,7 +284,7 @@ namespace i15013.elispy {
 
             return args[0].eval(ctx).is_null() ? new SexpSymbol("t") : new SexpSymbol("nil");
         }
-        public override string toCS() { return ""; }
+        public override string toCS(List<String> list) { return ""; }
     }
     
     public class IfSexpFunction : BuiltInSexpFunction {
@@ -292,7 +304,7 @@ namespace i15013.elispy {
             }
             return new SexpSymbol("nil");
         }
-        public override string toCS() { return ""; }
+        public override string toCS(List<String> list) { return ""; }
     }
     
     public class PrognSexpFunction : BuiltInSexpFunction {
@@ -308,7 +320,7 @@ namespace i15013.elispy {
             
             return res;
         }
-        public override string toCS() { return ""; }
+        public override string toCS(List<String> list) { return ""; }
     }
     
     public class PrincSexpFunction : BuiltInSexpFunction {
@@ -323,7 +335,7 @@ namespace i15013.elispy {
             Console.WriteLine(res);
             return res;
         }
-        public override string toCS() { return ""; }
+        public override string toCS(List<String> list) { return ""; }
     }
     
     public class WhileSexpFunction : BuiltInSexpFunction {
@@ -341,7 +353,7 @@ namespace i15013.elispy {
             }
             return res;
         }
-        public override string toCS() { return ""; }
+        public override string toCS(List<String> list) { return ""; }
     }
     
     public class ShellSexpFunction : BuiltInSexpFunction {
@@ -373,7 +385,7 @@ namespace i15013.elispy {
             return new SexpString(result);
 
         }
-        public override string toCS() { return ""; }
+        public override string toCS(List<String> list) { return ""; }
     }
     
     public class NotSexpFunction : BuiltInSexpFunction {
@@ -387,7 +399,7 @@ namespace i15013.elispy {
             if ((bool)args[0].eval(ctx)) return new SexpSymbol("nil");
             return new SexpSymbol("t");
         }
-        public override string toCS() { return ""; }
+        public override string toCS(List<String> list) { return ""; }
     }
     
     public class AndSexpFunction : BuiltInSexpFunction {
@@ -404,7 +416,7 @@ namespace i15013.elispy {
             
             return res;
         }
-        public override string toCS() { return ""; }
+        public override string toCS(List<String> list) { return ""; }
     }
     
     public class OrSexpFunction : BuiltInSexpFunction {
@@ -420,6 +432,6 @@ namespace i15013.elispy {
             
             return new SexpSymbol("nil");
         }
-        public override string toCS() { return ""; }
+        public override string toCS(List<String> list) { return ""; }
     }
 }

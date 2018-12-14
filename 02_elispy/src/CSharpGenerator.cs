@@ -27,24 +27,36 @@ namespace i15013.transpiler {
         public string toCSharp(Sexp sexp) {
             if (sexp is SexpAtom) {
                 return sexp.ToString();
-            } else if (sexp is SexpList) {
+            }
+            else if (sexp is SexpList) {
                 if (sexp.is_quoted) {
                     string res = "new List<dynamic>(new dynamic[]{";
-                    foreach(Sexp s in ((SexpList)sexp).terms) {
+                    foreach (Sexp s in ((SexpList) sexp).terms) {
                         res += s + " ,";
                     }
-                    res = res.Substring(0, res.Length-2);
+
+                    res = res.Substring(0, res.Length - 2);
                     res += "})";
                     return res;
-                } else if (sexp is SexpFunction) {
-                    return ((BuiltInSexpFunction)sexp).toCS();
+                }
+                else {
+                    List<Sexp> listSexps = ((SexpList) sexp).terms;
+                    List<string> listString = new List<String>();
+                    foreach (Sexp s in listSexps.GetRange(1, listSexps.Count - 1)) {
+                        listString.Add(this.toCSharp(s));
+                    }
+                    
+                    return ctx.functab[((SexpAtom)(listSexps[0])).value].toCS(
+                            listString);
                 }
             }
+
             return "";
         }
 
         public StringBuilder code { get; private set; }
 		private string tab = "    ";
+        private Context ctx = new Context();
     }
 
     
