@@ -36,8 +36,8 @@ namespace i15013.transpiler {
                     res = res.Substring(0, res.Length-2);
                     res += "})";
                     return res;
-                } else {
-                    
+                } else if (sexp is SexpFunction) {
+                    return ((BuiltInSexpFunction)sexp).toCS();
                 }
             }
             return "";

@@ -19,6 +19,8 @@ namespace i15013.elispy {
     public abstract class BuiltInSexpFunction : SexpFunction {
         protected BuiltInSexpFunction(string name) : base(name) {
         }
+
+        public abstract string toCS();
     }
     
     public class AddSexpFunction : BuiltInSexpFunction {
@@ -31,6 +33,8 @@ namespace i15013.elispy {
             }
             return res;
         }
+
+        public override string toCS() { return ""; }
     }
 
     public class SubSexpFunction : BuiltInSexpFunction {
@@ -51,6 +55,7 @@ namespace i15013.elispy {
             }
             return res;
         }
+        public override string toCS() { return ""; }
     }
     
     public class MulSexpFunction : BuiltInSexpFunction {
@@ -63,6 +68,7 @@ namespace i15013.elispy {
             }
             return res;
         }
+        public override string toCS() { return ""; }
     }
     
     public class DivSexpFunction : BuiltInSexpFunction {
@@ -79,6 +85,7 @@ namespace i15013.elispy {
             }
             return res;
         }
+        public override string toCS() { return ""; }
     }
     
     public class LessThanSexpFunction : BuiltInSexpFunction {
@@ -94,6 +101,7 @@ namespace i15013.elispy {
             }
             return new SexpSymbol("nil");
         }
+        public override string toCS() { return ""; }
     }
     
     public class LessThanOrEqualsSexpFunction : BuiltInSexpFunction {
@@ -109,6 +117,7 @@ namespace i15013.elispy {
             }
             return new SexpSymbol("nil");
         }
+        public override string toCS() { return ""; }
     }
     
     public class EqualsSexpFunction : BuiltInSexpFunction {
@@ -124,6 +133,7 @@ namespace i15013.elispy {
             }
             return new SexpSymbol("nil");
         }
+        public override string toCS() { return ""; }
     }
     
     public class GreaterThanOrEqualsSexpFunction : BuiltInSexpFunction {
@@ -139,6 +149,7 @@ namespace i15013.elispy {
             }
             return new SexpSymbol("nil");
         }
+        public override string toCS() { return ""; }
     }
     
     public class GreaterThanSexpFunction : BuiltInSexpFunction {
@@ -154,6 +165,7 @@ namespace i15013.elispy {
             }
             return new SexpSymbol("nil");
         }
+        public override string toCS() { return ""; }
     }
     
     public class FirstSexpFunction : BuiltInSexpFunction {
@@ -173,6 +185,7 @@ namespace i15013.elispy {
             }
             return sexpList.terms[0].eval(ctx);
         }
+        public override string toCS() { return ""; }
     }
     
     public class RestSexpFunction : BuiltInSexpFunction {
@@ -192,6 +205,7 @@ namespace i15013.elispy {
             return sexpList;
 
         }
+        public override string toCS() { return ""; }
     }
     
     public class ConsSexpFunction : BuiltInSexpFunction {
@@ -210,6 +224,7 @@ namespace i15013.elispy {
             return sexpList;
 
         }
+        public override string toCS() { return ""; }
     }
     
     public class EqualSexpFunction : BuiltInSexpFunction {
@@ -222,6 +237,7 @@ namespace i15013.elispy {
 
             return args[0] == args[1] ? new SexpSymbol("t") : new SexpSymbol("nil");
         }
+        public override string toCS() { return ""; }
     }
     
     public class SetqSexpFunction : BuiltInSexpFunction {
@@ -243,6 +259,7 @@ namespace i15013.elispy {
 
             return args[1].eval(ctx);
         }
+        public override string toCS() { return ""; }
     }
     
     public class NullSexpFunction : BuiltInSexpFunction {
@@ -255,6 +272,7 @@ namespace i15013.elispy {
 
             return args[0].eval(ctx).is_null() ? new SexpSymbol("t") : new SexpSymbol("nil");
         }
+        public override string toCS() { return ""; }
     }
     
     public class IfSexpFunction : BuiltInSexpFunction {
@@ -274,6 +292,7 @@ namespace i15013.elispy {
             }
             return new SexpSymbol("nil");
         }
+        public override string toCS() { return ""; }
     }
     
     public class PrognSexpFunction : BuiltInSexpFunction {
@@ -289,6 +308,7 @@ namespace i15013.elispy {
             
             return res;
         }
+        public override string toCS() { return ""; }
     }
     
     public class PrincSexpFunction : BuiltInSexpFunction {
@@ -303,6 +323,7 @@ namespace i15013.elispy {
             Console.WriteLine(res);
             return res;
         }
+        public override string toCS() { return ""; }
     }
     
     public class WhileSexpFunction : BuiltInSexpFunction {
@@ -320,6 +341,7 @@ namespace i15013.elispy {
             }
             return res;
         }
+        public override string toCS() { return ""; }
     }
     
     public class ShellSexpFunction : BuiltInSexpFunction {
@@ -351,6 +373,7 @@ namespace i15013.elispy {
             return new SexpString(result);
 
         }
+        public override string toCS() { return ""; }
     }
     
     public class NotSexpFunction : BuiltInSexpFunction {
@@ -364,6 +387,7 @@ namespace i15013.elispy {
             if ((bool)args[0].eval(ctx)) return new SexpSymbol("nil");
             return new SexpSymbol("t");
         }
+        public override string toCS() { return ""; }
     }
     
     public class AndSexpFunction : BuiltInSexpFunction {
@@ -380,6 +404,7 @@ namespace i15013.elispy {
             
             return res;
         }
+        public override string toCS() { return ""; }
     }
     
     public class OrSexpFunction : BuiltInSexpFunction {
@@ -395,5 +420,6 @@ namespace i15013.elispy {
             
             return new SexpSymbol("nil");
         }
+        public override string toCS() { return ""; }
     }
 }
