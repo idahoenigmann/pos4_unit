@@ -1,10 +1,9 @@
+using System.IO;
 using i15013.elispy;
+using i15013.lexer;
 
 namespace i15013.transpiler {
     public interface CodeGenerator {
-        void visit(SexpSymbol sexpsym);
-        void visit(SexpString sexpstr);
-        void visit(SexpInteger sexpint);
-        void visit(SexpList sexplst);
+		void generateCode(StreamWriter sw, SexpsParser parser, string source);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using i15013.elispy;
+using i15013.transpiler;
 
 namespace i15013
 {
@@ -37,7 +38,8 @@ namespace i15013
                     sw = new StreamWriter(csFile + ".cs");
                 }
                 sw.AutoFlush = true;
-                sw.WriteLine("qwerty");
+                CSharpGenerator cSharpGenerator = new CSharpGenerator();
+                cSharpGenerator.generateCode(sw, new SexpsParser(new SexpsLexer(), new Context()), File.ReadAllText(fileInformation.filename));
             }
             else {
                 if (fileInformation.filename == "") {
