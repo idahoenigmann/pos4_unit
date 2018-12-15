@@ -13,6 +13,8 @@ namespace i15013.transpiler {
 				tab + "public static void Main() {\n";
             sw.Write(sof);
 
+            addSymbols(sw);
+
             foreach(Sexp sexp in parser.parse(source)) {
                 sw.WriteLine(tab + tab + toCSharp(sexp) + ";");
             }
@@ -23,6 +25,11 @@ namespace i15013.transpiler {
 			
 			sw.Write(eof);
 		}
+
+        public void addSymbols(StreamWriter sw) {
+            sw.WriteLine(tab + tab + "bool t = true;\n" + tab + tab +
+                         "bool nil = false;\n");
+        }
 
         public string toCSharp(Sexp sexp) {
             if (sexp is SexpAtom) {

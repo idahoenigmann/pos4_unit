@@ -430,7 +430,7 @@ namespace i15013.elispy {
 			for (int i=1; i < list.Count; i++) {
 				res += list[i] + "; ";
 			}
-			return res.Substring(0, res.Length - 2) + " }";
+			return res.Substring(0, res.Length - 1) + " }";
 		}
     }
     
