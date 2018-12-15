@@ -158,7 +158,9 @@ namespace i15013.elispy {
             }
             return new SexpSymbol("nil");
         }
-        public override string toCS(List<String> list) { return ""; }
+        public override string toCS(List<String> list) {
+			return list[0].ToString() + " <= " + list[1].ToString();
+		}
     }
     
     public class EqualsSexpFunction : BuiltInSexpFunction {
@@ -174,7 +176,9 @@ namespace i15013.elispy {
             }
             return new SexpSymbol("nil");
         }
-        public override string toCS(List<String> list) { return ""; }
+        public override string toCS(List<String> list) {
+			return list[0].ToString() + " == " + list[1].ToString();
+		}
     }
     
     public class GreaterThanOrEqualsSexpFunction : BuiltInSexpFunction {
@@ -190,7 +194,9 @@ namespace i15013.elispy {
             }
             return new SexpSymbol("nil");
         }
-        public override string toCS(List<String> list) { return ""; }
+        public override string toCS(List<String> list) {
+			return list[0].ToString() + " >= " + list[1].ToString();
+		}
     }
     
     public class GreaterThanSexpFunction : BuiltInSexpFunction {
@@ -206,7 +212,9 @@ namespace i15013.elispy {
             }
             return new SexpSymbol("nil");
         }
-        public override string toCS(List<String> list) { return ""; }
+        public override string toCS(List<String> list) {
+			return list[0].ToString() + " > " + list[1].ToString();
+		}
     }
     
     public class FirstSexpFunction : BuiltInSexpFunction {
@@ -226,7 +234,9 @@ namespace i15013.elispy {
             }
             return sexpList.terms[0].eval(ctx);
         }
-        public override string toCS(List<String> list) { return ""; }
+        public override string toCS(List<String> list) {
+			return list[0] + "[0]";
+		}
     }
     
     public class RestSexpFunction : BuiltInSexpFunction {

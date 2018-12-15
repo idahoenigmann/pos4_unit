@@ -41,13 +41,20 @@ namespace i15013.transpiler {
                 }
                 else {
                     List<Sexp> listSexps = ((SexpList) sexp).terms;
-                    List<string> listString = new List<String>();
-                    foreach (Sexp s in listSexps.GetRange(1, listSexps.Count - 1)) {
-                        listString.Add(this.toCSharp(s));
+                    if (listSexps.Count > 0) {
+                        List<string> listString = new List<String>();
+
+                        foreach (Sexp s in listSexps.GetRange(1,
+                            listSexps.Count - 1)) {
+                            listString.Add(this.toCSharp(s));
+                        }
+
+                        return ctx.functab[((SexpAtom) (listSexps[0])).value]
+                            .toCS(listString);
                     }
-                    
-                    return ctx.functab[((SexpAtom)(listSexps[0])).value].toCS(
-                            listString);
+                    else {
+                        return "new List<dynamic>()";
+                    }
                 }
             }
 
