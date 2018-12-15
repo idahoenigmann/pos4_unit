@@ -338,7 +338,9 @@ namespace i15013.elispy {
 
             return args[0].eval(ctx).is_null() ? new SexpSymbol("t") : new SexpSymbol("nil");
         }
-        public override string toCS(List<String> list) { return ""; }
+        public override string toCS(List<String> list) {
+			return list[0] + " is null";
+		}
     }
     
     public class IfSexpFunction : BuiltInSexpFunction {
