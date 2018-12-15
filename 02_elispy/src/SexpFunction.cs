@@ -64,7 +64,18 @@ namespace i15013.elispy {
             }
             return res;
         }
-        public override string toCS(List<String> list) { return ""; }
+        public override string toCS(List<String> list) {
+			if (list.Count == 0) {
+				return "0";
+			} else if (list.Count == 1) {
+				return "0 - " + list[0];
+			}
+			string res = "";
+			foreach (String s in list) {
+				res += s + " - ";
+			}
+            return res.Substring(0, res.Length - 3);
+		}
     }
     
     public class MulSexpFunction : BuiltInSexpFunction {
