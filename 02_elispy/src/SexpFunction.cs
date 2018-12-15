@@ -360,7 +360,14 @@ namespace i15013.elispy {
             }
             return new SexpSymbol("nil");
         }
-        public override string toCS(List<String> list) { return ""; }
+        public override string toCS(List<String> list) {
+			if (list.Count == 2) {
+				return "if (" + list[0] + ") { " + list[1] + " }";
+			} else if (list.Count == 3) {
+				return "if (" + list[0] + ") { " + list[1] + " } else { " + list[2] + " }";
+			}
+			return "";
+		}
     }
     
     public class PrognSexpFunction : BuiltInSexpFunction {
