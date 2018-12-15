@@ -425,7 +425,13 @@ namespace i15013.elispy {
             }
             return res;
         }
-        public override string toCS(List<String> list) { return ""; }
+        public override string toCS(List<String> list) {
+			string res = "while (" + list[0] + ") { ";
+			for (int i=1; i < list.Count; i++) {
+				res += list[i] + "; ";
+			}
+			return res.Substring(0, res.Length - 2) + " }";
+		}
     }
     
     public class ShellSexpFunction : BuiltInSexpFunction {
