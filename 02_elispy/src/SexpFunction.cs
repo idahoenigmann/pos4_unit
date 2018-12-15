@@ -234,7 +234,7 @@ namespace i15013.elispy {
             }
             return sexpList.terms[0].eval(ctx);
         }
-        public override string toCS(List<String> list) {
+        public override string toCS(List<String> list) {	//TODO: (first ()) => nil
 			return list[0] + "[0]";
 		}
     }
@@ -256,7 +256,9 @@ namespace i15013.elispy {
             return sexpList;
 
         }
-        public override string toCS(List<String> list) { return ""; }
+        public override string toCS(List<String> list) {
+			return "";	//TODO: maybe impossible
+		}
     }
     
     public class ConsSexpFunction : BuiltInSexpFunction {
@@ -275,7 +277,9 @@ namespace i15013.elispy {
             return sexpList;
 
         }
-        public override string toCS(List<String> list) { return ""; }
+        public override string toCS(List<String> list) {
+			return list[1] + ".Insert(0, " + list[0] + ")";
+		}
     }
     
     public class EqualSexpFunction : BuiltInSexpFunction {
