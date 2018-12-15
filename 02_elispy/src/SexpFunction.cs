@@ -463,7 +463,7 @@ namespace i15013.elispy {
             return new SexpString(result);
 
         }
-        public override string toCS(List<String> list) { return ""; }
+        public override string toCS(List<String> list) { return ""; }	//TODO: implement Shell toCS
     }
     
     public class NotSexpFunction : BuiltInSexpFunction {
@@ -477,7 +477,9 @@ namespace i15013.elispy {
             if ((bool)args[0].eval(ctx)) return new SexpSymbol("nil");
             return new SexpSymbol("t");
         }
-        public override string toCS(List<String> list) { return ""; }
+        public override string toCS(List<String> list) {
+			return "!((bool)" + list[0] + ")";		//TODO: converstion of string and int
+		}
     }
     
     public class AndSexpFunction : BuiltInSexpFunction {
@@ -494,7 +496,19 @@ namespace i15013.elispy {
             
             return res;
         }
-        public override string toCS(List<String> list) { return ""; }
+        public override string toCS(List<String> list) {
+			if (list.Count == 0) {
+				return "true";
+			} else if (list.Count == 1) {
+				return "(bool)" + list[0];
+			}
+
+			string res = "(bool)" + list[0];
+			for (int i=1; i < list.Count; i++) {
+				res += " && " + "(bool)" + list[i]; //TODO: not defined symbols to false
+			}
+			return res; //TODO: converstion of string and int
+		}
     }
     
     public class OrSexpFunction : BuiltInSexpFunction {
