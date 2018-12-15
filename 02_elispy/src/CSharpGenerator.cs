@@ -64,6 +64,7 @@ namespace i15013.transpiler {
         public StringBuilder code { get; private set; }
 		private string tab = "    ";
         private Context ctx = new Context();
+        static public List<string> vars = new List<String>();
     }
 
     

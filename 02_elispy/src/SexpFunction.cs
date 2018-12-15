@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 
+using i15013.transpiler;
+
 namespace i15013.elispy {
     public abstract class SexpFunction : SexpSymbol {
         //protected string name;
@@ -292,7 +294,9 @@ namespace i15013.elispy {
 
             return args[0] == args[1] ? new SexpSymbol("t") : new SexpSymbol("nil");
         }
-        public override string toCS(List<String> list) { return ""; }
+        public override string toCS(List<String> list) {
+			return list[0] + " == " + list[1];
+		}
     }
     
     public class SetqSexpFunction : BuiltInSexpFunction {
@@ -314,7 +318,14 @@ namespace i15013.elispy {
 
             return args[1].eval(ctx);
         }
-        public override string toCS(List<String> list) { return ""; }
+        public override string toCS(List<String> list) {
+			string res = "";
+			if (!CSharpGenerator.vars.Contains(list[0])) {
+				res += "dynamic ";
+				CSharpGenerator.vars.Add(list[0]);
+			}
+			return res + list[0] + " = " + list[1];
+		}
     }
     
     public class NullSexpFunction : BuiltInSexpFunction {
