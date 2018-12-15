@@ -26,6 +26,9 @@ namespace i15013.transpiler {
 
         public string toCSharp(Sexp sexp) {
             if (sexp is SexpAtom) {
+                if (sexp.is_quoted) {
+                    return ((SexpAtom) sexp).value;
+                }
                 return sexp.ToString();
             }
             else if (sexp is SexpList) {

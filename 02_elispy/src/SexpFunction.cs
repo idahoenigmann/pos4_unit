@@ -383,7 +383,14 @@ namespace i15013.elispy {
             
             return res;
         }
-        public override string toCS(List<String> list) { return ""; }
+        public override string toCS(List<String> list) {
+			string res = "";
+			foreach (string s in list) {
+				res += s + ";\n";
+			}
+			if (res.Length == 0) return "";
+			return res.Substring(0, res.Length - 2);
+		}
     }
     
     public class PrincSexpFunction : BuiltInSexpFunction {
@@ -398,7 +405,9 @@ namespace i15013.elispy {
             Console.WriteLine(res);
             return res;
         }
-        public override string toCS(List<String> list) { return ""; }
+        public override string toCS(List<String> list) {
+			return "Console.WriteLine(" + list[0] + ")";
+		}
     }
     
     public class WhileSexpFunction : BuiltInSexpFunction {
