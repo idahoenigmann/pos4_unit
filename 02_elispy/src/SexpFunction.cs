@@ -524,6 +524,18 @@ namespace i15013.elispy {
             
             return new SexpSymbol("nil");
         }
-        public override string toCS(List<String> list) { return ""; }
+        public override string toCS(List<String> list) {
+			if (list.Count == 0) {
+				return "false";
+			} else if (list.Count == 1) {
+				return "(bool)" + list[0];
+			}
+
+			string res = "(bool)" + list[0];	//TODO: converstion of string and int
+			for (int i=1; i < list.Count; i++) {
+				res += " || " + "(bool)" + list[i]; //TODO: not defined symbols to false
+			}
+			return res; //TODO: return element instead of bool
+		}
     }
 }
