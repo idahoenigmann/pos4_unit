@@ -31,7 +31,7 @@ namespace i15013.transpiler {
                          "bool nil = false;\n");
         }
 
-        public string toCSharp(Sexp sexp) {
+        public static string toCSharp(Sexp sexp) {
             if (sexp is SexpAtom) {
                 if (sexp.is_quoted) {
                     return ((SexpAtom) sexp).value;
@@ -52,15 +52,8 @@ namespace i15013.transpiler {
                 else {
                     List<Sexp> listSexps = ((SexpList) sexp).terms;
                     if (listSexps.Count > 0) {
-                        List<string> listString = new List<String>();
-
-                        foreach (Sexp s in listSexps.GetRange(1,
-                            listSexps.Count - 1)) {
-                            listString.Add(this.toCSharp(s));
-                        }
-
                         return ctx.functab[((SexpAtom) (listSexps[0])).value]
-                            .toCS(listString);
+                            .toCS(listSexps.GetRange(1, listSexps.Count-1));
                     }
                     else {
                         return "new List<dynamic>()";
@@ -73,7 +66,7 @@ namespace i15013.transpiler {
 
         public StringBuilder code { get; private set; }
 		private string tab = "    ";
-        private Context ctx = new Context();
+        private static Context ctx = new Context();
         static public List<string> vars = new List<String>();
     }
 

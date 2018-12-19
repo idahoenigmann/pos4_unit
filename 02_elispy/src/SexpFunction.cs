@@ -22,7 +22,7 @@ namespace i15013.elispy {
         protected BuiltInSexpFunction(string name) : base(name) {
         }
 
-        public abstract string toCS(List<String> list);
+        public abstract string toCS(List<Sexp> list);
     }
     
     public class AddSexpFunction : BuiltInSexpFunction {
@@ -36,13 +36,13 @@ namespace i15013.elispy {
             return res;
         }
 
-        public override string toCS(List<String> list) {
+        public override string toCS(List<Sexp> list) {
 			if (list.Count == 0) {
 				return "0";
 			}
 			string res = "";
-			foreach (String s in list) {
-				res += s + " + ";
+			foreach (Sexp s in list) {
+				res += CSharpGenerator.toCSharp(s) + " + ";
 			}
             return res.Substring(0, res.Length - 3);
         }
@@ -66,15 +66,15 @@ namespace i15013.elispy {
             }
             return res;
         }
-        public override string toCS(List<String> list) {
+        public override string toCS(List<Sexp> list) {
 			if (list.Count == 0) {
 				return "0";
 			} else if (list.Count == 1) {
-				return "0 - " + list[0];
+				return "0 - " + CSharpGenerator.toCSharp(list[0]);
 			}
 			string res = "";
-			foreach (String s in list) {
-				res += s + " - ";
+			foreach (Sexp s in list) {
+				res += CSharpGenerator.toCSharp(s) + " - ";
 			}
             return res.Substring(0, res.Length - 3);
 		}
@@ -90,13 +90,13 @@ namespace i15013.elispy {
             }
             return res;
         }
-        public override string toCS(List<String> list) {
+        public override string toCS(List<Sexp> list) {
 			if (list.Count == 0) {
 				return "1";
 			}
 			string res = "";
-			foreach (String s in list) {
-				res += s + " * ";
+			foreach (Sexp s in list) {
+				res += CSharpGenerator.toCSharp(s) + " * ";
 			}
             return res.Substring(0, res.Length - 3);
 		}
@@ -116,13 +116,13 @@ namespace i15013.elispy {
             }
             return res;
         }
-        public override string toCS(List<String> list) {
+        public override string toCS(List<Sexp> list) {
 			if (list.Count <= 1) {
 				return "0";
 			}
 			string res = "";
-			foreach (String s in list) {
-				res += s + " / ";
+			foreach (Sexp s in list) {
+				res += CSharpGenerator.toCSharp(s) + " / ";
 			}
             return res.Substring(0, res.Length - 3);
 		}
@@ -142,8 +142,8 @@ namespace i15013.elispy {
             return new SexpSymbol("nil");
         }
 
-        public override string toCS(List<String> list) {
-			return list[0].ToString() + " < " + list[1].ToString();
+        public override string toCS(List<Sexp> list) {
+			return CSharpGenerator.toCSharp(list[0]) + " < " + CSharpGenerator.toCSharp(list[1]);
 		}
     }
     
@@ -160,8 +160,8 @@ namespace i15013.elispy {
             }
             return new SexpSymbol("nil");
         }
-        public override string toCS(List<String> list) {
-			return list[0].ToString() + " <= " + list[1].ToString();
+        public override string toCS(List<Sexp> list) {
+			return CSharpGenerator.toCSharp(list[0]) + " <= " + CSharpGenerator.toCSharp(list[1]);
 		}
     }
     
@@ -178,8 +178,8 @@ namespace i15013.elispy {
             }
             return new SexpSymbol("nil");
         }
-        public override string toCS(List<String> list) {
-			return list[0].ToString() + " == " + list[1].ToString();
+        public override string toCS(List<Sexp> list) {
+			return CSharpGenerator.toCSharp(list[0]) + " == " + CSharpGenerator.toCSharp(list[1]);
 		}
     }
     
@@ -196,8 +196,8 @@ namespace i15013.elispy {
             }
             return new SexpSymbol("nil");
         }
-        public override string toCS(List<String> list) {
-			return list[0].ToString() + " >= " + list[1].ToString();
+        public override string toCS(List<Sexp> list) {
+			return CSharpGenerator.toCSharp(list[0]) + " >= " + CSharpGenerator.toCSharp(list[1]);
 		}
     }
     
@@ -214,8 +214,8 @@ namespace i15013.elispy {
             }
             return new SexpSymbol("nil");
         }
-        public override string toCS(List<String> list) {
-			return list[0].ToString() + " > " + list[1].ToString();
+        public override string toCS(List<Sexp> list) {
+			return CSharpGenerator.toCSharp(list[0]) + " > " + CSharpGenerator.toCSharp(list[1]);
 		}
     }
     
@@ -236,8 +236,8 @@ namespace i15013.elispy {
             }
             return sexpList.terms[0].eval(ctx);
         }
-        public override string toCS(List<String> list) {	//TODO: (first ()) => nil
-			return list[0] + "[0]";
+        public override string toCS(List<Sexp> list) {	//TODO: (first ()) => nil
+			return CSharpGenerator.toCSharp(list[0]) + "[0]";
 		}
     }
     
@@ -258,8 +258,8 @@ namespace i15013.elispy {
             return sexpList;
 
         }
-        public override string toCS(List<String> list) {
-			return "";	//TODO: maybe impossible
+        public override string toCS(List<Sexp> list) {
+			return CSharpGenerator.toCSharp(list[0]) + ".getRange(1, " + CSharpGenerator.toCSharp(list[0]) + ".Count - 1)";
 		}
     }
     
@@ -279,8 +279,8 @@ namespace i15013.elispy {
             return sexpList;
 
         }
-        public override string toCS(List<String> list) {
-			return list[1] + ".Insert(0, " + list[0] + ")";
+        public override string toCS(List<Sexp> list) {
+			return CSharpGenerator.toCSharp(list[1]) + ".Insert(0, " + CSharpGenerator.toCSharp(list[0]) + ")";
 		}
     }
     
@@ -294,8 +294,8 @@ namespace i15013.elispy {
 
             return args[0] == args[1] ? new SexpSymbol("t") : new SexpSymbol("nil");
         }
-        public override string toCS(List<String> list) {
-			return list[0] + " == " + list[1];
+        public override string toCS(List<Sexp> list) {
+			return CSharpGenerator.toCSharp(list[0]) + " == " + CSharpGenerator.toCSharp(list[1]);
 		}
     }
     
@@ -318,13 +318,13 @@ namespace i15013.elispy {
 
             return args[1].eval(ctx);
         }
-        public override string toCS(List<String> list) {
+        public override string toCS(List<Sexp> list) {
 			string res = "";
-			if (!CSharpGenerator.vars.Contains(list[0])) {
+			if (!CSharpGenerator.vars.Contains(CSharpGenerator.toCSharp(list[0]))) {
 				res += "dynamic ";
-				CSharpGenerator.vars.Add(list[0]);
+				CSharpGenerator.vars.Add(CSharpGenerator.toCSharp(list[0]));
 			}
-			return res + list[0] + " = " + list[1];
+			return res + CSharpGenerator.toCSharp(list[0]) + " = " + CSharpGenerator.toCSharp(list[1]);
 		}
     }
     
@@ -338,8 +338,8 @@ namespace i15013.elispy {
 
             return args[0].eval(ctx).is_null() ? new SexpSymbol("t") : new SexpSymbol("nil");
         }
-        public override string toCS(List<String> list) {
-			return list[0] + " is null";
+        public override string toCS(List<Sexp> list) {
+			return CSharpGenerator.toCSharp(list[0]) + " is null";
 		}
     }
     
@@ -360,11 +360,11 @@ namespace i15013.elispy {
             }
             return new SexpSymbol("nil");
         }
-        public override string toCS(List<String> list) {
+        public override string toCS(List<Sexp> list) {
 			if (list.Count == 2) {
-				return "if (" + list[0] + ") { " + list[1] + " }";
+				return "if (" + CSharpGenerator.toCSharp(list[0]) + ") { " + CSharpGenerator.toCSharp(list[1]) + " }";
 			} else if (list.Count == 3) {
-				return "if (" + list[0] + ") { " + list[1] + " } else { " + list[2] + " }";
+				return "if (" + CSharpGenerator.toCSharp(list[0]) + ") { " + CSharpGenerator.toCSharp(list[1]) + " } else { " + CSharpGenerator.toCSharp(list[2]) + " }";
 			}
 			return "";
 		}
@@ -383,10 +383,10 @@ namespace i15013.elispy {
             
             return res;
         }
-        public override string toCS(List<String> list) {
+        public override string toCS(List<Sexp> list) {
 			string res = "";
-			foreach (string s in list) {
-				res += s + ";\n";
+			foreach (Sexp s in list) {
+				res += CSharpGenerator.toCSharp(s) + ";\n";
 			}
 			if (res.Length == 0) return "";
 			return res.Substring(0, res.Length - 2);
@@ -405,8 +405,8 @@ namespace i15013.elispy {
             Console.WriteLine(res);
             return res;
         }
-        public override string toCS(List<String> list) {
-			return "Console.WriteLine(" + list[0] + ")";
+        public override string toCS(List<Sexp> list) {
+			return "Console.WriteLine(" + CSharpGenerator.toCSharp(list[0]) + ")";
 		}
     }
     
@@ -425,10 +425,10 @@ namespace i15013.elispy {
             }
             return res;
         }
-        public override string toCS(List<String> list) {
-			string res = "while (" + list[0] + ") { ";
+        public override string toCS(List<Sexp> list) {
+			string res = "while (" + CSharpGenerator.toCSharp(list[0]) + ") { ";
 			for (int i=1; i < list.Count; i++) {
-				res += list[i] + "; ";
+				res += CSharpGenerator.toCSharp(list[i]) + "; ";
 			}
 			return res.Substring(0, res.Length - 1) + " }";
 		}
@@ -463,7 +463,7 @@ namespace i15013.elispy {
             return new SexpString(result);
 
         }
-        public override string toCS(List<String> list) { return ""; }	//TODO: implement Shell toCS
+        public override string toCS(List<Sexp> list) { return ""; }	//TODO: implement Shell toCS
     }
     
     public class NotSexpFunction : BuiltInSexpFunction {
@@ -477,8 +477,8 @@ namespace i15013.elispy {
             if ((bool)args[0].eval(ctx)) return new SexpSymbol("nil");
             return new SexpSymbol("t");
         }
-        public override string toCS(List<String> list) {
-			return "!((bool)" + list[0] + ")";		//TODO: converstion of string and int
+        public override string toCS(List<Sexp> list) {
+			return "!((bool)" + CSharpGenerator.toCSharp(list[0]) + ")";		//TODO: converstion of string and int
 		}
     }
     
@@ -496,16 +496,16 @@ namespace i15013.elispy {
             
             return res;
         }
-        public override string toCS(List<String> list) {
+        public override string toCS(List<Sexp> list) {
 			if (list.Count == 0) {
 				return "true";
 			} else if (list.Count == 1) {
-				return "(bool)" + list[0];
+				return "(bool)" + CSharpGenerator.toCSharp(list[0]);
 			}
 
-			string res = "(bool)" + list[0];
+			string res = "(bool)" + CSharpGenerator.toCSharp(list[0]);
 			for (int i=1; i < list.Count; i++) {
-				res += " && " + "(bool)" + list[i]; //TODO: not defined symbols to false
+				res += " && " + "(bool)" + CSharpGenerator.toCSharp(list[i]); //TODO: not defined symbols to false
 			}
 			return res; //TODO: converstion of string and int
 		}
@@ -524,16 +524,16 @@ namespace i15013.elispy {
             
             return new SexpSymbol("nil");
         }
-        public override string toCS(List<String> list) {
+        public override string toCS(List<Sexp> list) {
 			if (list.Count == 0) {
 				return "false";
 			} else if (list.Count == 1) {
-				return "(bool)" + list[0];
+				return "(bool)" + CSharpGenerator.toCSharp(list[0]);
 			}
 
-			string res = "(bool)" + list[0];	//TODO: converstion of string and int
+			string res = "(bool)" + CSharpGenerator.toCSharp(list[0]);	//TODO: converstion of string and int
 			for (int i=1; i < list.Count; i++) {
-				res += " || " + "(bool)" + list[i]; //TODO: not defined symbols to false
+				res += " || " + "(bool)" + CSharpGenerator.toCSharp(list[i]); //TODO: not defined symbols to false
 			}
 			return res; //TODO: return element instead of bool
 		}
