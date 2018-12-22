@@ -236,7 +236,10 @@ namespace i15013.elispy {
             }
             return sexpList.terms[0].eval(ctx);
         }
-        public override string toCS(List<Sexp> list) {	//TODO: (first ()) => nil
+        public override string toCS(List<Sexp> list) {
+			if (((SexpList)list[0]).terms.Count == 0) {
+				return CSharpGenerator.toCSharp(new SexpSymbol("nil"));
+			}
 			return CSharpGenerator.toCSharp(list[0]) + "[0]";
 		}
     }
@@ -361,12 +364,11 @@ namespace i15013.elispy {
             return new SexpSymbol("nil");
         }
         public override string toCS(List<Sexp> list) {
-			if (list.Count == 2) {
-				return "if (" + CSharpGenerator.toCSharp(list[0]) + ") { " + CSharpGenerator.toCSharp(list[1]) + " }";
-			} else if (list.Count == 3) {
-				return "if (" + CSharpGenerator.toCSharp(list[0]) + ") { " + CSharpGenerator.toCSharp(list[1]) + " } else { " + CSharpGenerator.toCSharp(list[2]) + " }";
+			string res = "if (" + CSharpGenerator.toCSharp(list[0]) + ") { " + CSharpGenerator.toCSharp(list[1]) + " }";
+			if (list.Count == 3) {
+				res += " else { " + CSharpGenerator.toCSharp(list[2]) + " }";
 			}
-			return "";
+			return res;
 		}
     }
     
@@ -478,8 +480,14 @@ namespace i15013.elispy {
             return new SexpSymbol("t");
         }
         public override string toCS(List<Sexp> list) {
-			return "!((bool)" + CSharpGenerator.toCSharp(list[0]) + ")";		//TODO: converstion of string and int
-		}
+			if (list[0] is SexpInteger) {
+				return "(" + CSharpGenerator.toCSharp(list[0]) + " == 0)";
+			}
+			if (list[0] is SexpString) {
+				return "(" + CSharpGenerator.toCSharp(list[0]) + ".IsNullOrEmpty())";
+			}
+			return "!((bool)" + CSharpGenerator.toCSharp(list[0]) + ")";
+		}	
     }
     
     public class AndSexpFunction : BuiltInSexpFunction {
@@ -499,15 +507,32 @@ namespace i15013.elispy {
         public override string toCS(List<Sexp> list) {
 			if (list.Count == 0) {
 				return "true";
-			} else if (list.Count == 1) {
-				return "(bool)" + CSharpGenerator.toCSharp(list[0]);
 			}
 
-			string res = "(bool)" + CSharpGenerator.toCSharp(list[0]);
-			for (int i=1; i < list.Count; i++) {
-				res += " && " + "(bool)" + CSharpGenerator.toCSharp(list[i]); //TODO: not defined symbols to false
+			string res = "(";
+			if (list[0] is SexpInteger) {
+				res += CSharpGenerator.toCSharp(list[0]) + " != 0)";
+			} else if (list[0] is SexpString) {
+				res += "!" + CSharpGenerator.toCSharp(list[0]) + ".IsNullOrEmpty())";
+			} else {
+				res += "(bool)" + CSharpGenerator.toCSharp(list[0]) + ")";
 			}
-			return res; //TODO: converstion of string and int
+
+			if (list.Count == 1) {
+				return res;
+			}
+
+			for (int i=1; i < list.Count; i++) {
+				res += " && ";
+				if (list[i] is SexpInteger) {
+					res += "(" + CSharpGenerator.toCSharp(list[i]) + " != 0)";
+				} else if (list[i] is SexpString) {
+					res += "(!" + CSharpGenerator.toCSharp(list[i]) + ".IsNullOrEmpty())";
+				} else {
+					res += "((bool)" + CSharpGenerator.toCSharp(list[i]) + ")";
+				}
+			}
+			return res;
 		}
     }
     
@@ -527,15 +552,32 @@ namespace i15013.elispy {
         public override string toCS(List<Sexp> list) {
 			if (list.Count == 0) {
 				return "false";
-			} else if (list.Count == 1) {
-				return "(bool)" + CSharpGenerator.toCSharp(list[0]);
 			}
 
-			string res = "(bool)" + CSharpGenerator.toCSharp(list[0]);	//TODO: converstion of string and int
-			for (int i=1; i < list.Count; i++) {
-				res += " || " + "(bool)" + CSharpGenerator.toCSharp(list[i]); //TODO: not defined symbols to false
+			string res = "(";
+			if (list[0] is SexpInteger) {
+				res += CSharpGenerator.toCSharp(list[0]) + " != 0)";
+			} else if (list[0] is SexpString) {
+				res += "!" + CSharpGenerator.toCSharp(list[0]) + ".IsNullOrEmpty())";
+			} else {
+				res += "(bool)" + CSharpGenerator.toCSharp(list[0]) + ")";
 			}
-			return res; //TODO: return element instead of bool
+
+			if (list.Count == 1) {
+				return res;
+			}
+
+			for (int i=1; i < list.Count; i++) {
+				res += " || ";
+				if (list[i] is SexpInteger) {
+					res += "(" + CSharpGenerator.toCSharp(list[i]) + " != 0)";
+				} else if (list[i] is SexpString) {
+					res += "(!" + CSharpGenerator.toCSharp(list[i]) + ".IsNullOrEmpty())";
+				} else {
+					res += "((bool)" + CSharpGenerator.toCSharp(list[i]) + ")";
+				}
+			}
+			return res;
 		}
     }
 }
