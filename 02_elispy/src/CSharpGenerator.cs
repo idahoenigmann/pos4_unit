@@ -7,9 +7,34 @@ using i15013.elispy;
 namespace i15013.transpiler {
     public class CSharpGenerator : CodeGenerator {
         public void generateCode(StreamWriter sw, SexpsParser parser, string source) {
-			string sof = "using System;\n" +
-				"using System.Collections.Generic;\n\n" +
-				"class Program {\n" +
+            string sof = "using System;\n" +
+                         "using System.Diagnostics;\n" +
+                         "using System.Collections.Generic;\n\n" +
+                         "class Program {\n" +
+                         tab +
+                         "public static string shell_exec(string cmd) {\n" +
+                         tab + tab +
+                         "var escaped_args = cmd.Replace(\"\\\"\", \"\\\\\\\"\");\n" +
+                         tab + tab + "var process = new Process() {\n" +
+                         tab + tab + tab +
+                         "StartInfo = new ProcessStartInfo {\n" +
+                         tab + tab + tab + tab +
+                         "FileName = \"/bin/bash\",\n" +
+                         tab + tab + tab + tab +
+                         "Arguments = $\"-c \\\"{escaped_args}\\\"\",\n" +
+                         tab + tab + tab + tab +
+                         "RedirectStandardOutput = true,\n" +
+                         tab + tab + tab + tab + "UseShellExecute = false,\n" +
+                         tab + tab + tab + tab + "CreateNoWindow = true\n" +
+                         tab + tab + tab + "}\n" +
+                         tab + tab + "};\n\n" +
+                         tab + tab + "process.Start();\n" +
+                         tab + tab + "string result = process.StandardOutput.ReadToEnd();\n" +
+                         tab + tab + "process.WaitForExit();\n\n" +
+                         tab + tab + "if (process.ExitCode != 0)\n" +
+                         tab + tab + tab + "throw new InvalidOperationException(\"Process exited.\");\n" +
+            tab + tab + "return result;\n" +
+                tab + "}\n\n" +
 				tab + "public static void Main() {\n";
             sw.Write(sof);
 

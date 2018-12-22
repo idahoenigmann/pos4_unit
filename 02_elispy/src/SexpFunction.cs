@@ -465,7 +465,9 @@ namespace i15013.elispy {
             return new SexpString(result);
 
         }
-        public override string toCS(List<Sexp> list) { return ""; }	//TODO: implement Shell toCS
+        public override string toCS(List<Sexp> list) {
+			return "shell_exec(" + list[0] + ")";
+		}
     }
     
     public class NotSexpFunction : BuiltInSexpFunction {
