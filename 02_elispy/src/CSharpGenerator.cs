@@ -7,22 +7,32 @@ using i15013.elispy;
 namespace i15013.transpiler {
     public class CSharpGenerator : CodeGenerator {
         public void generateCode(StreamWriter sw, SexpsParser parser, string source) {
-			string sof;
-        	if (File.Exists("../sof.txt")) {    
-				sof = File.ReadAllText("../sof.txt");
-			} else if (File.Exists("sof.txt")) {
-				sof = File.ReadAllText("sof.txt");
+        	if (File.Exists("sof.txt")) {
+				sw.Write(File.ReadAllText("sof.txt"));
 			} else {
 				throw new TranspilerException("sof.txt was deleted! code can not" +
  				" be generated without this file.");
 			}
-            sw.Write(sof);
 
             foreach(Sexp sexp in parser.parse(source)) {
                 sw.WriteLine(tab + tab + toCSharp(sexp) + ";");
             }
-
-			sw.Write(tab + "}\n}\n");
+			
+			if (uses_shell) {
+				if (File.Exists("eof_with_shell.txt")) {
+					sw.Write(File.ReadAllText("eof_with_shell.txt"));
+				} else {
+					throw new TranspilerException("eof_with_shell.txt was deleted! code can not" +
+ 					" be generated without this file.");
+				}
+			} else {
+				if (File.Exists("eof.txt")) {
+					sw.Write(File.ReadAllText("eof.txt"));
+				} else {
+					throw new TranspilerException("eof.txt was deleted! code can not" +
+ 					" be generated without this file.");
+				}
+			}
 		}
 
         public static string toCSharp(Sexp sexp) {
@@ -62,6 +72,7 @@ namespace i15013.transpiler {
 		private string tab = "    ";
         private static Context ctx = new Context();
         static public List<string> vars = new List<String>();
+		static public bool uses_shell = false;
     }
 
 	

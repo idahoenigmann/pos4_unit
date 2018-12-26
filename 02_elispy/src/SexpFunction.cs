@@ -466,7 +466,8 @@ namespace i15013.elispy {
 
         }
         public override string toCS(List<Sexp> list) {
-			return "shell_exec(" + list[0] + ")";
+            CSharpGenerator.uses_shell = true;
+			return "shell_exec(\"" + list[0] + "\")";
 		}
     }
     

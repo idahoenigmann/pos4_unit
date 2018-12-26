@@ -1,0 +1,23 @@
+    }
+
+    public static string shell_exec(string cmd) {
+        var escaped_args = cmd.Replace("\"", "\\\"");
+        var process = new Process() {
+            StartInfo = new ProcessStartInfo {
+                FileName = "/bin/bash",
+                Arguments = $"-c \"{escaped_args}\"",
+                RedirectStandardOutput = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            }
+        };
+
+        process.Start();
+        string result = process.StandardOutput.ReadToEnd();
+        process.WaitForExit();
+
+        if (process.ExitCode != 0)
+            throw new InvalidOperationException("Process exited.");
+        return result;
+    }
+}
