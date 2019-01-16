@@ -1,12 +1,12 @@
 ﻿using System;
 
 namespace i15013.logics.propositional {
-    public class Operators {
-        public bool conj(bool a, bool b);
-        public bool disj(bool a, bool b);
-        public bool neg(bool a, bool b);
-        public bool anti(bool a, bool b);
-        public bool imp(bool a, bool b);
-        public bool equiv(bool a, bool b);
+    public static class Operators {
+        public static bool conj(bool a, bool b) => a & b;
+        public static bool disj(bool a, bool b) => a | b;
+        public static bool neg(bool a) => !a;
+        public static bool anti(bool a, bool b) => a ^ b;
+        public static bool imp(bool a, bool b) => !a | b;
+        public static bool equiv(bool a, bool b) => a == b;
     }
 }
