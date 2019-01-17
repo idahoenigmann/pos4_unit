@@ -3,61 +3,57 @@ using System;
 namespace i15013.logics.lukasiewicz3 {
     public static class Operators {
         public static bool? conj(bool? a, bool? b) {
-            try {
-                if (!a | !b) {
-                    return false;
-                }
-            }
-            catch {
-                return null;
-            }
-            return true;
+            if (a is null & b is null) {
+				return null;
+			}
+			if (a is null) {
+				return b.Value ? null : b;
+			}
+			if (b is null) {
+				return a.Value ? null : a;
+			}
+			return a.Value & b.Value;
         }
 
         public static bool? disj(bool? a, bool? b) {
-            try {
-                if (a) {
-                    return true;
-                }
-            }
-            catch {
-                if (b) return true;
-                return null;
-            }
-            
-            try {
-                if (b) {
-                    return true;
-                }
-            }
-            catch {
-                if (a) return true;
-                return null;
-            }
-            
-            return false;
+            if (a is null & b is null) {
+				return null;
+			}
+			if (a is null) {
+				return b.Value ? b : null;
+			}
+			if (b is null) {
+				return a.Value ? a : null;
+			}
+			return a.Value | b.Value;
         }
 
         public static bool? neg(bool? a) {
-            try {
-                if a return false;
-                return true;
-            }
-            catch {
-                return null;
-            }
+			if (a is null) {
+				return null;
+			}
+			return !a.Value;
         }
 
         public static bool? anti(bool? a, bool? b) {
-            return (Math.min(Math.Max(a, b), 1 - (Math.min(a, b))));
+            return false;
         }
 
         public static bool? imp(bool? a, bool? b) {
-            return Math.min(1, 1 + b - a);
+            return false;
         }
 
         public static bool? equiv(bool? a, bool? b) {
-            return 1 - Math.Abs(a - b);
+            if (a is null & b is null) {
+				return true;
+			}
+			if (a is null) {
+				return false;
+			}
+			if (b is null) {
+				return false;
+			}
+			return a.Value == b.Value;
         }
     }
 }
