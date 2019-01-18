@@ -1,17 +1,16 @@
 ﻿using System;
-using i15013.logics.propositional;
-
-namespace i15013.logics_printer
-{
+using i15013.logics.lukasiewicz3;
+ 
+namespace i15013.logics_printer.lukasiewicz3 {
     static public class Printer {
-        static public void print_table(Func<bool, bool, bool> op) {
+        static public void print_table(Func<bool?, bool?, bool?> op) {
             Console.WriteLine($" 0 | 0 |   {System.Convert.ToInt32(op(false, false))}");
             Console.WriteLine($" 0 | 1 |   {System.Convert.ToInt32(op(false, true))}");
             Console.WriteLine($" 1 | 0 |   {System.Convert.ToInt32(op(true, false))}");
             Console.WriteLine($" 1 | 1 |   {System.Convert.ToInt32(op(true, true))}");
         }
         
-        static public void print_table(Func<bool, bool> op) {
+        static public void print_table(Func<bool?, bool?> op) {
             Console.WriteLine($" 0 |   {System.Convert.ToInt32(op(false))}");
             Console.WriteLine($" 1 |   {System.Convert.ToInt32(op(true))}");
         }
@@ -27,14 +26,13 @@ namespace i15013.logics_printer
         }
     }
     
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            Console.WriteLine("Propositional Logic");
+    class Program {
+        static public void print_lukasiewicz3_logic() {
+            Console.WriteLine("Lukasiewicz L3 Logic");
             Console.WriteLine("===================\n");
 
-            Printer.print_head("&", 2);
+            /*
+            propositional_logic.Printer.print_head("&", 2);
             Printer.print_table(Operators.conj);
             Console.WriteLine("");
             
@@ -58,7 +56,7 @@ namespace i15013.logics_printer
             Printer.print_head("<->", 2);
             Printer.print_table(Operators.equiv);
             Console.WriteLine("");
-
+            */
         }
     }
 }
