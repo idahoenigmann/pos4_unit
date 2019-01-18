@@ -63,11 +63,8 @@ namespace i15013.logics.lukasiewicz3 {
             if (a is null & b is null) {
 				return true;
 			}
-			if (a is null) {
-				return false;
-			}
-			if (b is null) {
-				return false;
+			if (a is null | b is null) {
+				return null;
 			}
 			return a.Value == b.Value;
         }

@@ -1,18 +1,39 @@
 ﻿using System;
+using System.Collections.Generic;
 using i15013.logics.lukasiewicz3;
  
 namespace i15013.logics_printer.lukasiewicz3 {
     static public class Printer {
+        static string boolToString(bool? b) {
+            if (b is null) {
+                return "½";
+            }
+
+            return System.Convert.ToInt32(b.Value).ToString();
+        }
+        
         static public void print_table(Func<bool?, bool?, bool?> op) {
-            Console.WriteLine($" 0 | 0 |   {System.Convert.ToInt32(op(false, false))}");
-            Console.WriteLine($" 0 | 1 |   {System.Convert.ToInt32(op(false, true))}");
-            Console.WriteLine($" 1 | 0 |   {System.Convert.ToInt32(op(true, false))}");
-            Console.WriteLine($" 1 | 1 |   {System.Convert.ToInt32(op(true, true))}");
+            var dict = new Dictionary<string, bool?>();
+            dict.Add("0", false);
+            dict.Add("½", null);
+            dict.Add("1", true);
+
+            foreach (KeyValuePair<string, bool?> a in dict) {
+                foreach (KeyValuePair<string, bool?> b in dict) {
+                    Console.WriteLine($" {a.Key} | {b.Key} |   {boolToString(op(a.Value, b.Value))}");
+                }
+            }
         }
         
         static public void print_table(Func<bool?, bool?> op) {
-            Console.WriteLine($" 0 |   {System.Convert.ToInt32(op(false))}");
-            Console.WriteLine($" 1 |   {System.Convert.ToInt32(op(true))}");
+            var dict = new Dictionary<string, bool?>();
+            dict.Add("0", false);
+            dict.Add("½", null);
+            dict.Add("1", true);
+            
+            foreach (KeyValuePair<string, bool?> a in dict) {
+                Console.WriteLine($" {a.Key} |   {boolToString(op(a.Value))}");
+            }
         }
         
         static public void print_head(string sym, int args) {
@@ -31,7 +52,6 @@ namespace i15013.logics_printer.lukasiewicz3 {
             Console.WriteLine("Lukasiewicz L3 Logic");
             Console.WriteLine("===================\n");
 
-            /*
             propositional_logic.Printer.print_head("&", 2);
             Printer.print_table(Operators.conj);
             Console.WriteLine("");
@@ -56,7 +76,6 @@ namespace i15013.logics_printer.lukasiewicz3 {
             Printer.print_head("<->", 2);
             Printer.print_table(Operators.equiv);
             Console.WriteLine("");
-            */
         }
     }
 }
