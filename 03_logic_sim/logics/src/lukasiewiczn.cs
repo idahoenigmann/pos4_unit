@@ -15,7 +15,8 @@ namespace i15013.logics.lukasiewiczn {
         }
         
         public static double anti(double op1, double op2) {
-            return conj(disj(op1, op2), neg(conj(op1, op2)));
+            return Operators.conj(Operators.disj(op1, op2), Operators.neg(Operators.conj(op1, op2)));
+            //return disj(conj(neg(op1), op2), conj(op1, neg(op2)));
         }
         
         public static double imp(double op1, double op2) {

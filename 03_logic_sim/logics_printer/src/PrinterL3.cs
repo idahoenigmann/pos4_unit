@@ -35,16 +35,6 @@ namespace i15013.logics_printer.lukasiewicz3 {
                 Console.WriteLine($" {a.Key} |   {boolToString(op(a.Value))}");
             }
         }
-        
-        static public void print_head(string sym, int args) {
-            if (args == 2) {
-                Console.WriteLine($" a | b | a {sym} b");
-                Console.WriteLine("---------------");
-            } else if (args == 1) {
-                Console.WriteLine($" a |  {sym}a");
-                Console.WriteLine("-------------");
-            }
-        }
     }
     
     class Program {
@@ -56,24 +46,24 @@ namespace i15013.logics_printer.lukasiewicz3 {
             Printer.print_table(Operators.conj);
             Console.WriteLine("");
             
-            Printer.print_head("|", 2);
+            propositional_logic.Printer.print_head("|", 2);
             Printer.print_table(Operators.disj);
             Console.WriteLine("");
             
-            Printer.print_head("^", 2);
+            propositional_logic.Printer.print_head("^", 2);
             Printer.print_table(Operators.anti);
             Console.WriteLine("");
             
-            Printer.print_head("!", 1);
+            propositional_logic.Printer.print_head("!", 1);
             Printer.print_table(Operators.neg);
             Console.WriteLine("");
 
-            Printer.print_head("->", 2);
+            propositional_logic.Printer.print_head("->", 2);
             Printer.print_table(Operators.imp);
             Console.WriteLine("");
 
             
-            Printer.print_head("<->", 2);
+            propositional_logic.Printer.print_head("<->", 2);
             Printer.print_table(Operators.equiv);
             Console.WriteLine("");
         }

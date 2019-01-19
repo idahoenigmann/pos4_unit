@@ -1,6 +1,7 @@
 using System;
 using i15013.logics.propositional;
 using i15013.logics_printer.lukasiewicz3;
+using i15013.logics_printer.lukasiewiczn;
 
 namespace i15013.logics_printer.propositional_logic {
     static public class Printer {
@@ -32,7 +33,7 @@ namespace i15013.logics_printer.propositional_logic {
             Console.WriteLine("Propositional Logic");
             Console.WriteLine("===================\n");
 
-            propositional_logic.Printer.print_head("&", 2);
+            Printer.print_head("&", 2);
             Printer.print_table(Operators.conj);
             Console.WriteLine("");
             
@@ -61,6 +62,7 @@ namespace i15013.logics_printer.propositional_logic {
         static void Main(string[] args) {
             Program.print_propositional_logic();
             i15013.logics_printer.lukasiewicz3.Program.print_lukasiewicz3_logic();
+			i15013.logics_printer.lukasiewiczn.Program.print_lukasiewiczn_logic();
         }
     }
 }
