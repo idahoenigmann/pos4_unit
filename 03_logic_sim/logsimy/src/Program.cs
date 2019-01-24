@@ -9,7 +9,9 @@ namespace i15013.logsimy
             Variable v1 = new Variable(false, "v1");
             Variable v2 = new Variable(false, "v2");
 
-            v1.value = true;
+            v1.notify += (v => v2.value = v);
+            v1.set_value(true);
+            
             Console.WriteLine(v2.value);
         }
     }
