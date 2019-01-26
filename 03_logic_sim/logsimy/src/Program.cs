@@ -7,7 +7,7 @@ namespace i15013.logsimy
     {
         static void Main(string[] args)
         {
-            Variable v1 = new Variable(false, "v1");
+            /*Variable v1 = new Variable(false, "v1");
             Variable v2 = new Variable(false, "v2");
 
             Utilities.connect(v1, v2);
@@ -15,6 +15,7 @@ namespace i15013.logsimy
             v1.value = true;
             
             //Console.WriteLine(v2.value);
+            */
         }
     }
 }
