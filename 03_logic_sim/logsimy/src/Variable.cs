@@ -1,5 +1,5 @@
 namespace i15013.logsimy.variables {
-    public class Variable {
+    public sealed class Variable {
         public string name { get; set; }
         public bool value;
 
