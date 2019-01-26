@@ -3,6 +3,10 @@ namespace i15013.logsimy.variables {
 		changed,
 		reset
 	}
+
+	public interface Observer {
+    	void update(Variable v, NotificationReason r);
+	}
 	
     public sealed class Variable {
         public string name { get; set; }
