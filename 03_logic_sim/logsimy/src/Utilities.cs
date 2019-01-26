@@ -9,5 +9,9 @@ namespace i15013.logsimy.variables {
 		public static void enable_logging(Variable v) {
 			v.notify += ((w, r) => Console.WriteLine(v.name + ": " + v.value + " (" + r + ")"));
 		}
+
+		public static void inform(Variable src, Observer obs) {
+			src.notify += obs.update;
+		}
     }
 }
