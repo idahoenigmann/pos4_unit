@@ -6,6 +6,30 @@ namespace i15013.logsimy.gates.propositional {
     public class AndGate : Gate2 {
         public AndGate(string name) : base(name, Operators.conj) {}
     }
+    
+    public class OrGate : Gate2 {
+        public OrGate(string name) : base(name, Operators.disj) {}
+    }
+    
+    public class XOrGate : Gate2 {
+        public XOrGate(string name) : base(name, Operators.anti) {}
+    }
+    
+    public class NegGate : Gate1 {
+        public NegGate(string name) : base(name, Operators.neg) {}
+    }
+    
+    public class XNOrGate : Gate2 {
+        public XNOrGate(string name) : base(name, Operators.equiv) {}
+    }
+    
+    public class NAndGate : Gate2 {
+        public NAndGate(string name) : base(name, (x, y) => Operators.neg(Operators.conj(x, y))) {}
+    }
+    
+    public class NOrGate : Gate2 {
+        public NOrGate(string name) : base(name, (x, y) => Operators.neg(Operators.disj(x, y))) {}
+    }
 
     public abstract class Gate2 : Observer {
         public string name { get; }
@@ -41,9 +65,11 @@ namespace i15013.logsimy.gates.propositional {
         public string name { get; }
         public Variable i;
         public Variable o;
+        protected BooleanOperator1 op;
         
         public Gate1(string name, BooleanOperator1 op) {
             this.name = name;
+            this.op = op;
             
             i = new Variable(false, name + ".i");
             o = new Variable(false, name + ".o");
@@ -55,7 +81,11 @@ namespace i15013.logsimy.gates.propositional {
             o.value = false;
         }
         
-        public abstract void update(Variable v, NotificationReason r);
+        public void update(Variable v, NotificationReason r) {
+            if (r != NotificationReason.reset) {
+                o.value = op(i.value);
+            }
+        }
     }
     
     public delegate bool BooleanOperator1(bool a);
