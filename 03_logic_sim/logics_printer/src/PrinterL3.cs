@@ -13,26 +13,20 @@ namespace i15013.logics_printer.lukasiewicz3 {
         }
         
         static public void print_table(Func<bool?, bool?, bool?> op) {
-            var dict = new Dictionary<string, bool?>();
-            dict.Add("0", false);
-            dict.Add("½", null);
-            dict.Add("1", true);
+            bool?[] array = new bool?[3] {false, null, true};
 
-            foreach (KeyValuePair<string, bool?> a in dict) {
-                foreach (KeyValuePair<string, bool?> b in dict) {
-                    Console.WriteLine($" {a.Key} | {b.Key} |   {boolToString(op(a.Value, b.Value))}");
+            foreach (bool? a in array) {
+                foreach (bool? b in array) {
+                    Console.WriteLine($" {boolToString(a)} | {boolToString(b)} |   {boolToString(op(a, b))}");
                 }
             }
         }
         
         static public void print_table(Func<bool?, bool?> op) {
-            var dict = new Dictionary<string, bool?>();
-            dict.Add("0", false);
-            dict.Add("½", null);
-            dict.Add("1", true);
-            
-            foreach (KeyValuePair<string, bool?> a in dict) {
-                Console.WriteLine($" {a.Key} |   {boolToString(op(a.Value))}");
+            bool?[] array = new bool?[3] {false, null, true};
+
+            foreach (bool? a in array) {
+                Console.WriteLine($" {boolToString(a)} |   {boolToString(op(a))}");
             }
         }
     }
