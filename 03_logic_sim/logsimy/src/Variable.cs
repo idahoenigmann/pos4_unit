@@ -1,4 +1,4 @@
-namespace i15013.logsimy {
+namespace i15013.logsimy.variables {
     public class Variable {
         public string name { get; set; }
         public bool value;
