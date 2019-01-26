@@ -41,19 +41,13 @@ namespace i15013.logics.lukasiewicz3 {
 
         public static bool? imp(bool? a, bool? b) {
 			if (a is null & b is null) {
-				return null;
+				return true;
 			}
 			if (a is null) {	// b is not null
-				if (b.Value) {
-					return true;
-				}
-				return null;
+				return b.Value ? b : null;
 			}
 			if (b is null) {	// a is not null
-				if (a.Value) {
-					return null;
-				}
-				return true;
+				return a.Value ? null : !a;
 			}
 		
             return !a | b;
