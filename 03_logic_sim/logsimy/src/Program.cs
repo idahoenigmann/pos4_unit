@@ -6,7 +6,8 @@ namespace i15013.logsimy
     class Program
     {
         static void Main(string[] args) {
-            Circuits.and3();
+            //Circuits.and3();
+            Circuits.flip_flop();
         }
     }
 }

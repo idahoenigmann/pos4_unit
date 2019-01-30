@@ -50,8 +50,10 @@ namespace i15013.logsimy.gates.propositional {
             Utilities.inform(i1, this);
         }
         
-        public void reset(Variable v, NotificationReason r) {
-            o.Value = false;
+        public void reset(bool v=false) {
+            i0.reset(v);
+            i1.reset(v);
+            o.reset(v);
         }
         
         public void update(Variable v, NotificationReason r) {
@@ -77,8 +79,9 @@ namespace i15013.logsimy.gates.propositional {
             Utilities.inform(i, this);
         }
         
-        public void reset(Variable v, NotificationReason r) {
-            o.Value = false;
+        public void reset(bool v=false) {
+            i.reset(v);
+            o.reset(v);
         }
         
         public void update(Variable v, NotificationReason r) {
