@@ -1,3 +1,5 @@
+using System;
+
 namespace i15013.logsimy.variables {
 	public enum NotificationReason {
 		changed,
@@ -10,30 +12,31 @@ namespace i15013.logsimy.variables {
 	
     public sealed class Variable {
         public string name { get; set; }
-        public bool value {
+		private bool _value;
+        public bool Value {
 			get {
-				return value;
+				return _value;
 			}
 			set {
-				if (value == this.value) return;
+				if (value == _value) return;
+				_value = value;
 				if (notify != null) {
 					notify(this, NotificationReason.changed);
 				}
-				this.value = value;
 			}
 		}
 
         public Variable(bool value, string name = "") {
-            this.value = value;
+            _value = value;
             this.name = name;
         }
 
 		public void reset(bool v=false) {
-			if (v == this.value) return;
+			if (v == _value) return;
 			if (notify != null) {
 				notify(this, NotificationReason.reset);
 			}
-			this.value = v;	
+			_value = v;	
 		}
 
         public delegate void NotifyHandler(Variable v, NotificationReason r);

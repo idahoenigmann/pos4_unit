@@ -51,12 +51,12 @@ namespace i15013.logsimy.gates.propositional {
         }
         
         public void reset(Variable v, NotificationReason r) {
-            o.value = false;
+            o.Value = false;
         }
         
         public void update(Variable v, NotificationReason r) {
             if (r != NotificationReason.reset) {
-                o.value = op(i0.value, i1.value);
+                o.Value = op(i0.Value, i1.Value);
             }
         }
     }
@@ -78,12 +78,12 @@ namespace i15013.logsimy.gates.propositional {
         }
         
         public void reset(Variable v, NotificationReason r) {
-            o.value = false;
+            o.Value = false;
         }
         
         public void update(Variable v, NotificationReason r) {
             if (r != NotificationReason.reset) {
-                o.value = op(i.value);
+                o.Value = op(i.Value);
             }
         }
     }

@@ -20,9 +20,9 @@ namespace i15013.logsimy.circuits {
 
             Utilities.enable_logging(and2.o);
 
-            i0.value = true;
-            i1.value = true;
-            i2.value = true;
+            i0.Value = true;
+            i1.Value = true;
+            i2.Value = true;
         }
     }
 }
