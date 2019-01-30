@@ -48,8 +48,10 @@ namespace i15013.logsimy.circuits {
             o0.reset();
             o1.reset();
 
-			nor1.reset();
-			nor2.reset();
+			nor1.reset(true);
+			nor2.reset(false);
+
+			nor2.i0.Value = true;
 			
 			Console.WriteLine("start flip-flopping");
 

@@ -21,15 +21,33 @@ namespace i15013.logsimy.gates.propositional {
     
     public class XNOrGate : Gate2 {
         public XNOrGate(string name) : base(name, Operators.equiv) {}
+
+		public override void reset(bool v=true) {
+            i0.reset();
+            i1.reset();
+            o.reset(v);
+        }
     }
     
     public class NAndGate : Gate2 {
         public NAndGate(string name) : base(name, (x, y) => Operators.neg(Operators.conj(x, y))) {}
-    }
+    
+		public override void reset(bool v=true) {
+            i0.reset();
+            i1.reset();
+            o.reset(v);
+        }
+	}
     
     public class NOrGate : Gate2 {
         public NOrGate(string name) : base(name, (x, y) => Operators.neg(Operators.disj(x, y))) {}
-    }
+    
+		public override void reset(bool v=true) {
+            i0.reset();
+            i1.reset();
+            o.reset(v);
+        }
+	}
 
     public abstract class Gate2 : Observer {
         public string name { get; }
@@ -50,7 +68,7 @@ namespace i15013.logsimy.gates.propositional {
             Utilities.inform(i1, this);
         }
         
-        public void reset(bool v=false) {
+        public virtual void reset(bool v=false) {
             i0.reset(v);
             i1.reset(v);
             o.reset(v);

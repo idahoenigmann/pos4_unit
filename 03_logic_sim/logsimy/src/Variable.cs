@@ -32,11 +32,11 @@ namespace i15013.logsimy.variables {
         }
 
 		public void reset(bool v=false) {
-			if (v == _value) return;
+			//if (v == _value) return;
+			_value = v;
 			if (notify != null) {
 				notify(this, NotificationReason.reset);
 			}
-			_value = v;	
 		}
 
         public delegate void NotifyHandler(Variable v, NotificationReason r);
