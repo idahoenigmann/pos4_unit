@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>180</y>
+      <w>270</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>Variable
+--
++ name: string
++ Value: bool
+--
++Variable(value: bool, name: string)
++reset(v: bool)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>80</y>
+      <w>310</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+Observer
+--
+--
+update(v: Variable, r: NotificationReason)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>90</x>
+      <y>0</y>
+      <w>190</w>
+      <h>50</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;enum&gt;&gt;
+NotificationReason</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>330</x>
+      <y>10</y>
+      <w>280</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>Utilities
+--
+--
+_+ connect(v1: Variable, v2: Variable)_
+_+ enable_logging(v: Variable)_
+_+ inform(src: Variable, obs: Observer)_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>330</x>
+      <y>130</y>
+      <w>160</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>Program
+--
+--
+_Main(args: string[])_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>20</x>
+      <y>320</y>
+      <w>190</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>AndGate
+--
+--
++ AndGate(name: string)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>20</x>
+      <y>390</y>
+      <w>190</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>XOrGate
+--
+--
++ AndGate(name: string)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>20</x>
+      <y>460</y>
+      <w>190</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>XNOrGate
+--
+--
++ AndGate(name: string)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>220</x>
+      <y>390</y>
+      <w>190</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>NegGate
+--
+--
++ AndGate(name: string)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>220</x>
+      <y>320</y>
+      <w>190</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>OrGate
+--
+--
++ AndGate(name: string)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>220</x>
+      <y>460</y>
+      <w>190</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>NAndGate
+--
+--
++ AndGate(name: string)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>20</x>
+      <y>530</y>
+      <w>190</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>NOrGate
+--
+--
++ AndGate(name: string)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>20</x>
+      <y>600</y>
+      <w>330</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>Gate2
+--
++name: string
++i0: Variable
++i1: Variable
++o: Variable
+-op: BooleanOperator2
+--
++Gate2(name: string, op: BooleanOperator2)
++reset(v: bool)
++update(v: Variable, r:NotificationReason)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>20</x>
+      <y>780</y>
+      <w>330</w>
+      <h>170</h>
+    </coordinates>
+    <panel_attributes>Gate1
+--
++name: string
++i: Variable
++o: Variable
+-op: BooleanOperator1
+--
++Gate2(name: string, op: BooleanOperator1)
++reset(v: bool)
++update(v: Variable, r:NotificationReason)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>380</x>
+      <y>610</y>
+      <w>100</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>Circuits
+--
+--
+_+and3()_
+_+flip_flop()_</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
