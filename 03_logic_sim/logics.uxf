@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>230</x>
+      <y>310</y>
+      <w>280</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>i15013.logics.lukasiewicz3::Operators
+--
+--
+_+conj(a: bool?, b: bool?): bool?_
+_+disj(a: bool?, b: bool?): bool?_
+_+neg(a: bool?): bool?_
+_+anti(a: bool?, b: bool?): bool?_
+_+imp(a: bool?, b: bool?): bool?_
+_+equiv(a: bool?, b: bool?): bool?_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>230</x>
+      <y>460</y>
+      <w>310</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>i15013.logics.lukasiewiczn::Operators
+--
+--
+_+conj(op1: double, op2: double): double_
+_+disj(op1: double, op2: double): double_
+_+neg(op1: double): double_
+_+anti(op1: double, op2: double): double_
+_+imp(op1: double, op2: double): double_
+_+equiv(op1: double, op2: double): double_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>230</x>
+      <y>160</y>
+      <w>290</w>
+      <h>140</h>
+    </coordinates>
+    <panel_attributes>i15013.logics.propositional::Operators
+--
+--
+_+conj(a: bool, b: bool): bool_
+_+disj(a: bool, b: bool): bool_
+_+neg(a: bool): bool_
+_+anit(a: bool, b: bool): bool_
+_+imp(a: bool, b: bool): bool_
+_+equiv(a: bool, b: bool): bool_</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
