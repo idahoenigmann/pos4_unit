@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>240</y>
+      <w>360</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>i15013.logics_printer.propositional_logic::Printer
+--
+--
+_+print_table(op: Func&lt;bool, bool, bool&gt;)_
+_+print_table(op: Func&lt;bool, bool&gt;)_
+_+print_head(sym: string, args: int)_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>0</x>
+      <y>340</y>
+      <w>370</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>i15013.logics_printer.propositional_logic::Program
+--
+--
+_+print_propositional_logic()_
+_+Main(args: string[])_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>430</x>
+      <y>240</y>
+      <w>310</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>i15013.logics_printer.lukasiewicz3::Printer
+--
+--
+_-boolToString(b: bool?): string_
+_+print_table(op: Func&lt;bool?, bool?, bool?)_
+_+print_table(op: Func&lt;bool?, bool?)_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>430</x>
+      <y>340</y>
+      <w>330</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>i15013.logics_printer.lukasiewicz3::Program
+--
+--
+_+print_lukasiewicz3_logic()_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>800</x>
+      <y>340</y>
+      <w>330</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>i15013.logics_printer.lukasiewiczn::Program
+--
+--
+_+print_lukasiewiczn_logic()_</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>800</x>
+      <y>240</y>
+      <w>400</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>i15013.logics_printer.lukasiewiczn::Printer
+--
+--
+_+print_table(op: Func&lt;double, double, double&gt;, n: int)_
+_+print_table(op: Func&lt;double, double&gt;, n: int)_</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
